@@ -1,10 +1,12 @@
 #!/usr/bin/env python
 
+import os
 from application import create_app
 from flask import render_template
 
 
-app = create_app('config_dev')
+config_filename = 'config_' + (os.environ.get('env', 'prod')).lower()
+app = create_app(config_filename)
 
 @app.route('/')
 def home():
