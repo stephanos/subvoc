@@ -12,4 +12,4 @@ app = create_app(config_filename)
 def home():
   return render_template('home.html')
 
-app.run()
+app.run(port = int(os.environ.get('PORT', 5000)))
