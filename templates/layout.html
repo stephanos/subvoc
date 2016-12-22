@@ -13,6 +13,7 @@
 
     <link href="/static/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
     <link href="/static/css/layout.css" rel="stylesheet">
+    <link href="/static/css/home.css" rel="stylesheet">
   </head>
 
   <body>
@@ -28,13 +29,10 @@
               <h3 class="masthead-brand">
                 <a href="/">subvoc</a>
               </h3>
-              <nav class="nav nav-masthead">
-                <a class="nav-link active" href="/">Home</a>
-              </nav>
             </div>
           </div>
 
-          <div class="inner cover">
+          <div id="app" class="inner cover">
             {% block content %}
             {% endblock %}
           </div>

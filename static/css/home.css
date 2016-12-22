@@ -1,0 +1,9 @@
+.search {
+    padding: 2rem;
+}
+
+.search-result {
+    margin-top: 2rem;
+    font-weight: normal;
+    font-size: 0.6em;
+}

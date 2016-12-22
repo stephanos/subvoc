@@ -1,4 +1,3 @@
-import os
 import credentials
 
 # flask core settings
