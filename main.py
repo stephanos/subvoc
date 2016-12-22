@@ -1,6 +1,7 @@
 import os
-from flask import Flask, render_template, request
 from domain.search import find_movies
+from domain.opensubtitles import API
+from flask import Flask, render_template, request
 
 
 config_filename = os.environ.get('CONFIG', 'config_dev')
@@ -14,8 +15,11 @@ OPENSUBTITLES_CREDENTIALS = (app.config['OPENSUBTITLES_USER'], app.config['OPENS
 @app.route('/')
 def home():
     query = request.args.get('q')
-    print(query, 'true' if query else 'false')
-    movies = find_movies(query, OPENSUBTITLES_CREDENTIALS) if query else ''
+
+    movies = []
+    if query:
+        api = API(OPENSUBTITLES_CREDENTIALS)
+        movies = find_movies(api, query)
 
     return render_template('home.html',
         query=query if query else '',
