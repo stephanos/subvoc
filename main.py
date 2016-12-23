@@ -1,7 +1,9 @@
 import os
-from domain.search import find_movies
-from domain.opensubtitles import API
 from flask import Flask, render_template, request
+
+from domain.search import find_movies
+from domain.analysis import analyse_movie
+from domain.opensubtitles import API
 
 
 config_filename = os.environ.get('CONFIG', 'config_dev')
@@ -24,3 +26,10 @@ def home():
     return render_template('home.html',
         query=query if query else '',
         result=movies)
+
+@app.route('/<id>')
+def analysis(id):
+    api = API(OPENSUBTITLES_CREDENTIALS)
+    analysis = analyse_movie(api, id)
+    return render_template('analysis.html',
+        analysis=analysis)
