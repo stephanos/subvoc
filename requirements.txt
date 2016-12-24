@@ -1,2 +1,4 @@
 flask==0.11
 gunicorn==19.6.0
+nltk==3.2.1
+sortedcontainers==1.5.7
