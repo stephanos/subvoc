@@ -1,4 +1,5 @@
 *.pyc
+.cache
 .DS_Store
 __pycache__
 credentials.py
