@@ -1,4 +1,4 @@
-from analysis import analyse_subtitles, WordFreq
+from domain.analysis import analyse_subtitles, WordFreq
 
 def test_sort():
     assert analyse_subtitles(
