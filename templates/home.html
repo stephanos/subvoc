@@ -22,7 +22,7 @@
         {% if result %}
           {% for item in result %}
           <div class="search-result-item">
-            <a href="/{{ item.id }}">{{ item.title }}</a>
+            <a href="/{{ item.id }}">{{ item.title }} ({{ item.year }})</a>
           </div>
           {% endfor %}
         {% endif %}
