@@ -3,7 +3,7 @@ from sortedcontainers import SortedSet, SortedDict
 from nltk import pos_tag
 from nltk.corpus import wordnet
 from nltk.tokenize import WordPunctTokenizer
-from domain.search import to_movie
+from domain.search import parse
 
 
 WordFreq = collections.namedtuple('WordFreq', 'word freq')
@@ -68,6 +68,6 @@ def analyse_movie(api, imdb_id):
     subtitle_text = load_subtitle(api, subtitle)
     analysis = analyse_subtitles(subtitle_text)
     return {
-        'movie': to_movie(subtitle),
+        'movie': parse(subtitle),
         'entries': analysis
     }
