@@ -1,5 +1,7 @@
 import base64, zlib
 from xmlrpc.client import ServerProxy
+from domain.api.model import to_model
+
 
 OPENSUBTITLES_URL = 'http://api.opensubtitles.org/xml-rpc'
 OPENSUBTITLES_UA = 'OSTestUserAgentTemp'
@@ -11,7 +13,7 @@ def ensure_success(resp):
         raise RuntimeError("received status {}".format(resp.get('status')))
 
 
-class API:
+class OpenSubtitles:
 
     def __init__(self, credentials):
         self.token = None
@@ -31,7 +33,7 @@ class API:
         resp = self.xmlrpc.SearchSubtitles(self.token, [query], [ { 'limit': 100 } ])
         ensure_success(resp)
 
-        return resp.get('data')
+        return [to_model(item) for item in resp.get('data')]
 
     def find_by_query(self, query):
         return self.find({ 'query': query, 'sublanguageid': 'eng' })
@@ -39,15 +41,15 @@ class API:
     def find_subtitles_for_movie(self, movie_id):
         return self.find({ 'imdbid': movie_id, 'sublanguageid': 'eng' })
 
-    def load_subtitle(self, subtitle_id):
+    def load_text(self, api, subtitle):
         if not self.token:
             self.login()
 
-        resp = self.xmlrpc.DownloadSubtitles(self.token, [subtitle_id])
+        resp = self.xmlrpc.DownloadSubtitles(self.token, [subtitle.id])
         ensure_success(resp)
 
-        data = resp.get('data')[0].get('data')
-        data = base64.standard_b64decode(data)
-        data = zlib.decompress(data, 47)
-
-        return data
+        text = resp.get('data')[0].get('data')
+        text = base64.standard_b64decode(text)
+        text = zlib.decompress(text, 47)
+        text = str(text, subtitle.encoding)
+        return text
