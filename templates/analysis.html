@@ -1,6 +1,17 @@
 {% extends "layout.html" %}
 {% block content %}
 
-  ... results ...
+  <table>
+    {% for item in analysis %}
+    <tr>
+      <td>
+        {{ item.word }}
+      </td>
+      <td>
+        {{ item.freq }}
+      </td>
+    <tr>
+    {% endfor %}
+  </table>
 
 {% endblock %}
