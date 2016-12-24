@@ -1,8 +1,10 @@
 {% extends "layout.html" %}
 {% block content %}
 
+  {{ analysis.movie.title }} ({{ analysis.movie.year }})
+
   <table>
-    {% for item in analysis %}
+    {% for item in analysis.entries %}
     <tr>
       <td>
         {{ item.word }}

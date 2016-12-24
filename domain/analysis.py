@@ -3,6 +3,7 @@ from sortedcontainers import SortedSet, SortedDict
 from nltk import pos_tag
 from nltk.corpus import wordnet
 from nltk.tokenize import WordPunctTokenizer
+from domain.search import to_movie
 
 
 WordFreq = collections.namedtuple('WordFreq', 'word freq')
@@ -30,14 +31,16 @@ def pick_best(subtitles):
     subtitle = single_subtitles_by_dls[0]
     return subtitle
 
-
-def load_subtitle(api, imdb_id):
+def find_subtitle(api, imdb_id):
     all_subtitles = api.find_subtitles_for_movie(imdb_id)
     if not all_subtitles:
         return None
     print('found {} subtitles'.format(len(all_subtitles)))
 
     subtitle = pick_best(all_subtitles)
+    return subtitle
+
+def load_subtitle(api, subtitle):
     subtitle_id = subtitle.get('IDSubtitleFile')
     subtitle_bytes = api.load_subtitle(subtitle_id)
     print('loaded subtitle with ID {}'.format(subtitle_id))
@@ -61,6 +64,10 @@ def analyse_subtitles(subtitles):
 
 
 def analyse_movie(api, imdb_id):
-    subtitle_text = load_subtitle(api, imdb_id)
+    subtitle = find_subtitle(api, imdb_id)
+    subtitle_text = load_subtitle(api, subtitle)
     analysis = analyse_subtitles(subtitle_text)
-    return analysis
+    return {
+        'movie': to_movie(subtitle),
+        'entries': analysis
+    }
