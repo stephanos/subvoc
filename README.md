@@ -16,5 +16,15 @@ This project was created by me to scratch my own itch. I love to watch movies an
  - [ ] support for TV show episodes
 
 
+ 
+## Development
+ 
+ - `pip install -r requirements.txt`
+ - `pip install -r dev-requirements.txt`
+ - `python -m nltk.downloader averaged_perceptron_tagger stopwords wordnet`
+
+Start the application via `python run.py`, test it via `pytest`.
+
+
 ## License
 MIT (see LICENSE).
