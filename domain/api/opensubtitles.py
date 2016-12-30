@@ -30,7 +30,7 @@ class OpenSubtitles:
         if not self.token:
             self.login()
 
-        resp = self.xmlrpc.SearchSubtitles(self.token, [query], [ { 'limit': 100 } ])
+        resp = self.xmlrpc.SearchSubtitles(self.token, [query], [ { 'limit': 500 } ])
         ensure_success(resp)
 
         return [to_model(item) for item in resp.get('data')]

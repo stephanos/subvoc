@@ -1,7 +1,8 @@
 class Media:
-    def __init__(self, id, title, year):
+    def __init__(self, id, title, kind, year):
         self.id = id
         self.title = title
+        self.kind = kind
         self.year = year
 
     def __eq__(self, other):
@@ -25,6 +26,7 @@ def to_model(item):
     media = Media(
         id = item.get('IDMovieImdb'),
         title = item.get('MovieName'),
+        kind = item.get('MovieKind'),
         year = item.get('MovieYear'),
     )
 

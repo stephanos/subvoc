@@ -8,9 +8,9 @@ from domain.api.opensubtitles import OpenSubtitles
 def test_find_movies():
     api_mock = Mock(spec=OpenSubtitles)
 
-    movie1 = Media('M1', '1', 2000)
-    movie2 = Media('M2', '2', 2000)
-    movie3 = Media('M3', '3', 2000)
+    movie1 = Media('M1', '1', 'movie', 2000)
+    movie2 = Media('M2', '2', 'movie', 2000)
+    movie3 = Media('M3', '3', 'movie', 2000)
     api_mock.find_by_query.return_value = [
         Subtitle('S1', movie1,  100, 'UTF-8', False),
         Subtitle('S2', movie1,  500, 'UTF-8', False),
