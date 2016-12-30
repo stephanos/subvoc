@@ -1,12 +1,27 @@
 import collections, nltk, re
 from sortedcontainers import SortedSet, SortedDict
 from nltk import pos_tag
-from nltk.corpus import wordnet
+from nltk.corpus import wordnet, stopwords
+from nltk.stem.wordnet import WordNetLemmatizer
 from nltk.tokenize import WordPunctTokenizer
 
 
+stop_words = set(stopwords.words('english'))
+tokenizer = WordPunctTokenizer()
+lemmatizer = WordNetLemmatizer()
 WordFreq = collections.namedtuple('WordFreq', 'word freq')
 
+def get_wordnet_pos(treebank_tag):
+    if treebank_tag.startswith('J'):
+        return wordnet.ADJ
+    elif treebank_tag.startswith('V'):
+        return wordnet.VERB
+    elif treebank_tag.startswith('N'):
+        return wordnet.NOUN
+    elif treebank_tag.startswith('R'):
+        return wordnet.ADV
+    else:
+        return None
 
 def load_corpus(filepath):
     words_by_freq = SortedDict()
@@ -40,13 +55,23 @@ def find_subtitle(api, imdb_id):
 def analyse_subtitles(subtitle_text):
     # TODO transform into tuple (start, end, text)
     word_by_freq = SortedSet(key = lambda x: x.freq)
-    tokenizer = WordPunctTokenizer()
-    tokens = tokenizer.tokenize(subtitle_text)
-    for token in tokens:
-        word = token # todo use lemma
-        if word in corpus:
-            freq = corpus[word]
-            word_by_freq.add(WordFreq(word, freq))
+    tokens = pos_tag(tokenizer.tokenize(subtitle_text))
+
+    for token, token_type in tokens:
+        if token in stop_words:
+            continue
+
+        wordnet_pos = get_wordnet_pos(token_type)
+        if wordnet_pos is None:
+            continue
+
+        word = lemmatizer.lemmatize(token, pos=wordnet_pos)
+        if word not in corpus:
+            continue
+
+        freq = corpus[word]
+        word_by_freq.add(WordFreq(word, freq))
+
     return list(word_by_freq)
 
 
