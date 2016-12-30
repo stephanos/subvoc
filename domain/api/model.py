@@ -4,6 +4,13 @@ class Media:
         self.title = title
         self.year = year
 
+    def __eq__(self, other):
+        return isinstance(other, __class__) and self.id == other.id
+
+    def __ne__(self, other):
+        return not self.__eq__(other)
+
+
 class Subtitle:
     def __init__(self, id, media, downloads, encoding, partial, text=None):
         self.id = id
@@ -26,5 +33,5 @@ def to_model(item):
         media = media,
         partial = item.get('SubSumCD') != '1',
         encoding = item.get('SubEncoding'),
-        downloads = item.get('SubDownloadsCnt'),
+        downloads = int(item.get('SubDownloadsCnt')),
     )

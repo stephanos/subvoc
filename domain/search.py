@@ -1,5 +1,15 @@
-def find_movies(api, query):
+from collections import Counter
+
+
+def find_movies(api, query, count=20):
     subtitles = api.find_by_query(query)
-    movies = [s.media for s in subtitles]
-    unique_movies = { m.id: m for m in movies }.values()
-    return unique_movies
+
+    movie_downloads = Counter()
+    movie_by_id = {}
+    for s in subtitles:
+        media_id = s.media.id
+        movie_by_id[media_id] = s.media
+        movie_downloads[media_id] += s.downloads
+
+    popular_movies = [movie_by_id[m[0]] for m in movie_downloads.most_common(count)]
+    return popular_movies
