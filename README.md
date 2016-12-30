@@ -1,7 +1,20 @@
 subvoc [![Build Status](https://secure.travis-ci.org/stephanos/subvoc.png)](https://travis-ci.org/stephanos/subvoc)
 ======
 
-TBD
+This project was created by me to scratch my own itch. I love to watch movies and am always keen to expand my vocabulary. But it's difficult to notice an unknown word *during* a movie without spoiling the experience. That's when `subvoc` was born.
+
+## Features
+
+ - [x] landing page with search bar
+ - [x] search movie by query
+ - [x] sort search results by popularity
+ - [x] host on Heroku
+ - [x] list of words sorted by difficulty
+ - [ ] include context for each word
+ - [ ] include movie poster
+ - [ ] use the base of each word
+ - [ ] support for TV show episodes
+
 
 ## License
 MIT (see LICENSE).
