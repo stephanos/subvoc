@@ -6,7 +6,7 @@ class Media:
         self.year = year
 
     def __eq__(self, other):
-        return isinstance(other, __class__) and self.id == other.id
+        return self.__dict__ == other.__dict__
 
     def __ne__(self, other):
         return not self.__eq__(other)
@@ -20,6 +20,12 @@ class Subtitle:
         self.encoding = encoding
         self.partial = partial
         self.text = text
+
+    def __eq__(self, other):
+        return self.__dict__ == other.__dict__
+
+    def __ne__(self, other):
+        return not self.__eq__(other)
 
 
 def to_model(item):
