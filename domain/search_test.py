@@ -1,11 +1,11 @@
 from unittest.mock import Mock
-from domain.search import find_movies
+from domain.search import search
 
 from domain.api.model import Media, Subtitle
 from domain.api.opensubtitles import OpenSubtitles
 
 
-def test_find_movies():
+def test_search():
     api_mock = Mock(spec=OpenSubtitles)
 
     movie1 = Media('M1', '1', 'movie', 2000)
@@ -19,6 +19,6 @@ def test_find_movies():
         Subtitle('S5', movie3, 'srt', 1000, 'UTF-8', False)
     ]
 
-    result = find_movies(api_mock, 'a_query', count=2)
+    result = search(api_mock, 'a_query', count=2)
 
     assert result == [movie3, movie2]

@@ -1,8 +1,8 @@
 import os
 from flask import Flask, render_template, request
 
-from domain.search import find_movies
-from domain.analysis import analyse_movie
+from domain.search import search
+from domain.analysis import analyse
 from domain.api.opensubtitles import OpenSubtitles
 
 
@@ -21,7 +21,7 @@ def home():
     movies = []
     if query:
         api = OpenSubtitles(OPENSUBTITLES_CREDENTIALS)
-        movies = find_movies(api, query)
+        movies = search(api, query)
 
     return render_template(
         'home.html',
@@ -32,7 +32,7 @@ def home():
 @app.route('/<int:id>')
 def analysis(id):
     api = OpenSubtitles(OPENSUBTITLES_CREDENTIALS)
-    movie, analysis = analyse_movie(api, id)
+    movie, analysis = analyse(api, id)
     return render_template(
         'analysis.html',
         movie = movie,

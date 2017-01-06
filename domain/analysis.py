@@ -5,8 +5,6 @@ from nltk.corpus import wordnet, stopwords
 from nltk.stem.wordnet import WordNetLemmatizer
 from nltk.tokenize import WordPunctTokenizer
 
-from domain.parse import parse
-
 
 stop_words = set(stopwords.words('english'))
 tokenizer = WordPunctTokenizer()
@@ -77,7 +75,7 @@ def analyse_subtitles(text):
     return list(word_by_freq)
 
 
-def analyse_movie(api, imdb_id):
+def analyse(api, imdb_id):
     subtitle = find_subtitle(api, imdb_id)
     if not subtitle:
         raise RuntimeError('no subtitle found for movie {}'.format(imdb_id))

@@ -1,7 +1,7 @@
 from collections import Counter
 
 
-def find_movies(api, query, count=20):
+def search(api, query, count=20):
     subtitles = api.find_by_query(query)
 
     movie_downloads = Counter()
