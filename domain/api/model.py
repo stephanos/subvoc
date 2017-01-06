@@ -13,13 +13,12 @@ class Media:
 
 
 class Subtitle:
-    def __init__(self, id, media, downloads, encoding, partial, text=None):
+    def __init__(self, id, media, downloads, encoding, partial):
         self.id = id
         self.media = media
         self.downloads = downloads
         self.encoding = encoding
         self.partial = partial
-        self.text = text
 
     def __eq__(self, other):
         return self.__dict__ == other.__dict__
