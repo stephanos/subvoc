@@ -1,10 +1,10 @@
 {% extends "layout.html" %}
 {% block content %}
 
-  {{ movie.title }} ({{ movie.year }})
+  {{ analysis.movie.title }} ({{ analysis.movie.year }})
 
   <table>
-    {% for item in analysis %}
+    {% for item in analysis.word_freqs %}
     <tr>
       <td>
         {{ item.word }}
