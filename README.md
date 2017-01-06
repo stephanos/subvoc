@@ -3,6 +3,7 @@ subvoc [![Build Status](https://secure.travis-ci.org/stephanos/subvoc.png)](http
 
 This project was created by me to scratch my own itch. I love to watch movies and am always keen to expand my vocabulary. But it's difficult to notice an unknown word *during* a movie without spoiling the experience. That's when `subvoc` was born.
 
+
 ## Features
 
  - [x] landing page with search bar
@@ -10,11 +11,11 @@ This project was created by me to scratch my own itch. I love to watch movies an
  - [x] sort search results by popularity
  - [x] host on Heroku
  - [x] list of words sorted by difficulty
- - [ ] include context for each word
+ - [x] use the base of each word
+ - [ ] show movie context for each word
+ - [ ] show context in another language side by side
  - [ ] include movie poster
- - [ ] use the base of each word
  - [ ] support for TV show episodes
-
 
 
 ## Development
