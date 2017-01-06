@@ -1,4 +1,4 @@
-subvoc [![Build Status](https://secure.travis-ci.org/stephanos/subvoc.png)](https://travis-ci.org/stephanos/subvoc)
+subvoc [![Build Status](https://secure.travis-ci.org/stephanos/subvoc.png)](https://travis-ci.org/stephanos/subvoc)[![Coverage Status](https://coveralls.io/repos/github/stephanos/subvoc/badge.svg?branch=master)](https://coveralls.io/github/stephanos/subvoc?branch=master)
 ======
 
 This project was created by me to scratch my own itch. I love to watch movies and am always keen to expand my vocabulary. But it's difficult to notice an unknown word *during* a movie without spoiling the experience. That's when `subvoc` was born.
