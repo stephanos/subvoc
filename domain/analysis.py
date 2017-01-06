@@ -10,10 +10,16 @@ from domain.freq import get_word_freqs
 from domain.parser import parse
 
 
+lemmatizer = WordNetLemmatizer()
 stop_words = set(stopwords.words('english'))
 tokenizer = WordPunctTokenizer()
-lemmatizer = WordNetLemmatizer()
 WordFreq = collections.namedtuple('WordFreq', 'word freq')
+
+
+class Analysis:
+
+    def __init__(self, word_freqs):
+        self.word_freqs = word_freqs
 
 
 def get_wordnet_pos(treebank_tag):
@@ -69,7 +75,7 @@ def analyse_subtitles(text, freq_lookup):
             freq = freq_lookup[word]
             word_by_freq.add(WordFreq(word, freq))
 
-    return list(word_by_freq)
+    return Analysis(list(word_by_freq))
 
 
 def analyse(api, imdb_id):
