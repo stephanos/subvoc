@@ -1,11 +1,12 @@
-import base64, zlib
+import base64, re, zlib
 from xmlrpc.client import ServerProxy
 from domain.api.model import to_model
 
 
+LANGUAGE = 'en'
+NEWLINE_PATTERN = re.compile(r'(\r\n|\r|\n)')
 OPENSUBTITLES_URL = 'http://api.opensubtitles.org/xml-rpc'
 OPENSUBTITLES_UA = 'subvoc v1.0'
-LANGUAGE = 'en'
 
 
 def ensure_success(resp):
@@ -52,4 +53,6 @@ class OpenSubtitles:
         text = base64.standard_b64decode(text)
         text = zlib.decompress(text, 47)
         text = str(text, subtitle.encoding)
+        text = re.sub(NEWLINE_PATTERN, '\n', text)
+
         return text
