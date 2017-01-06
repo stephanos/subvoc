@@ -13,14 +13,16 @@ def ensure_success(resp):
     if resp.get('status').split()[0] != '200':
         raise RuntimeError("received status {}".format(resp.get('status')))
 
+def create_client():
+    return ServerProxy(OPENSUBTITLES_URL, allow_none=True)
+
 
 class OpenSubtitles:
 
-    def __init__(self, credentials):
+    def __init__(self, credentials, create_client=create_client):
         self.token = None
         self.credentials = credentials
-        self.xmlrpc = ServerProxy(OPENSUBTITLES_URL, allow_none=True)
-
+        self.xmlrpc = create_client()
 
     def login(self):
         resp = self.xmlrpc.LogIn(self.credentials[0], self.credentials[1], LANGUAGE, OPENSUBTITLES_UA)
@@ -42,7 +44,7 @@ class OpenSubtitles:
     def find_subtitles_for_movie(self, movie_id):
         return self.find({ 'imdbid': movie_id, 'sublanguageid': 'eng' })
 
-    def load_text(self, api, subtitle):
+    def load_text(self, subtitle):
         if not self.token:
             self.login()
 

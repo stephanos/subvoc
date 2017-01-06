@@ -77,6 +77,6 @@ def analyse(api, imdb_id):
     if not subtitle:
         raise RuntimeError('no subtitle found for movie {}'.format(imdb_id))
 
-    text = api.load_text(api, subtitle)
+    text = api.load_text(subtitle)
     analysis = analyse_subtitles(text, get_word_freqs('corpus/en.txt'))
     return subtitle.media, analysis

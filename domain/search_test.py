@@ -1,6 +1,6 @@
 from unittest.mock import Mock
-from domain.search import search
 
+from domain.search import search
 from domain.api.model import Media, Subtitle
 from domain.api.opensubtitles import OpenSubtitles
 
