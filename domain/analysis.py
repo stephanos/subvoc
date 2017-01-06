@@ -47,24 +47,27 @@ def find_subtitle(api, imdb_id):
     subtitle = pick_best(all_subtitles)
     return subtitle
 
-def analyse_subtitles(text):
+def analyse_subtitles(text, freq_lookup):
+    sentences = parse(text)
     word_by_freq = SortedSet(key = lambda x: x.freq)
-    tokens = pos_tag(tokenizer.tokenize(text))
 
-    for token, token_type in tokens:
-        if token in stop_words:
-            continue
+    for sentence in sentences:
+        tokens = pos_tag(tokenizer.tokenize(sentence.text))
 
-        wordnet_pos = get_wordnet_pos(token_type)
-        if wordnet_pos is None:
-            continue
+        for token, token_type in tokens:
+            if token in stop_words:
+                continue
 
-        word = lemmatizer.lemmatize(token, pos=wordnet_pos)
-        if word not in corpus:
-            continue
+            wordnet_pos = get_wordnet_pos(token_type)
+            if wordnet_pos is None:
+                continue
 
-        freq = corpus[word]
-        word_by_freq.add(WordFreq(word, freq))
+            word = lemmatizer.lemmatize(token, pos=wordnet_pos)
+            if word not in freq_lookup:
+                continue
+
+            freq = freq_lookup[word]
+            word_by_freq.add(WordFreq(word, freq))
 
     return list(word_by_freq)
 
@@ -75,5 +78,5 @@ def analyse(api, imdb_id):
         raise RuntimeError('no subtitle found for movie {}'.format(imdb_id))
 
     text = api.load_text(api, subtitle)
-    analysis = analyse_subtitles(text)
+    analysis = analyse_subtitles(text, get_word_freqs('corpus/en.txt'))
     return subtitle.media, analysis
