@@ -5,11 +5,14 @@ from nltk.corpus import wordnet, stopwords
 from nltk.stem.wordnet import WordNetLemmatizer
 from nltk.tokenize import WordPunctTokenizer
 
+from domain.parse import parse
+
 
 stop_words = set(stopwords.words('english'))
 tokenizer = WordPunctTokenizer()
 lemmatizer = WordNetLemmatizer()
 WordFreq = collections.namedtuple('WordFreq', 'word freq')
+
 
 def get_wordnet_pos(treebank_tag):
     if treebank_tag.startswith('J'):
@@ -34,14 +37,14 @@ def load_corpus(filepath):
 corpus = load_corpus('corpus/en.txt')
 
 def pick_best(subtitles):
-    single_subtitles = [s for s in subtitles if not s.partial]
-    if not single_subtitles:
+    valid_subtitles = [s for s in subtitles if not s.partial and s.format == 'srt']
+    if not valid_subtitles:
         return None
 
     sort_by_dls = lambda s: s.downloads
-    single_subtitles_by_dls = sorted(single_subtitles, key = sort_by_dls)
+    valid_subtitles_by_dls = sorted(valid_subtitles, key = sort_by_dls)
 
-    subtitle = single_subtitles_by_dls[0]
+    subtitle = valid_subtitles_by_dls[0]
     return subtitle
 
 def find_subtitle(api, imdb_id):
@@ -52,10 +55,9 @@ def find_subtitle(api, imdb_id):
     subtitle = pick_best(all_subtitles)
     return subtitle
 
-def analyse_subtitles(subtitle_text):
-    # TODO transform into tuple (start, end, text)
+def analyse_subtitles(text):
     word_by_freq = SortedSet(key = lambda x: x.freq)
-    tokens = pos_tag(tokenizer.tokenize(subtitle_text))
+    tokens = pos_tag(tokenizer.tokenize(text))
 
     for token, token_type in tokens:
         if token in stop_words:
@@ -80,6 +82,6 @@ def analyse_movie(api, imdb_id):
     if not subtitle:
         raise RuntimeError('no subtitle found for movie {}'.format(imdb_id))
 
-    subtitle.text = api.load_text(api, subtitle)
-    analysis = analyse_subtitles(subtitle.text)
+    text = api.load_text(api, subtitle)
+    analysis = analyse_subtitles(text)
     return subtitle.media, analysis

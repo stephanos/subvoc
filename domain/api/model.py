@@ -13,9 +13,10 @@ class Media:
 
 
 class Subtitle:
-    def __init__(self, id, media, downloads, encoding, partial):
+    def __init__(self, id, media, format, downloads, encoding, partial):
         self.id = id
         self.media = media
+        self.format = format
         self.downloads = downloads
         self.encoding = encoding
         self.partial = partial
@@ -38,6 +39,7 @@ def to_model(item):
     return Subtitle(
         id = item.get('IDSubtitleFile'),
         media = media,
+        format = item.get('SubFormat'),
         partial = item.get('SubSumCD') != '1',
         encoding = item.get('SubEncoding'),
         downloads = int(item.get('SubDownloadsCnt')),

@@ -2,8 +2,8 @@ from domain.api.model import to_model, Media, Subtitle
 
 
 def test_subtitle_equality():
-    assert Subtitle('S1', None, False, 'enc', 1) == Subtitle('S1', None, False, 'enc', 1)
-    assert Subtitle('S2', None, False, 'enc', 1) != Subtitle('S1', None, False, 'enc', 1)
+    assert Subtitle('S1', None, 'srt', 1, 'enc', False) == Subtitle('S1', None, 'srt', 1, 'enc', False)
+    assert Subtitle('S2', None, 'srt', 1, 'enc', False) != Subtitle('S1', None, 'srt', 1, 'enc', False)
 
 def test_media_equality():
     assert Media('M1', 'War and Peace', 'movie', '2000') == Media('M1', 'War and Peace', 'movie', '2000')
@@ -19,6 +19,7 @@ def test_to_model():
         'Nonsense': 'nonsense',
         'SubSumCD': '1',
         'SubDownloadsCnt': '100',
+        'SubFormat': 'srt',
         'SubEncoding': 'enc'
     }
 
@@ -32,6 +33,7 @@ def test_to_model():
             title = 'name',
             year = '1986',
         ),
+        format = 'srt',
         partial = False,
         encoding = 'enc',
         downloads = 100,

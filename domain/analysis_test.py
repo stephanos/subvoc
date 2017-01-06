@@ -1,14 +1,15 @@
 from domain.analysis import analyse_subtitles, WordFreq
 
-def test_sort():
+
+def test_analysis():
     analysis = analyse_subtitles(
-'''
-1684
+'''\
+1
 02:11:39,473 --> 02:11:42,375
 I hoped to see my friend
 and shake his hand.
 
-1685
+2
 02:11:44,176 --> 02:11:48,071
 I hoped the Pacific is as blue
 as it has been in my dreams.
