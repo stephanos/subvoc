@@ -1,9 +1,13 @@
 import collections, nltk, re
 from sortedcontainers import SortedSet, SortedDict
+
 from nltk import pos_tag
 from nltk.corpus import wordnet, stopwords
 from nltk.stem.wordnet import WordNetLemmatizer
 from nltk.tokenize import WordPunctTokenizer
+
+from domain.freq import get_word_freqs
+from domain.parser import parse
 
 
 stop_words = set(stopwords.words('english'))
@@ -23,16 +27,6 @@ def get_wordnet_pos(treebank_tag):
         return wordnet.ADV
     else:
         return None
-
-def load_corpus(filepath):
-    words_by_freq = SortedDict()
-    with open(filepath, 'r') as file:
-        for line in file:
-            word, freq = line.split(' ')
-            words_by_freq[word] = int(freq)
-    return words_by_freq
-
-corpus = load_corpus('corpus/en.txt')
 
 def pick_best(subtitles):
     valid_subtitles = [s for s in subtitles if not s.partial and s.format == 'srt']

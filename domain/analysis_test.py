@@ -1,4 +1,5 @@
 from domain.analysis import analyse_subtitles, WordFreq
+from domain.freq import get_word_freqs
 
 
 def test_analysis():
@@ -13,7 +14,7 @@ and shake his hand.
 02:11:44,176 --> 02:11:48,071
 I hoped the Pacific is as blue
 as it has been in my dreams.
-''')
+''', get_word_freqs('corpus/en_min.txt'))
 
     assert analysis == [WordFreq(word='hop', freq=7928),
                         WordFreq(word='shake', freq=20029),
