@@ -29,7 +29,7 @@ def home():
         result = movies
     )
 
-@app.route('/<id>')
+@app.route('/<int:id>')
 def analysis(id):
     api = OpenSubtitles(OPENSUBTITLES_CREDENTIALS)
     movie, analysis = analyse_movie(api, id)
