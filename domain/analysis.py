@@ -21,7 +21,7 @@ class Analysis:
 
     def __init__(self, subtitle, word_freqs):
         self.word_freqs = word_freqs
-        self.movie = subtitle.media
+        self.media = subtitle.media
 
 
 def get_wordnet_pos(treebank_tag):

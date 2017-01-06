@@ -16,11 +16,13 @@ I hoped the Pacific is as blue
 as it has been in my dreams.
 '''
     api = MagicMock()
-    subtitle = MagicMock(media = MagicMock())
+    media = MagicMock()
+    subtitle = MagicMock(media = media)
     loader = MagicMock(return_value = (subtitle, text))
 
     analysis = analyse(api, 'movie-id', 'corpus/en_min.txt', loader)
 
+    assert analysis.media == media
     assert analysis.word_freqs == [
         WordFreq(word='hop', freq=7928),
         WordFreq(word='shake', freq=20029),
