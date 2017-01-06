@@ -16,6 +16,7 @@ This project was created by me to scratch my own itch. I love to watch movies an
  - [ ] show context in another language side by side
  - [ ] include movie poster
  - [ ] support for TV show episodes
+ - [ ] wild idea: display YouTube videos with a certain word
 
 
 ## Development
