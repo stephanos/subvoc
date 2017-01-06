@@ -4,7 +4,7 @@ from domain.api.model import to_model
 
 
 OPENSUBTITLES_URL = 'http://api.opensubtitles.org/xml-rpc'
-OPENSUBTITLES_UA = 'OSTestUserAgentTemp'
+OPENSUBTITLES_UA = 'subvoc v1.0'
 LANGUAGE = 'en'
 
 
