@@ -20,7 +20,7 @@ as it has been in my dreams.
     subtitle = MagicMock(media = media)
     loader = MagicMock(return_value = (subtitle, text))
 
-    analysis = analyse(api, 'movie-id', 'corpus/en_min.txt', loader)
+    analysis = analyse(api, '<id>', 'corpus/en_min.txt', loader)
 
     assert analysis.media == media
     assert analysis.word_freqs == [
@@ -33,4 +33,4 @@ as it has been in my dreams.
         WordFreq(word='see', freq=1386818),
     ]
 
-    loader.assert_called_with(api, 'movie-id')
+    loader.assert_called_with(api, '<id>', 'eng')

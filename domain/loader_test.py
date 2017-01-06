@@ -13,12 +13,12 @@ def test_load():
     api_mock.find_subtitles_for_movie = MagicMock(return_value = subtitles)
     api_mock.load_text = MagicMock(return_value = '<text>')
 
-    s, t = load(api_mock, '114369')
+    s, t = load(api_mock, '<id>', '<lang>')
 
     assert s is subtitles[0]
     assert t == '<text>'
 
-    api_mock.find_subtitles_for_movie.assert_called_with('114369')
+    api_mock.find_subtitles_for_movie.assert_called_with('<id>', '<lang>')
     api_mock.load_text.assert_called_with(subtitles[0])
 
 def test_load_only_uses_srt_format():
@@ -31,7 +31,7 @@ def test_load_only_uses_srt_format():
     api_mock = MagicMock()
     api_mock.find_subtitles_for_movie = MagicMock(return_value = subtitles)
 
-    s, _ = load(api_mock, '114369')
+    s, _ = load(api_mock, '<id>', '<lang>')
     assert s is subtitles[2]
 
 def test_load_only_uses_complete_subtitles():
@@ -44,7 +44,7 @@ def test_load_only_uses_complete_subtitles():
     api_mock = MagicMock()
     api_mock.find_subtitles_for_movie = MagicMock(return_value = subtitles)
 
-    s, _ = load(api_mock, '114369')
+    s, _ = load(api_mock, '<id>', '<lang>')
     assert s is subtitles[2]
 
 def test_load_sorts_by_downloads():
@@ -57,14 +57,14 @@ def test_load_sorts_by_downloads():
     api_mock = MagicMock()
     api_mock.find_subtitles_for_movie = MagicMock(return_value = subtitles)
 
-    s, _ = load(api_mock, '114369')
+    s, _ = load(api_mock, '<id>', '<lang>')
     assert s is subtitles[2]
 
 def test_load_none_found():
     api_mock = MagicMock()
     api_mock.find_subtitles_for_movie = MagicMock(return_value = [])
 
-    s, t = load(api_mock, '114369')
+    s, t = load(api_mock, '<id>', '<lang>')
     assert s is None
     assert t is None
 
@@ -77,6 +77,6 @@ def test_load_none_valid():
     api_mock = MagicMock()
     api_mock.find_subtitles_for_movie = MagicMock(return_value = invalid_subtitles)
 
-    s, t = load(api_mock, '114369')
+    s, t = load(api_mock, '<id>', '<lang>')
     assert s is None
     assert t is None

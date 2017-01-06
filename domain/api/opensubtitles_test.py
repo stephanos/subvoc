@@ -60,7 +60,7 @@ def test_find_subtitles_for_movie(api):
         client.LogIn = MagicMock(return_value = successful_login_resp)
         client.SearchSubtitles = MagicMock(return_value = json.load(resp))
 
-        result = openSubtitles.find_subtitles_for_movie('114369')
+        result = openSubtitles.find_subtitles_for_movie('114369', 'eng')
 
         assert len(result) == 64
         assert isinstance(result[0], Subtitle)

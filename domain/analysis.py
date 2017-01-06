@@ -62,7 +62,7 @@ def analyse_subtitles(text, freq_lookup):
 
 
 def analyse(api, imdb_id, freq_db='corpus/en.txt', loader=load):
-    subtitle, text = loader(api, imdb_id)
+    subtitle, text = loader(api, imdb_id, 'eng')
     if not subtitle:
         raise RuntimeError('no subtitle found for movie {}'.format(imdb_id))
 

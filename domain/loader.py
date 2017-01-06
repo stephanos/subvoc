@@ -9,8 +9,8 @@ def pick_best(subtitles):
     subtitle = valid_subtitles_by_dls[-1]
     return subtitle
 
-def load(api, imdb_id):
-    all_subtitles = api.find_subtitles_for_movie(imdb_id)
+def load(api, imdb_id, lang):
+    all_subtitles = api.find_subtitles_for_movie(imdb_id, lang)
     if not all_subtitles:
         return None, None
 
