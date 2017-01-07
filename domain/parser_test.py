@@ -88,6 +88,16 @@ def test_parse_sentences_with_dash_and_space():
         Sentence('And shake his hand.', timedelta(minutes = 1))
     ]
 
+def test_parse_sentences_with_html():
+        assert parse(
+'''\
+1
+00:01:00,000 --> 00:01:03,000
+<i>I hope to see my friend.</i>
+''') == [
+        Sentence('I hope to see my friend.', timedelta(minutes = 1)),
+    ]
+
 def test_parse_full_subtitle_file():
     with open('fixtures/114369.subtitles.txt') as text:
         result = parse(''.join(text.readlines()))
