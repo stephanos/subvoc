@@ -4,3 +4,4 @@ gunicorn==19.6.0
 nltk==3.2.1
 sortedcontainers==1.5.7
 srt==1.2.0
+wordnik-py3==2.1.2
