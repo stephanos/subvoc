@@ -1,6 +1,6 @@
 from unittest.mock import MagicMock
 
-from domain.analysis import analyse, WordFreq
+from domain.analysis import analyse, corpora, WordFreq
 
 
 def test_analysis():
@@ -20,7 +20,7 @@ as it has been in my dreams.
     subtitle = MagicMock(media = media)
     loader = MagicMock(return_value = (subtitle, text))
 
-    analysis = analyse(api, '<id>', 'corpus/en_min.txt', loader)
+    analysis = analyse(api, '<id>', corpora['min'], loader)
 
     assert analysis.media == media
     assert analysis.word_freqs == [

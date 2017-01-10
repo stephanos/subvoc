@@ -11,6 +11,10 @@ from domain.loader import load
 from domain.parser import parse
 
 
+corpora = {
+    'full': 'corpora/en.txt',
+    'min':  'corpora/en_min.txt'
+}
 lemmatizer = WordNetLemmatizer()
 stop_words = set(stopwords.words('english'))
 tokenizer = WordPunctTokenizer()
@@ -61,7 +65,7 @@ def analyse_subtitles(text, freq_lookup):
     return list(word_by_freq)
 
 
-def analyse(api, imdb_id, freq_db='corpus/en.txt', loader=load):
+def analyse(api, imdb_id, freq_db=corpora['full'], loader=load):
     subtitle, text = loader(api, imdb_id, 'eng')
     if not subtitle:
         raise RuntimeError('no subtitle found for movie {}'.format(imdb_id))
