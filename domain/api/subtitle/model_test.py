@@ -1,4 +1,4 @@
-from domain.api.model import to_model, Media, Subtitle
+from domain.api.subtitle.model import to_model, Media, Subtitle
 
 
 def test_subtitle_equality():

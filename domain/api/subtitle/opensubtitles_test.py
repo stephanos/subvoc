@@ -1,8 +1,8 @@
 import pytest, json
 from unittest.mock import MagicMock
 
-from domain.api.model import Subtitle
-from domain.api.opensubtitles import OpenSubtitles
+from domain.api.subtitle.model import Subtitle
+from domain.api.subtitle.opensubtitles import OpenSubtitles
 
 
 successful_login_resp = { 'status': '200 OK', 'token': 'my-token' }

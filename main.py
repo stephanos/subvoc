@@ -3,7 +3,7 @@ from flask import Flask, render_template, request
 
 from domain.search import search
 from domain.analysis import analyse
-from domain.api.opensubtitles import OpenSubtitles
+from domain.api.subtitle.opensubtitles import OpenSubtitles
 
 
 config_filename = os.environ.get('CONFIG', 'config_dev')

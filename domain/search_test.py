@@ -1,8 +1,8 @@
 from unittest.mock import Mock
 
 from domain.search import search
-from domain.api.model import Media, Subtitle
-from domain.api.opensubtitles import OpenSubtitles
+from domain.api.subtitle.model import Media, Subtitle
+from domain.api.subtitle.opensubtitles import OpenSubtitles
 
 
 def test_search():
