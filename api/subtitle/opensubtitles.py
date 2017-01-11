@@ -1,6 +1,6 @@
 import base64, codecs, re, zlib
 from xmlrpc.client import ServerProxy
-from domain.api.subtitle.model import to_model
+from api.subtitle.model import to_model
 
 
 LANGUAGE = 'en'

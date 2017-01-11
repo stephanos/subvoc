@@ -1,6 +1,6 @@
 from unittest.mock import MagicMock
 
-from domain.api.subtitle.model import Media, Subtitle
+from api.subtitle.model import Media, Subtitle
 from domain.loader import load
 
 
