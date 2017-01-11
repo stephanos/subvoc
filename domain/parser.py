@@ -1,10 +1,13 @@
-import collections, srt
+import collections
+
+import srt
 from bs4 import BeautifulSoup
 from nltk.tokenize import sent_tokenize
 
 
 Sentence = collections.namedtuple('Sentence', ['text', 'time'])
 SubtitleLine = collections.namedtuple('SubtitleLine', ['text', 'time'])
+
 
 def parse_subtitle(subtitle):
     lines = []
@@ -25,6 +28,7 @@ def parse_subtitle(subtitle):
     full_text = ' '.join(text_list)
     return lines, full_text
 
+
 def to_sentences(lines, tokens):
     l, t, time, sentences = 0, 0, None, []
     while len(sentences) != len(tokens):
@@ -37,6 +41,7 @@ def to_sentences(lines, tokens):
             time = None
             t += 1
     return sentences
+
 
 def parse(subtitle):
     lines, text = parse_subtitle(subtitle)

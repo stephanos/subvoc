@@ -25,9 +25,10 @@ def home():
 
     return render_template(
         'home.html',
-        query = query if query else '',
-        result = movies
+        query=query if query else '',
+        result=movies
     )
+
 
 @app.route('/<int:id>')
 def analysis(id):
@@ -35,6 +36,6 @@ def analysis(id):
     subtitle, analysis = analyse(api, id)
     return render_template(
         'analysis.html',
-        media = subtitle.media,
-        analysis = analysis
+        media=subtitle.media,
+        analysis=analysis
     )

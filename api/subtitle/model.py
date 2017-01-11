@@ -30,17 +30,17 @@ class Subtitle:
 
 def to_model(item):
     media = Media(
-        id = item.get('IDMovieImdb'),
-        title = item.get('MovieName'),
-        kind = item.get('MovieKind'),
-        year = item.get('MovieYear'),
+        id=item.get('IDMovieImdb'),
+        title=item.get('MovieName'),
+        kind=item.get('MovieKind'),
+        year=item.get('MovieYear'),
     )
 
     return Subtitle(
-        id = item.get('IDSubtitleFile'),
-        media = media,
-        format = item.get('SubFormat'),
-        partial = item.get('SubSumCD') != '1',
-        encoding = item.get('SubEncoding'),
-        downloads = int(item.get('SubDownloadsCnt')),
+        id=item.get('IDSubtitleFile'),
+        media=media,
+        format=item.get('SubFormat'),
+        partial=item.get('SubSumCD') != '1',
+        encoding=item.get('SubEncoding'),
+        downloads=int(item.get('SubDownloadsCnt')),
     )

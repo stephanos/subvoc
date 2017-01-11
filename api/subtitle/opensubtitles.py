@@ -1,5 +1,8 @@
-import base64, codecs, re, zlib
+import base64
+import re
+import zlib
 from xmlrpc.client import ServerProxy
+
 from api.subtitle.model import to_model
 
 
@@ -14,6 +17,7 @@ def ensure_success(resp):
     if resp.get('status').split()[0] != '200':
         raise RuntimeError("received status {}".format(resp.get('status')))
 
+
 def create_client():
     return ServerProxy(OPENSUBTITLES_URL, allow_none=True)
 
@@ -26,7 +30,9 @@ class OpenSubtitles:
         self.xmlrpc = create_client()
 
     def login(self):
-        resp = self.xmlrpc.LogIn(self.credentials[0], self.credentials[1], LANGUAGE, OPENSUBTITLES_UA)
+        username = self.credentials[0]
+        password = self.credentials[1]
+        resp = self.xmlrpc.LogIn(username, password, LANGUAGE, OPENSUBTITLES_UA)
         ensure_success(resp)
         self.token = resp.get('token')
 
@@ -34,16 +40,16 @@ class OpenSubtitles:
         if not self.token:
             self.login()
 
-        resp = self.xmlrpc.SearchSubtitles(self.token, [query], [ { 'limit': 500 } ])
+        resp = self.xmlrpc.SearchSubtitles(self.token, [query], [{'limit': 500}])
         ensure_success(resp)
 
         return [to_model(item) for item in resp.get('data')]
 
     def find_by_query(self, query):
-        return self.find({ 'query': query, 'sublanguageid': 'eng' })
+        return self.find({'query': query, 'sublanguageid': 'eng'})
 
     def find_subtitles_for_movie(self, movie_id, lang):
-        return self.find({ 'imdbid': movie_id, 'sublanguageid': lang })
+        return self.find({'imdbid': movie_id, 'sublanguageid': lang})
 
     def load_text(self, subtitle):
         if not self.token:
