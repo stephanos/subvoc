@@ -3,6 +3,24 @@ from unittest.mock import MagicMock
 from domain.analysis import analyse, corpora, WordFreq
 
 
+def test_analysis_ignores_stopwords():
+    text = '''\
+1
+00:01:00,000 --> 00:01:03,000
+I hoped to see my friend
+and shake his hand.
+'''
+    api = MagicMock()
+    media = MagicMock()
+    subtitle = MagicMock(media = media)
+    loader = MagicMock(return_value = (subtitle, text))
+
+    analysis = analyse(api, '<id>', corpora['min'], loader)
+
+    stopwords = set(['and', 'to', 'his', 'my'])
+    subtitle_words = set([i.word for i in analysis.word_freqs])
+    assert len(subtitle_words) == len(subtitle_words - stopwords)
+
 def test_analysis():
     text = '''\
 1
