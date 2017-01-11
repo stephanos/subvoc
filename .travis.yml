@@ -8,7 +8,9 @@ install:
   - python -m nltk.downloader $(tr "\n" " " < ".nltk_packages")
   - pip install coveralls
 
-script: pytest --cov
+script:
+  - flake8
+  - pytest --cov
 
 after_success:
   coveralls
