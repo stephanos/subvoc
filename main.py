@@ -32,8 +32,9 @@ def home():
 @app.route('/<int:id>')
 def analysis(id):
     api = OpenSubtitles(OPENSUBTITLES_CREDENTIALS)
-    analysis = analyse(api, id)
+    subtitle, analysis = analyse(api, id)
     return render_template(
         'analysis.html',
+        media = subtitle.media,
         analysis = analysis
     )

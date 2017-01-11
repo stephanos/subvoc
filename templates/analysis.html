@@ -1,13 +1,13 @@
 {% extends "layout.html" %}
 {% block content %}
 
-  {{ analysis.media.title }} ({{ analysis.media.year }})
+  {{ media.title }} ({{ media.year }})
 
   <table>
-    {% for item in analysis.word_freqs %}
+    {% for item in analysis.words_by_difficulty() %}
     <tr>
       <td>
-        {{ item.word }}
+        {{ item.word.token }}
       </td>
       <td>
         {{ item.freq }}
