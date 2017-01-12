@@ -1,9 +1,12 @@
 .search {
+    margin: 0 auto;
     margin-top: 2.5rem;
     max-width: 60rem;
 }
 
 .search .search-wrapper {
+    display: -webkit-box;
+    display: -ms-flexbox;
     display: flex;
 }
 
@@ -24,6 +27,7 @@
 .search .searchbutton {
     font-weight: normal;
     margin-left: 1rem;
+    padding: 0 1.5rem;
 }
 
 
@@ -68,5 +72,6 @@
 
 .search-result .search-result-item .footer {
     font-size: 0.55em;
+    letter-spacing: 0rem;
     padding: 1rem 0.5rem 0 0.5rem;
 }
