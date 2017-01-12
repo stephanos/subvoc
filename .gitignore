@@ -6,3 +6,4 @@ credentials.py
 .coverage
 .webassets-cache
 generated
+node_modules
