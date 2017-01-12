@@ -12,7 +12,9 @@
     <title>Discover new vocabulary in movies</title>
 
     <link href="/static/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
-    <link href="/static/css/layout.css" rel="stylesheet">
+    {% assets "layout" %}
+      <link href="{{ ASSET_URL }}" rel="stylesheet">
+    {% endassets %}
     {% block header %}{% endblock %}
   </head>
 

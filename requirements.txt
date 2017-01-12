@@ -1,5 +1,7 @@
 beautifulsoup4==4.5.3
+cssmin==0.2.0
 flask==0.11
+Flask-Assets==0.12
 gunicorn==19.6.0
 lxml==3.7.2
 nltk==3.2.1

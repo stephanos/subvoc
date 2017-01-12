@@ -1,7 +1,9 @@
 {% extends "layout.html" %}
 
 {% block header %}
-  <link href="/static/css/analysis.css" rel="stylesheet">
+  {% assets "analysis" %}
+    <link href="{{ ASSET_URL }}" rel="stylesheet">
+  {% endassets %}
 {% endblock %}
 
 {% block content %}

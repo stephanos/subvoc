@@ -4,3 +4,5 @@
 __pycache__
 credentials.py
 .coverage
+.webassets-cache
+generated
