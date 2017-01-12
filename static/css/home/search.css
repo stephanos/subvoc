@@ -51,6 +51,7 @@
 }
 
 .search-result .search-result-item {
+    display: block;
     min-width: 13rem;
     max-width: 13rem;
     margin-bottom: 1.5rem;
