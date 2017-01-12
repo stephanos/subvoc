@@ -1,9 +1,10 @@
 class Media:
-    def __init__(self, id, title, kind, year):
+    def __init__(self, id, title, kind, year, poster_url=None):
         self.id = id
         self.title = title
         self.kind = kind
         self.year = year
+        self.poster_url = poster_url
 
     def __eq__(self, other):
         return self.__dict__ == other.__dict__
@@ -28,9 +29,15 @@ class Subtitle:
         return not self.__eq__(other)
 
 
+def toImdbID(id):
+    if id is None:
+        return None
+    return 'tt' + id.zfill(7)
+
+
 def to_model(item):
     media = Media(
-        id=item.get('IDMovieImdb'),
+        id=toImdbID(item.get('IDMovieImdb')),
         title=item.get('MovieName'),
         kind=item.get('MovieKind'),
         year=item.get('MovieYear'),

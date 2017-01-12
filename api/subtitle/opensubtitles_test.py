@@ -51,7 +51,7 @@ def test_find_by_query(api):
 
         assert len(result) == 78
         assert isinstance(result[0], Subtitle)
-        assert result[0].media.id == '114369'
+        assert result[0].media.id == 'tt0114369'
 
         client.SearchSubtitles.assert_called_with('my-token', [{
             'query': 'movie name',
@@ -69,7 +69,7 @@ def test_find_subtitles_for_movie(api):
 
         assert len(result) == 64
         assert isinstance(result[0], Subtitle)
-        assert result[0].media.id == '114369'
+        assert result[0].media.id == 'tt0114369'
 
         client.SearchSubtitles.assert_called_with('my-token', [{
             'imdbid': '114369',

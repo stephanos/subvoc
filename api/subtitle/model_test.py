@@ -17,7 +17,7 @@ def test_media_equality():
 
 def test_to_model():
     input = {
-        'IDMovieImdb': 'imdb-id',
+        'IDMovieImdb': '1',
         'IDSubtitleFile': 'file-id',
         'MovieKind': 'movie',
         'MovieName': 'name',
@@ -34,7 +34,7 @@ def test_to_model():
     assert result == Subtitle(
         id='file-id',
         media=Media(
-            id='imdb-id',
+            id='tt000001',
             kind='movie',
             title='name',
             year='1986',

@@ -48,8 +48,9 @@ class OpenSubtitles:
     def find_by_query(self, query):
         return self.find({'query': query, 'sublanguageid': 'eng'})
 
-    def find_subtitles_for_movie(self, movie_id, lang):
-        return self.find({'imdbid': movie_id, 'sublanguageid': lang})
+    def find_subtitles_for_movie(self, imdb_id, lang):
+        search_id = imdb_id.replace('tt', '').lstrip('0')
+        return self.find({'imdbid': search_id, 'sublanguageid': lang})
 
     def load_text(self, subtitle):
         if not self.token:
