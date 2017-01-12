@@ -1,0 +1,32 @@
+.navigation {
+    display: block;
+
+    opacity: 0.9;
+    background: rgba(0, 0, 0, 0.2);
+
+    height: 5.2rem;
+    width: 100%;
+    max-width: 100%;
+
+    position: fixed;
+    left: 0;
+    right: 0;
+    top: 0;
+
+    z-index: 1;
+}
+
+.navigation .navigation-link,
+.navigation .navigation-title,
+.navigation .title {
+    display: inline;
+    font-size: 2rem;
+    line-height: 5.2rem;
+    padding: 0;
+    text-decoration: none;
+}
+
+.navigation .navigation-title,
+.navigation .title {
+    position: relative;
+}

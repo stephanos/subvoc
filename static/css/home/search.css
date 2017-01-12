@@ -1,0 +1,47 @@
+.search {
+    margin-top: 2.5rem;
+    max-width: 60rem;
+}
+
+.search .search-wrapper {
+    display: flex;
+}
+
+
+/* BAR */
+
+.search .searchbar {
+    background-color: #fff;
+}
+
+
+/* BUTTON */
+
+.search .searchbar:focus {
+    border-color: transparent;
+}
+
+.search .searchbutton {
+    font-weight: normal;
+    margin-left: 1rem;
+}
+
+
+/* BAR + BUTTON */
+
+.search .searchbutton,
+.search .searchbar {
+    font-size: 2rem;
+
+    height: 4rem;
+    line-height: 4rem;
+}
+
+
+/* RESULT */
+
+.search .search-result {
+    margin-top: 2rem;
+    font-weight: normal;
+    font-size: 0.6em;
+}

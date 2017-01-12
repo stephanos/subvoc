@@ -1,0 +1,40 @@
+html,
+body {
+    height: 100%;
+
+    background: -webkit-linear-gradient(right, #7b4397, #dc2430);
+    background: -o-linear-gradient(right, #7b4397, #dc2430);
+    background: linear-gradient(to left, #7b4397, #dc2430);
+}
+
+body {
+    color: #fff;
+    text-align: center;
+    text-shadow: 0 .05rem .1rem rgba(0,0,0,.5);
+}
+
+body .wrapper {
+    display: block;
+    overflow: hidden;
+    position: relative;
+    margin: 0 auto;
+    width: 100%;
+}
+
+.wrapper>.container {
+    padding-top: 7.5rem;
+}
+
+a,
+a:focus,
+a:hover {
+    color: #fff;
+}
+
+
+@media (min-width: 80rem) {
+  body .wrapper {
+      width: 80rem;
+  }
+}
+
