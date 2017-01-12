@@ -7,7 +7,7 @@ FANART_URL = 'http://webservice.fanart.tv/v3'
 
 
 class Fetcher:
-    def get(urls, parallel=10):
+    def get(self, urls, parallel=10):
         requests = [grequests.get(u) for u in urls]
         responses = grequests.map(requests, size=parallel)
         return [r.json() for r in responses if r.status_code == 200]
