@@ -45,3 +45,28 @@
     font-weight: normal;
     font-size: 0.6em;
 }
+
+.search-result .search-result-item {
+    min-width: 13rem;
+    max-width: 13rem;
+    margin-bottom: 1.5rem;
+}
+
+.search-result .search-result-item .header {
+    width: 130px;
+    height: 182px;
+}
+
+.search-result .search-result-item .header .poster {
+    border-radius: .4rem;
+}
+
+.search-result .search-result-item .header .poster.empty {
+    height: 100%;
+    background: rgba(255, 255, 255, 0.2);
+}
+
+.search-result .search-result-item .footer {
+    font-size: 0.55em;
+    padding: 1rem 0.5rem 0 0.5rem;
+}

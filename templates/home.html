@@ -31,12 +31,21 @@
         </form>
       </div>
 
-      <div class="search-result">
+      <div class="cards search-result">
         {% if result %}
           {% for item in result %}
-          <div class="search-result-item">
-            <a href="/{{ item.id }}">{{ item.title }} ({{ item.year }})</a>
-          </div>
+          <a class="card search-result-item" href="/m/{{ item.id }}">
+            <div class="header">
+              {% if item.poster_url %}
+                <img class="poster" src="{{ item.poster_url }}">
+              {% else %}
+                <div class="poster empty"></div>
+              {% endif %}
+            </div>
+            <div class="footer">
+              {{ item.title }}
+            </div>
+          </a>
           {% endfor %}
         {% endif %}
       </div>

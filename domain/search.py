@@ -1,8 +1,14 @@
 from collections import Counter
 
 
-def search(api, query, count=20):
-    subtitles = api.find_by_query(query)
+def add_posters(poster_api, movies):
+    posters = poster_api.get_movie_posters([m.id for m in movies])
+    for movie in movies:
+        movie.poster_url = posters.get(movie.id, None)
+
+
+def search(subtitle_api, poster_api, query, count=10):
+    subtitles = subtitle_api.find_by_query(query)
 
     movie_downloads = Counter()
     movie_by_id = {}
@@ -12,5 +18,6 @@ def search(api, query, count=20):
             movie_by_id[media_id] = s.media
             movie_downloads[media_id] += s.downloads
 
-    popular_movies = [movie_by_id[m[0]] for m in movie_downloads.most_common(count)]
-    return popular_movies
+    most_popular_movies = [movie_by_id[m[0]] for m in movie_downloads.most_common(count)]
+    add_posters(poster_api, most_popular_movies)
+    return most_popular_movies

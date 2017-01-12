@@ -34,7 +34,7 @@ def test_to_model():
     assert result == Subtitle(
         id='file-id',
         media=Media(
-            id='tt000001',
+            id='tt0000001',
             kind='movie',
             title='name',
             year='1986',

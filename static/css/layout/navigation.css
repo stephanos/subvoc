@@ -2,7 +2,7 @@
     display: block;
 
     opacity: 0.9;
-    background: rgba(0, 0, 0, 0.2);
+    background: rgba(0, 0, 0, 0.4);
 
     height: 5.2rem;
     width: 100%;
@@ -24,6 +24,7 @@
     line-height: 5.2rem;
     padding: 0;
     text-decoration: none;
+    color: #fff;
 }
 
 .navigation .navigation-title,
