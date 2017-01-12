@@ -21,7 +21,7 @@ def parse_subtitle(subtitle):
                 line_text = line_text[:-3].strip()
             if line_text.startswith('-'):
                 line_text = line_text[1:].strip()
-            line_text = BeautifulSoup(line_text, 'lxml').text
+            line_text = BeautifulSoup(line_text, 'html.parser').text
 
             lines.append(SubtitleLine(line_text, entry.start))
             text_list.append(line_text)
