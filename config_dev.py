@@ -5,6 +5,8 @@ DEBUG = True
 TESTING = False
 
 # project settings
+FANART_TV_KEY = credentials.FANART_TV_KEY
+
 OPENSUBTITLES_USER = credentials.OPENSUBTITLES_USER
 OPENSUBTITLES_PASS = credentials.OPENSUBTITLES_PASS
 
