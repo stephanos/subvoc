@@ -28,8 +28,7 @@ def test_get_movie_posters():
 def test_ignore_movies_without_posters():
     fetcher_mock = MagicMock(spec=Fetcher)
     fetcher_mock.get.return_value = [{
-        'imdb_id': 'tt0000001',
-        'movieposter': []
+        'imdb_id': 'tt0000001'
     }]
 
     api = FanArt('api-key', fetcher_mock)

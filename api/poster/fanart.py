@@ -28,7 +28,7 @@ class FanArt:
 
         poster_url_by_id = {}
         for response in responses:
-            poster_data = response['movieposter']
+            poster_data = response.get('movieposter', None)
             if not poster_data:
                 continue
 
