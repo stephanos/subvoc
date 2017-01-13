@@ -47,22 +47,16 @@
 .search .search-result {
     margin-top: 2rem;
     font-weight: normal;
-    font-size: 0.6em;
-}
-
-.search-result .search-result-item {
-    display: block;
-    min-width: 13rem;
-    max-width: 13rem;
     margin-bottom: 1.5rem;
 }
 
-.search-result .search-result-item .header {
-    width: 130px;
-    height: 182px;
+.search-result .search-result-item {
+    color: #fff;
+    padding: 10px;
 }
 
 .search-result .search-result-item .header .poster {
+    margin: 0 auto;
     border-radius: .4rem;
 }
 
@@ -72,7 +66,7 @@
 }
 
 .search-result .search-result-item .footer {
-    font-size: 0.55em;
+    font-size: 0.3em;
     letter-spacing: 0rem;
     padding: 1rem 0.5rem 0 0.5rem;
 }

@@ -1,8 +1,12 @@
 {% extends "layout.html" %}
 
 {% block header %}
-  {% assets "home" %}
+  {% assets "home-css" %}
       <link href="{{ ASSET_URL }}" rel="stylesheet">
+  {% endassets %}
+
+  {% assets "home-js" %}
+    <script src="{{ ASSET_URL }}"></script>
   {% endassets %}
 {% endblock %}
 
@@ -29,21 +33,21 @@
         </form>
       </div>
 
-      <div class="cards search-result">
+      <div class="search-result container">
         {% if result %}
           {% for item in result %}
-          <a class="card search-result-item" href="/m/{{ item.id }}">
-            <div class="header">
+          <div class="search-result-item">
+            <a class="header" href="/m/{{ item.id }}">
               {% if item.poster_url %}
                 <img class="poster" src="{{ item.poster_url }}">
               {% else %}
                 <div class="poster empty"></div>
               {% endif %}
-            </div>
+            </a>
             <div class="footer">
               {{ item.title }}
             </div>
-          </a>
+          </div>
           {% endfor %}
         {% endif %}
       </div>

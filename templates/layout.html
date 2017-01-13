@@ -13,12 +13,16 @@
 
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300italic,700,700italic">
 
-    {% assets "vendor" %}
+    {% assets "vendor-css" %}
       <link href="{{ ASSET_URL }}" rel="stylesheet">
     {% endassets %}
 
-    {% assets "layout" %}
+    {% assets "layout-css" %}
       <link href="{{ ASSET_URL }}" rel="stylesheet">
+    {% endassets %}
+
+    {% assets "vendor-js" %}
+      <script src="{{ ASSET_URL }}"></script>
     {% endassets %}
 
     {% block header %}{% endblock %}

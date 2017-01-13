@@ -10,6 +10,7 @@ class Fetcher:
     def get(self, urls, parallel=10):
         requests = [grequests.get(u) for u in urls]
         responses = grequests.map(requests, size=parallel)
+        print(responses)
         return [r.json() for r in responses if r.status_code == 200]
 
 
