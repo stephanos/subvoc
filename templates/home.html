@@ -48,6 +48,8 @@
           </div>
         </div>
         {% endfor %}
+      {% elif result is not none %}
+        No movie was found.
       {% endif %}
       </div>
     </div>

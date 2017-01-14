@@ -6,7 +6,7 @@ from domain.search import search
 def home(subtitle_api, poster_api):
     query = request.args.get('q')
 
-    movies = []
+    movies = None
     if query:
         movies = search(subtitle_api, poster_api, query)
 
