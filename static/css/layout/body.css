@@ -22,10 +22,3 @@ body .wrapper {
 .wrapper>.container {
     padding-top: 7.5rem;
 }
-
-@media (min-width: 80rem) {
-  body .wrapper {
-      width: 80rem;
-  }
-}
-
