@@ -1,6 +1,7 @@
 import base64
 import re
 import zlib
+from retrying import retry
 from xmlrpc.client import ServerProxy
 
 from api.subtitle.model import to_model
@@ -36,6 +37,7 @@ class OpenSubtitles:
         ensure_success(resp)
         self.token = resp.get('token')
 
+    @retry(stop_max_delay=5000, stop_max_attempt_number=3)
     def find(self, query):
         if not self.token:
             self.login()
@@ -52,6 +54,7 @@ class OpenSubtitles:
         search_id = imdb_id.replace('tt', '').lstrip('0')
         return self.find({'imdbid': search_id, 'sublanguageid': lang})
 
+    @retry(stop_max_delay=5000, stop_max_attempt_number=3)
     def load_text(self, subtitle):
         if not self.token:
             self.login()
