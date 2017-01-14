@@ -12,46 +12,43 @@
 
 {% block content %}
 
-  <h1 class="cover-heading">
+  <h1>Discover new vocabulary in movies.</h1>
 
-    Discover new vocabulary in movies.
+  <div class="search">
+    <div class="search-input input-group">
+      <form action="/" method="GET">
+        <div class="search-wrapper">
+          <input type="text"
+                class="searchbar"
+                name="q"
+                value="{{query}}"
+                autofocus
+                class="form-control"
+                autocomplete="off"
+                placeholder="Search movie ...">
+          <input class="button searchbutton" type="submit" value="go">
+        </div>
+      </form>
+    </div>
 
-    <div class="search">
-      <div class="search-input input-group">
-        <form action="/" method="GET">
-          <div class="search-wrapper">
-            <input type="text"
-                  class="searchbar"
-                  name="q"
-                  value="{{query}}"
-                  autofocus
-                  class="form-control"
-                  autocomplete="off"
-                  placeholder="Search movie ...">
-            <input class="button searchbutton" type="submit" value="go">
+    <div class="search-result container">
+      {% if result %}
+        {% for item in result %}
+        <div class="search-result-item">
+          <a class="header" href="/m/{{ item.id }}">
+            {% if item.poster_url %}
+              <img class="poster" src="{{ item.poster_url }}">
+            {% else %}
+              <img class="poster empty" src="/static/img/placeholder.png">
+            {% endif %}
+          </a>
+          <div class="footer">
+            {{ item.title }}
           </div>
-        </form>
-      </div>
-
-      <div class="search-result container">
-        {% if result %}
-          {% for item in result %}
-          <div class="search-result-item">
-            <a class="header" href="/m/{{ item.id }}">
-              {% if item.poster_url %}
-                <img class="poster" src="{{ item.poster_url }}">
-              {% else %}
-                <div class="poster empty"></div>
-              {% endif %}
-            </a>
-            <div class="footer">
-              {{ item.title }}
-            </div>
-          </div>
-          {% endfor %}
-        {% endif %}
-      </div>
-
-  </h1>
+        </div>
+        {% endfor %}
+      {% endif %}
+    </div>
+  </div>
 
 {% endblock %}
