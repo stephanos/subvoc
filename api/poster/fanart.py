@@ -11,7 +11,7 @@ FANART_URL = 'http://webservice.fanart.tv/v3'
 s = Session()
 s.mount(FANART_URL,
         HTTPAdapter(max_retries=Retry(
-                total=3, backoff_factor=0.2, status_forcelist=[500, 502, 503, 504])))
+                total=5, status_forcelist=[500, 502, 503, 504, 520, 521])))
 
 
 class Fetcher:
