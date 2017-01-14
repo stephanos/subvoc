@@ -52,6 +52,11 @@
     margin-top: 2rem;
     font-weight: normal;
     margin-bottom: 1.5rem;
+    visibility: hidden;
+}
+
+.search .search-result.slick-initialized {
+    visibility: visible;
 }
 
 .search-result .search-result-item {
@@ -71,4 +76,9 @@
 .search-result .search-result-item .footer {
     letter-spacing: 0rem;
     padding: 1rem 0.5rem 0 0.5rem;
+}
+
+
+.slick-next, .slick-prev {
+    top: 35%;  /* align with poster */
 }
