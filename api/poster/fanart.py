@@ -1,17 +1,24 @@
 from urllib.parse import urlencode
+from requests import Session
+from requests.adapters import HTTPAdapter
+from requests.packages.urllib3.util.retry import Retry
 
 import grequests
 
 
 FANART_URL = 'http://webservice.fanart.tv/v3'
 
+s = Session()
+s.mount(FANART_URL,
+        HTTPAdapter(max_retries=Retry(
+                total=3, backoff_factor=0.2, status_forcelist=[500, 502, 503, 504])))
+
 
 class Fetcher:
     def get(self, urls, parallel=10):
-        requests = [grequests.get(u) for u in urls]
+        requests = [grequests.get(u, session=s) for u in urls]
         responses = grequests.map(requests, size=parallel)
-        print(responses)
-        return [r.json() for r in responses if r.status_code == 200]
+        return [r.json() for r in responses if r and r.status_code == 200]
 
 
 class FanArt:
