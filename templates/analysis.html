@@ -1,26 +1,28 @@
 {% extends "layout.html" %}
 
+
 {% block header %}
   {% assets "analysis-css" %}
     <link href="{{ ASSET_URL }}" rel="stylesheet">
   {% endassets %}
+
+  {% assets "analysis-js" %}
+    <script src="{{ ASSET_URL }}"></script>
+  {% endassets %}
 {% endblock %}
+
 
 {% block content %}
 
-  {{ media.title }} ({{ media.year }})
+  <div id="app">
 
-  <table>
-    {% for item in analysis.words_by_difficulty() %}
-    <tr>
-      <td>
-        {{ item.word.token }}
-      </td>
-      <td>
-        {{ item.freq }}
-      </td>
-    <tr>
-    {% endfor %}
-  </table>
+    <div class="sk-folding-cube">
+      <div class="sk-cube1 sk-cube"></div>
+      <div class="sk-cube2 sk-cube"></div>
+      <div class="sk-cube4 sk-cube"></div>
+      <div class="sk-cube3 sk-cube"></div>
+    </div>
+
+  </div>
 
 {% endblock %}

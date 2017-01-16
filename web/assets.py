@@ -17,7 +17,8 @@ def dir_to_resources(root_dir, filters, file_type):
         if not os.path.isdir(dir_path):
             continue
         asset_paths = [os.path.join(dir_path, f) for f in os.listdir(dir_path)]
-        b = Bundle(*asset_paths,
+        asset_file_paths = [f for f in asset_paths if f.endswith(file_type)]
+        b = Bundle(*asset_file_paths,
                    filters=filters,
                    output='generated/{}.{}'.format(directory, file_type))
 

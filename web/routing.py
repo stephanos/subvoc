@@ -2,7 +2,7 @@ import os
 import jinja2
 
 from web.routes.home import home
-from web.routes.analysis import analysis
+from web.routes.analysis import analysis_data, analysis_page
 
 from api.subtitle.opensubtitles import OpenSubtitles
 from api.poster.fanart import FanArt
@@ -25,5 +25,9 @@ def create_routes(app):
         return home(subtitle_api, poster_api)
 
     @app.route('/m/<id>')
-    def analysis_route(id):
-        return analysis(subtitle_api, id)
+    def analysis_page_route(id):
+        return analysis_page(subtitle_api, id)
+
+    @app.route('/analysis/<id>')
+    def analysis_data_route(id):
+        return analysis_data(subtitle_api, id)
