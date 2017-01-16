@@ -42,6 +42,13 @@ var Analysis = function (_preact$Component) {
                             'td',
                             null,
                             ' ',
+                            item.word.type,
+                            ' '
+                        ),
+                        preact.h(
+                            'td',
+                            null,
+                            ' ',
                             item.freq,
                             ' '
                         )

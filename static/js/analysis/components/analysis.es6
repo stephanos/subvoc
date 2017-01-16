@@ -8,6 +8,7 @@ class Analysis extends preact.Component {
             { $.map(props.data.words, item =>
                 <tr>
                     <td> { item.word.token } </td>
+                    <td> { item.word.type } </td>
                     <td> { item.freq } </td>
                 </tr>
             ) }
