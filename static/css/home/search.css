@@ -17,6 +17,11 @@
     background-color: #fff;
 }
 
+.search .searchbar[readonly] {
+    border-color: #606c76;
+    color: #606c76;
+}
+
 
 /* BUTTON */
 
@@ -34,6 +39,7 @@
 
 .search .searchbutton.waiting {
     cursor: default;
+    border-color: transparent;
     background-color: #606c76;
 }
 

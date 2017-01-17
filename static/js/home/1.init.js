@@ -26,5 +26,6 @@ $(document).ready(function(){
 
     $('#search').on('submit', function() {
         $('.searchbutton').replaceWith('<button class="searchbutton waiting"><div class="spinner"><div class="double-bounce1"></div><div class="double-bounce2"></div></div></button>')
+        $('.searchbar').prop('readonly', 'readonly');
     })
 });
