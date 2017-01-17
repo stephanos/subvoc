@@ -28,6 +28,7 @@ That's where `subvoc` comes in: search for a movie and discover its vocabulary.
  - `pip install -r requirements.txt`
  - `pip install -r dev-requirements.txt`
  - `python -m nltk.downloader $(tr "\n" " " < ".nltk_packages")`
+ - use `python run.py`, `pytest` and `scripts/compilejs.sh`
 
 Start the application via `python run.py`, test it via `pytest`.
 
