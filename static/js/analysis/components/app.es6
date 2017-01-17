@@ -7,7 +7,7 @@ import { Analysis } from './analysis.es6';
 class Root extends preact.Component {
     render(props) {
         if (props.data) {
-            return <Analysis data={props.data}/>
+            return <Analysis data={props.data} />
         } else {
             return <span> Unable to analyse movie :( <br/> Sorry! </span>;
         }
