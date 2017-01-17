@@ -15,6 +15,7 @@ That's where `subvoc` comes in: search for a movie and discover its vocabulary.
  - [x] host on Heroku
  - [x] list of words sorted by difficulty
  - [x] use the base of each word
+ - [x] lazy load analysis
  - [ ] show movie context for each word
  - [ ] show context in another language side by side
  - [ ] include movie poster
