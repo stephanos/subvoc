@@ -17,9 +17,10 @@ That's where `subvoc` comes in: search for a movie and discover its vocabulary.
  - [x] use the base of each word
  - [x] lazy load analysis
  - [ ] show movie context for each word
- - [ ] show context in another language side by side
- - [ ] include movie poster
+ - [x] include movie poster
+ - [ ] support for idioms
  - [ ] support for TV show episodes
+ - [ ] show context in another language side by side
  - [ ] wild idea: display YouTube videos with a certain word
 
 
