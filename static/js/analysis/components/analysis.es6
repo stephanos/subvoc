@@ -14,7 +14,7 @@ class Spinner extends preact.Component {
 class WordDetailHeader extends preact.Component {
     render({ active, enabled, code, label, onSelectPOS }) {
         const classNames = `tab ${enabled ? '' : 'empty'} ${active ? 'active' : ''}`;
-        return <div onClick={() => onSelectPOS(code)} class={classNames} >
+        return <div onClick={() => enabled ? onSelectPOS(code) : null} class={classNames} >
             <span>{ label }</span>
         </div>
     }

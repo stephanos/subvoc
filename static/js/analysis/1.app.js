@@ -58,7 +58,7 @@ var WordDetailHeader = function (_preact$Component2) {
             return preact.h(
                 'div',
                 { onClick: function onClick() {
-                        return onSelectPOS(code);
+                        return enabled ? onSelectPOS(code) : null;
                     }, 'class': classNames },
                 preact.h(
                     'span',
