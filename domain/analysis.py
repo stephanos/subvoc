@@ -1,5 +1,5 @@
 from enum import Enum
-from collections import namedtuple, Counter
+from collections import defaultdict, namedtuple, Counter
 
 from nltk import pos_tag
 from nltk.corpus import wordnet, stopwords
@@ -42,15 +42,16 @@ class Analysis:
     def __init__(self):
         self.word_with_freq = {}
         self.word_with_lang_freq = {}
+        self.sentences_with_word = defaultdict(list)
         self.ignored_words_with_reason = Counter()
 
     def count_occurrence(self, word):
         self.word_with_freq.setdefault(word, 0)
         self.word_with_freq[word] += 1
 
-    def add(self, word, freq):
-        if word not in self.word_with_lang_freq:
-            self.word_with_lang_freq[word] = freq
+    def add(self, word, sentence, freq):
+        self.sentences_with_word[word].append(sentence)
+        self.word_with_lang_freq[word] = freq
         self.count_occurrence(word)
 
     def ignore(self, word, reason):
@@ -61,6 +62,7 @@ class Analysis:
         data = self.word_with_lang_freq
         return ({
             'word': w,
+            'sentences': self.sentences_with_word[w],
             'freq': data[w],
         } for w in sorted(data, key=lambda x: data[x]))
 
@@ -124,7 +126,7 @@ def analyse_subtitles(text, freq_lookup):
                 analysis.ignore(word, WordIgnoreType.UNKNOWN_FREQ)
                 continue
 
-            analysis.add(Word(lemma, word_type), freq_lookup[lemma])
+            analysis.add(Word(lemma, word_type), sentence, freq_lookup[lemma])
 
     return analysis
 

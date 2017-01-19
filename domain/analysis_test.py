@@ -1,6 +1,8 @@
+import datetime
 from unittest.mock import MagicMock
 
 from domain.analysis import analyse, CORPORA, Word, WordType, WordIgnoreType
+from domain.parser import Sentence
 
 
 api_mock = MagicMock()
@@ -23,14 +25,18 @@ as it has been in my dreams.
     loader_mock = MagicMock(return_value=(subtitle_mock, text))
     _, analysis = analyse(api_mock, '<id>', CORPORA['min'], loader_mock)
 
+    sentence1 = Sentence('I hoped to see my friend and shake his hand.',
+                         datetime.timedelta(0, 7899, 473000))
+    sentence2 = Sentence('I hoped the Pacific is as blue as it has been in my dreams.',
+                         datetime.timedelta(0, 7904, 176000))
     assert list(analysis.words_by_difficulty()) == [
-        {'word': Word('hop', WordType.VERB), 'freq': 7928},
-        {'word': Word('shake', WordType.VERB), 'freq': 20029},
-        {'word': Word('blue', WordType.ADJ), 'freq': 53435},
-        {'word': Word('dream', WordType.NOUN), 'freq': 75468},
-        {'word': Word('hand', WordType.NOUN), 'freq': 161068},
-        {'word': Word('friend', WordType.NOUN), 'freq': 243502},
-        {'word': Word('see', WordType.VERB), 'freq': 1386818},
+        {'word': Word('hop', WordType.VERB), 'sentences': [sentence1, sentence2], 'freq': 7928},
+        {'word': Word('shake', WordType.VERB), 'sentences': [sentence1], 'freq': 20029},
+        {'word': Word('blue', WordType.ADJ), 'sentences': [sentence2], 'freq': 53435},
+        {'word': Word('dream', WordType.NOUN), 'sentences': [sentence2], 'freq': 75468},
+        {'word': Word('hand', WordType.NOUN), 'sentences': [sentence1], 'freq': 161068},
+        {'word': Word('friend', WordType.NOUN), 'sentences': [sentence1], 'freq': 243502},
+        {'word': Word('see', WordType.VERB), 'sentences': [sentence1], 'freq': 1386818},
     ]
 
 

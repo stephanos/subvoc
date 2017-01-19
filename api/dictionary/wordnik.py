@@ -32,7 +32,6 @@ class Wordnik:
         info = WordInfo(token, ATTRIBUTION_TEXT, ATTRIBUTION_URL)
         for response_data in responses_data:
             for entry in response_data:
-                print(entry)
                 info.add_info({
                     'pos': entry['partOfSpeech'],
                     'definition': entry['text']

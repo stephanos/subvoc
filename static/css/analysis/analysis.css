@@ -97,12 +97,14 @@
     color: #aaa;
 }
 
-.word-detail .body .explanations {
+.word-detail .body .examples .example {
+    margin-top: 2rem;
     text-align: left;
 }
 
 .word-detail .body .explanations .explanation {
     margin-top: 2rem;
+    text-align: left;
 }
 
 

@@ -72,16 +72,16 @@ var WordDetailHeader = function (_preact$Component2) {
     return WordDetailHeader;
 }(preact.Component);
 
-var WordExplanation = function (_preact$Component3) {
-    _inherits$1(WordExplanation, _preact$Component3);
+var WordExplanations = function (_preact$Component3) {
+    _inherits$1(WordExplanations, _preact$Component3);
 
-    function WordExplanation() {
-        _classCallCheck$1(this, WordExplanation);
+    function WordExplanations() {
+        _classCallCheck$1(this, WordExplanations);
 
-        return _possibleConstructorReturn$1(this, (WordExplanation.__proto__ || Object.getPrototypeOf(WordExplanation)).apply(this, arguments));
+        return _possibleConstructorReturn$1(this, (WordExplanations.__proto__ || Object.getPrototypeOf(WordExplanations)).apply(this, arguments));
     }
 
-    _createClass$1(WordExplanation, [{
+    _createClass$1(WordExplanations, [{
         key: 'render',
         value: function render(_ref2) {
             var info = _ref2.info;
@@ -100,11 +100,42 @@ var WordExplanation = function (_preact$Component3) {
         }
     }]);
 
-    return WordExplanation;
+    return WordExplanations;
 }(preact.Component);
 
-var WordDetailBody = function (_preact$Component4) {
-    _inherits$1(WordDetailBody, _preact$Component4);
+var WordExamples = function (_preact$Component4) {
+    _inherits$1(WordExamples, _preact$Component4);
+
+    function WordExamples() {
+        _classCallCheck$1(this, WordExamples);
+
+        return _possibleConstructorReturn$1(this, (WordExamples.__proto__ || Object.getPrototypeOf(WordExamples)).apply(this, arguments));
+    }
+
+    _createClass$1(WordExamples, [{
+        key: 'render',
+        value: function render(_ref3) {
+            var examples = _ref3.examples;
+
+            return preact.h(
+                'div',
+                null,
+                $.map(examples, function (example) {
+                    return preact.h(
+                        'div',
+                        { 'class': 'example' },
+                        example.text
+                    );
+                })
+            );
+        }
+    }]);
+
+    return WordExamples;
+}(preact.Component);
+
+var WordDetailBody = function (_preact$Component5) {
+    _inherits$1(WordDetailBody, _preact$Component5);
 
     function WordDetailBody() {
         _classCallCheck$1(this, WordDetailBody);
@@ -114,17 +145,16 @@ var WordDetailBody = function (_preact$Component4) {
 
     _createClass$1(WordDetailBody, [{
         key: 'render',
-        value: function render(_ref3) {
-            var info = _ref3.info,
-                selection = _ref3.selection,
-                onSelectPOS = _ref3.onSelectPOS;
+        value: function render(_ref4) {
+            var info = _ref4.info,
+                selection = _ref4.selection,
+                onSelectPOS = _ref4.onSelectPOS;
 
             var headers = [['noun', 'noun'], ['verb', 'verb'], ['adjective', 'adj'], ['adverb', 'adv']];
             var selectedPOS = selection.POS || $.grep(headers, function (h) {
                 return info.info_by_pos[h[0]];
             })[0][0];
 
-            console.log(info);
             return preact.h(
                 'div',
                 null,
@@ -142,8 +172,14 @@ var WordDetailBody = function (_preact$Component4) {
                 ),
                 preact.h(
                     'section',
+                    { 'class': 'examples' },
+                    preact.h(WordExamples, { examples: selection.word.sentences })
+                ),
+                preact.h('hr', null),
+                preact.h(
+                    'section',
                     { 'class': 'explanations' },
-                    preact.h(WordExplanation, { info: info.info_by_pos[selectedPOS] })
+                    preact.h(WordExplanations, { info: info.info_by_pos[selectedPOS] })
                 )
             );
         }
@@ -152,8 +188,8 @@ var WordDetailBody = function (_preact$Component4) {
     return WordDetailBody;
 }(preact.Component);
 
-var WordDetail = function (_preact$Component5) {
-    _inherits$1(WordDetail, _preact$Component5);
+var WordDetail = function (_preact$Component6) {
+    _inherits$1(WordDetail, _preact$Component6);
 
     function WordDetail() {
         _classCallCheck$1(this, WordDetail);
@@ -163,11 +199,11 @@ var WordDetail = function (_preact$Component5) {
 
     _createClass$1(WordDetail, [{
         key: 'render',
-        value: function render(_ref4) {
-            var info = _ref4.info,
-                selection = _ref4.selection,
-                onSelectPOS = _ref4.onSelectPOS,
-                onUnselect = _ref4.onUnselect;
+        value: function render(_ref5) {
+            var info = _ref5.info,
+                selection = _ref5.selection,
+                onSelectPOS = _ref5.onSelectPOS,
+                onUnselectWord = _ref5.onUnselectWord;
 
             if (selection.word) {
                 return preact.h(
@@ -182,14 +218,14 @@ var WordDetail = function (_preact$Component5) {
                             preact.h(
                                 'div',
                                 { 'class': 'arrow', onClick: function onClick() {
-                                        return onUnselect();
+                                        return onUnselectWord();
                                     } },
                                 '<'
                             ),
                             preact.h(
                                 'span',
                                 { 'class': 'label' },
-                                selection.word.token
+                                selection.word.word.token
                             )
                         ),
                         preact.h(
@@ -226,8 +262,8 @@ var WordDetail = function (_preact$Component5) {
     return WordDetail;
 }(preact.Component);
 
-var WordListItem = function (_preact$Component6) {
-    _inherits$1(WordListItem, _preact$Component6);
+var WordListItem = function (_preact$Component7) {
+    _inherits$1(WordListItem, _preact$Component7);
 
     function WordListItem() {
         _classCallCheck$1(this, WordListItem);
@@ -237,19 +273,19 @@ var WordListItem = function (_preact$Component6) {
 
     _createClass$1(WordListItem, [{
         key: 'render',
-        value: function render(_ref5) {
-            var word = _ref5.word,
-                onSelect = _ref5.onSelect;
+        value: function render(_ref6) {
+            var word = _ref6.word,
+                onSelectWord = _ref6.onSelectWord;
 
             return preact.h(
                 'div',
                 { 'class': 'card word-item', onClick: function onClick() {
-                        return onSelect(word);
+                        return onSelectWord(word);
                     } },
                 preact.h(
                     'div',
                     { 'class': 'label' },
-                    word.token
+                    word.word.token
                 ),
                 preact.h(
                     'div',
@@ -263,8 +299,8 @@ var WordListItem = function (_preact$Component6) {
     return WordListItem;
 }(preact.Component);
 
-var WordList = function (_preact$Component7) {
-    _inherits$1(WordList, _preact$Component7);
+var WordList = function (_preact$Component8) {
+    _inherits$1(WordList, _preact$Component8);
 
     function WordList() {
         _classCallCheck$1(this, WordList);
@@ -274,15 +310,15 @@ var WordList = function (_preact$Component7) {
 
     _createClass$1(WordList, [{
         key: 'render',
-        value: function render(_ref6) {
-            var data = _ref6.data,
-                onSelect = _ref6.onSelect;
+        value: function render(_ref7) {
+            var data = _ref7.data,
+                onSelectWord = _ref7.onSelectWord;
 
             return preact.h(
                 'div',
                 { 'class': 'word-list' },
                 $.map(data.words, function (item) {
-                    return preact.h(WordListItem, { word: item.word, onSelect: onSelect });
+                    return preact.h(WordListItem, { word: item, onSelectWord: onSelectWord });
                 })
             );
         }
@@ -291,29 +327,29 @@ var WordList = function (_preact$Component7) {
     return WordList;
 }(preact.Component);
 
-var Analysis = function (_preact$Component8) {
-    _inherits$1(Analysis, _preact$Component8);
+var Analysis = function (_preact$Component9) {
+    _inherits$1(Analysis, _preact$Component9);
 
     function Analysis() {
         _classCallCheck$1(this, Analysis);
 
-        var _this8 = _possibleConstructorReturn$1(this, (Analysis.__proto__ || Object.getPrototypeOf(Analysis)).call(this));
+        var _this9 = _possibleConstructorReturn$1(this, (Analysis.__proto__ || Object.getPrototypeOf(Analysis)).call(this));
 
-        _this8.state.selection = {};
-        _this8.state.infoByToken = {};
-        return _this8;
+        _this9.state.selection = {};
+        _this9.state.infoByToken = {};
+        return _this9;
     }
 
     _createClass$1(Analysis, [{
         key: 'handleSelectWord',
         value: function handleSelectWord(word) {
-            var _this9 = this;
+            var _this10 = this;
 
             this.setState({ selection: { word: word } });
 
-            $.getJSON({ url: '/api/words/' + word.token }).then(function (res) {
-                _this9.setState(function (prevState) {
-                    prevState.infoByToken[word.token] = res;
+            $.getJSON({ url: '/api/words/' + word.word.token }).then(function (res) {
+                _this10.setState(function (prevState) {
+                    prevState.infoByToken[word.word.token] = res;
                 });
             }).catch(function (err) {
                 console.error(err); // eslint-disable-line
@@ -334,10 +370,10 @@ var Analysis = function (_preact$Component8) {
         }
     }, {
         key: 'render',
-        value: function render(_ref7) {
-            var _this10 = this;
+        value: function render(_ref8) {
+            var _this11 = this;
 
-            var data = _ref7.data;
+            var data = _ref8.data;
 
             var selectedWord = this.state.selection.word;
             return preact.h(
@@ -345,17 +381,17 @@ var Analysis = function (_preact$Component8) {
                 { 'class': 'analysis ' + (selectedWord ? 'detail' : 'list') },
                 preact.h(WordDetail, {
                     selection: this.state.selection,
-                    info: selectedWord ? this.state.infoByToken[selectedWord.token] : undefined,
+                    info: selectedWord ? this.state.infoByToken[selectedWord.word.token] : undefined,
                     onSelectPOS: function onSelectPOS(p) {
-                        return _this10.handleSelectPOS(p);
+                        return _this11.handleSelectPOS(p);
                     },
-                    onUnselect: function onUnselect() {
-                        return _this10.handleUnselectWord();
+                    onUnselectWord: function onUnselectWord() {
+                        return _this11.handleUnselectWord();
                     } }),
                 preact.h(WordList, {
                     data: data,
-                    onSelect: function onSelect(w) {
-                        return _this10.handleSelectWord(w);
+                    onSelectWord: function onSelectWord(w) {
+                        return _this11.handleSelectWord(w);
                     } })
             );
         }

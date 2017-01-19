@@ -1,4 +1,5 @@
 import simplejson as json
+from datetime import timedelta
 from enum import Enum
 from flask import render_template, Response
 
@@ -9,6 +10,10 @@ class AnalysisEncoder(json.JSONEncoder):
     def default(self, obj):
         if isinstance(obj, Enum):
             return obj.name
+        elif isinstance(obj, tuple):
+            return dict(obj)
+        elif isinstance(obj, timedelta):
+            return str(obj)
         return json.JSONEncoder.default(self, obj)
 
 

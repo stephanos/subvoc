@@ -20,12 +20,24 @@ class WordDetailHeader extends preact.Component {
     }
 }
 
-class WordExplanation extends preact.Component {
+class WordExplanations extends preact.Component {
     render({ info }) {
         return <div>
             { $.map(info, (entry) =>
                 <div class="explanation">
                     { entry.definition }
+                </div>
+            ) }
+        </div>
+    }
+}
+
+class WordExamples extends preact.Component {
+    render({ examples }) {
+        return <div>
+            { $.map(examples, (example) =>
+                <div class="example">
+                    { example.text }
                 </div>
             ) }
         </div>
@@ -41,7 +53,6 @@ class WordDetailBody extends preact.Component {
         const selectedPOS = selection.POS ||
             $.grep(headers, (h) => info.info_by_pos[h[0]])[0][0]
 
-        console.log(info)
         return <div>
             <header class="tab-group">
                 { $.map(headers, (header) =>
@@ -53,21 +64,25 @@ class WordDetailBody extends preact.Component {
                         onSelectPOS={onSelectPOS} />
                 )}
             </header>
+            <section class="examples">
+                <WordExamples examples={selection.word.sentences} />
+            </section>
+            <hr/>
             <section class="explanations">
-                <WordExplanation info={info.info_by_pos[selectedPOS]} />
+                <WordExplanations info={info.info_by_pos[selectedPOS]} />
             </section>
         </div>
     }
 }
 
 class WordDetail extends preact.Component {
-    render({ info, selection, onSelectPOS, onUnselect }) {
+    render({ info, selection, onSelectPOS, onUnselectWord }) {
         if (selection.word) {
             return <div>
                 <div class="card word-detail">
                     <header class="head">
-                        <div class="arrow" onClick={() => onUnselect()}>&lt;</div>
-                        <span class="label">{selection.word.token}</span>
+                        <div class="arrow" onClick={() => onUnselectWord()}>&lt;</div>
+                        <span class="label">{selection.word.word.token}</span>
                     </header>
                     <section class="body">
                         { !info
@@ -97,9 +112,9 @@ class WordDetail extends preact.Component {
 
 
 class WordListItem extends preact.Component {
-    render({ word, onSelect }) {
-        return <div class="card word-item" onClick={() => onSelect(word)}>
-            <div class="label">{ word.token }</div>
+    render({ word, onSelectWord }) {
+        return <div class="card word-item" onClick={() => onSelectWord(word)}>
+            <div class="label">{ word.word.token }</div>
             <div class="arrow">&gt;</div>
         </div>
     }
@@ -107,10 +122,10 @@ class WordListItem extends preact.Component {
 
 
 class WordList extends preact.Component {
-    render({ data, onSelect }) {
+    render({ data, onSelectWord }) {
         return <div class="word-list">
             { $.map(data.words, item =>
-                <WordListItem word={item.word} onSelect={onSelect} /> )}
+                <WordListItem word={item} onSelectWord={onSelectWord} /> )}
         </div>
     }
 }
@@ -126,10 +141,10 @@ class Analysis extends preact.Component {
     handleSelectWord(word) {
         this.setState({ selection: { word } });
 
-        $.getJSON({url: `/api/words/${word.token}`})
+        $.getJSON({url: `/api/words/${word.word.token}`})
             .then((res) => {
                 this.setState((prevState) => {
-                    prevState.infoByToken[word.token]  = res
+                    prevState.infoByToken[word.word.token]  = res
                 });
             })
             .catch((err) => {
@@ -153,12 +168,12 @@ class Analysis extends preact.Component {
         return <div class={'analysis ' + (selectedWord ? 'detail' : 'list')}>
             <WordDetail
                 selection={this.state.selection}
-                info={selectedWord ? this.state.infoByToken[selectedWord.token] : undefined}
+                info={selectedWord ? this.state.infoByToken[selectedWord.word.token] : undefined}
                 onSelectPOS={(p) => this.handleSelectPOS(p)}
-                onUnselect={() => this.handleUnselectWord()} />
+                onUnselectWord={() => this.handleUnselectWord()} />
             <WordList
                 data={data}
-                onSelect={(w) => this.handleSelectWord(w)} />
+                onSelectWord={(w) => this.handleSelectWord(w)} />
         </div>
     }
 }
