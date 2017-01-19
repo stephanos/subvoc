@@ -9,7 +9,14 @@ class Root extends preact.Component {
         if (props.data) {
             return <Analysis data={props.data} />
         } else {
-            return <span> Unable to analyse movie :( <br/> Sorry! </span>;
+            return <div class="error">
+                <div>
+                    Unable to analyse movie :(
+                </div>
+                <div>
+                    Sorry!
+                </div>
+            </div>;
         }
     }
 }

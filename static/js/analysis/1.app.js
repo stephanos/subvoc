@@ -424,11 +424,18 @@ var Root = function (_preact$Component) {
                 return preact.h(Analysis, { data: props.data });
             } else {
                 return preact.h(
-                    'span',
-                    null,
-                    ' Unable to analyse movie :( ',
-                    preact.h('br', null),
-                    ' Sorry! '
+                    'div',
+                    { 'class': 'error' },
+                    preact.h(
+                        'div',
+                        null,
+                        'Unable to analyse movie :('
+                    ),
+                    preact.h(
+                        'div',
+                        null,
+                        'Sorry!'
+                    )
                 );
             }
         }
