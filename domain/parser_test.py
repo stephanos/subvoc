@@ -90,6 +90,6 @@ def test_parse_sentences_with_html():
 
 
 def test_parse_full_subtitle_file():
-    with open('fixtures/114369.subtitles.txt') as text:
+    with open('fixtures/opensubtitles/114369.subtitles.txt') as text:
         result = parse(''.join(text.readlines()))
         assert len(result) > 0

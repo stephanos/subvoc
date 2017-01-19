@@ -42,7 +42,7 @@ def test_login_fail(api):
 
 
 def test_find_by_query(api):
-    with open('fixtures/114369.find_by_query.json') as resp:
+    with open('fixtures/opensubtitles/114369.find_by_query.json') as resp:
         client, openSubtitles = api
         client.LogIn = MagicMock(return_value=successful_login_resp)
         client.SearchSubtitles = MagicMock(return_value=json.load(resp))
@@ -60,7 +60,7 @@ def test_find_by_query(api):
 
 
 def test_find_subtitles_for_movie(api):
-    with open('fixtures/114369.find_by_id.json') as resp:
+    with open('fixtures/opensubtitles/114369.find_by_id.json') as resp:
         client, openSubtitles = api
         client.LogIn = MagicMock(return_value=successful_login_resp)
         client.SearchSubtitles = MagicMock(return_value=json.load(resp))
@@ -78,7 +78,7 @@ def test_find_subtitles_for_movie(api):
 
 
 def test_load_text(api):
-    with open('fixtures/114369.subtitles.raw') as resp:
+    with open('fixtures/opensubtitles/114369.subtitles.raw') as resp:
         client, openSubtitles = api
         client.LogIn = MagicMock(return_value=successful_login_resp)
         client.DownloadSubtitles = MagicMock(return_value=json.load(resp))
