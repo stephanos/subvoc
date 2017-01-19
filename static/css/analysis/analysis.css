@@ -4,6 +4,7 @@
 
 
 .analysis {
+    margin-bottom: 5rem;
 }
 
 .analysis.list .word-list {
@@ -60,11 +61,62 @@
     display: none;
 }
 
-.word-detail header {
+.word-detail .top {
     position: relative;
 }
 
-.word-detail .header .arrow {
+.word-detail .top .arrow {
     left: 10px;
     top: 29%;
+}
+
+.word-detail .top .arrow {
+    left: 10px;
+    top: 29%;
+}
+
+.word-detail .body {
+    margin-top: 2.5rem;
+}
+
+.word-detail .body .tab-group {
+}
+
+.word-detail .body .tab-group .tab {
+    display: inline;
+    padding: 0 2rem;
+    cursor: pointer;
+}
+
+.word-detail .body .tab-group .tab.active {
+    text-decoration: underline;
+}
+
+.word-detail .body .tab-group .tab.empty {
+    cursor: default;
+    color: #aaa;
+}
+
+.word-detail .body .explanations {
+    text-align: left;
+}
+
+.word-detail .body .explanations .explanation {
+    margin-top: 2rem;
+}
+
+
+.analysis.detail .attribution {
+    margin-top: 1rem;
+    font-size: 0.5rem;
+}
+
+.analysis.detail .attribution .attribution_dictionary {
+    float: left;
+    padding: 0.4rem;
+}
+
+.analysis.detail .attribution .attribution_api {
+    float: right;
+    padding: 0 0.4rem;
 }

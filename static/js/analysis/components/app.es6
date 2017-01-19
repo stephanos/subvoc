@@ -18,7 +18,7 @@ class Root extends preact.Component {
 function loadAnalysis() {
     const imdbId = window.location.pathname.split('/').slice(-1)[0];
     return $.getJSON({
-        url: `/analysis/${imdbId}`,
+        url: `/api/analysis/${imdbId}`,
     })
 }
 

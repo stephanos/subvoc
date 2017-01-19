@@ -1,9 +1,11 @@
 import os
 import jinja2
 
+from web.routes.analysis import analysis_api, analysis_page
 from web.routes.home import home
-from web.routes.analysis import analysis_data, analysis_page
+from web.routes.word import words_api
 
+from api.dictionary.wordnik import Wordnik
 from api.subtitle.opensubtitles import OpenSubtitles
 from api.poster.fanart import FanArt
 
@@ -20,6 +22,9 @@ def create_routes(app):
     fanart_key = app.config['FANART_TV_KEY']
     poster_api = FanArt(fanart_key)
 
+    wordnik_key = app.config['WORDNIK_KEY']
+    wordnik_api = Wordnik(wordnik_key)
+
     @app.route('/')
     def home_route():
         return home(subtitle_api, poster_api)
@@ -28,6 +33,10 @@ def create_routes(app):
     def analysis_page_route(id):
         return analysis_page(subtitle_api, id)
 
-    @app.route('/analysis/<id>')
-    def analysis_data_route(id):
-        return analysis_data(subtitle_api, id)
+    @app.route('/api/analysis/<id>')
+    def analysis_api_route(id):
+        return analysis_api(subtitle_api, id)
+
+    @app.route('/api/words/<token>')
+    def words_api_route(token):
+        return words_api(wordnik_api, token)

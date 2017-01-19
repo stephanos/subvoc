@@ -9,4 +9,3 @@ retrying==1.3.3
 simplejson==3.10.0
 srt==1.2.0
 webassets-babel==0.3.0
-wordnik-py3==2.1.2

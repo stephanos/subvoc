@@ -16,7 +16,7 @@ def analysis_page(subtitle_api, id):
     return render_template('analysis.html')
 
 
-def analysis_data(subtitle_api, id):
+def analysis_api(subtitle_api, id):
     subtitle, analysis = analyse(subtitle_api, id)
 
     data = json.dumps({
