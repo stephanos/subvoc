@@ -88,6 +88,32 @@ and shake his weirdnonsenseword.
     assert analysis.ignored_words_with_reason[unknown_word] == WordIgnoreType.UNKNOWN
 
 
+def test_analysis_skips_word_subtitle_entirely():
+    text = '''\
+1
+00:01:00,000 --> 00:01:03,000
+Subtitle ... subtitle ... SUBTITLE!
+'''
+    loader_mock = MagicMock(return_value=(subtitle_mock, text))
+    _, analysis = analyse(api_mock, '<id>', CORPORA['min'], loader_mock)
+
+    assert not analysis.ignored_words_with_reason
+    assert not list(analysis.words_by_difficulty())
+
+
+def test_analysis_skips_non_words_entirely():
+    text = '''\
+1
+00:01:00,000 --> 00:01:03,000
+42! test0.
+'''
+    loader_mock = MagicMock(return_value=(subtitle_mock, text))
+    _, analysis = analyse(api_mock, '<id>', CORPORA['min'], loader_mock)
+
+    assert not analysis.ignored_words_with_reason
+    assert not list(analysis.words_by_difficulty())
+
+
 def test_analysis_ignores_words_with_unknown_frequency():
     text = '''\
 1

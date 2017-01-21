@@ -102,7 +102,7 @@ def analyse_subtitles(text, freq_lookup):
         tokens = pos_tag(TOKENIZER.tokenize(sentence.text))
 
         for token, token_type in tokens:
-            if not token.isalpha():
+            if token.lower() == 'subtitle' or not token.isalpha():
                 continue
 
             word_type = get_word_type(token_type)
