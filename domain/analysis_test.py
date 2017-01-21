@@ -1,4 +1,5 @@
 import datetime
+import pytest
 from unittest.mock import MagicMock
 
 from domain.analysis import analyse, CORPORA, Word, WordType, WordIgnoreType
@@ -127,3 +128,9 @@ and shake his moustache.
     unknown_freq_word = Word('moustache', WordType.NOUN)
     assert unknown_freq_word in analysis.ignored_words_with_reason
     assert analysis.ignored_words_with_reason[unknown_freq_word] == WordIgnoreType.UNKNOWN_FREQ
+
+
+def test_analysis_fails_when_no_subtitle():
+    with pytest.raises(RuntimeError, message='no subtitle found for movie <id>'):
+        loader_mock = MagicMock(return_value=(None, None))
+        analyse(None, '<id>', None, loader_mock)
