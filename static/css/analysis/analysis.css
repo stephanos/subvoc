@@ -65,16 +65,12 @@
     display: none;
 }
 
-.word-detail .top {
+.word-detail .head {
     position: relative;
 }
 
-.word-detail .top .arrow {
-    left: 10px;
-    top: 29%;
-}
-
-.word-detail .top .arrow {
+.word-detail .head .arrow {
+    cursor: pointer;
     left: 10px;
     top: 29%;
 }
