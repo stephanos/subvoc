@@ -7,6 +7,11 @@ But it's difficult to notice an unknown word *during* a movie without spoiling t
 That's where `subvoc` comes in: search for a movie and discover its vocabulary.
 
 
+## Online Demo
+
+Visit https://subvoc.stephanbehnke.com (hosted on Heroku, takes a few moments to start sometimes).
+
+
 ## Features
 
  - [x] landing page with search bar
