@@ -21,9 +21,9 @@ class WordDetailHeader extends preact.Component {
 }
 
 class WordExplanations extends preact.Component {
-    render({ info }) {
+    render({ definitions }) {
         return <div>
-            { $.map(info, (entry) =>
+            { $.map(definitions, (entry) =>
                 <div class="explanation">
                     { entry.definition }
                 </div>
@@ -45,20 +45,21 @@ class WordExamples extends preact.Component {
 }
 
 class WordDetailBody extends preact.Component {
-    render({ info, selection, onSelectPOS }) {
+    render({ lookup, selection, onSelectPOS }) {
         const headers = [['noun', 'noun'],
                          ['verb', 'verb'],
                          ['adjective', 'adj'],
                          ['adverb', 'adv']]
+
         const selectedPOS = selection.POS ||
-            $.grep(headers, (h) => info.info_by_pos[h[0]])[0][0]
+            $.grep(headers, (h) => lookup[h[0]])[0][0]
 
         return <div>
             <header class="tab-group">
                 { $.map(headers, (header) =>
                     <WordDetailHeader
                         active={selectedPOS === header[0]}
-                        enabled={info.info_by_pos[header[0]]}
+                        enabled={lookup[header[0]]}
                         code={header[0]}
                         label={header[1]}
                         onSelectPOS={onSelectPOS} />
@@ -69,14 +70,14 @@ class WordDetailBody extends preact.Component {
             </section>
             <hr/>
             <section class="explanations">
-                <WordExplanations info={info.info_by_pos[selectedPOS]} />
+                <WordExplanations definitions={lookup[selectedPOS]} />
             </section>
         </div>
     }
 }
 
 class WordDetail extends preact.Component {
-    render({ info, selection, onSelectPOS, onUnselectWord }) {
+    render({ lookup, selection, onSelectPOS, onUnselectWord }) {
         if (selection.word) {
             return <div>
                 <div class="card word-detail">
@@ -85,19 +86,19 @@ class WordDetail extends preact.Component {
                         <span class="label">{selection.word.word.token}</span>
                     </header>
                     <section class="body">
-                        { !info
+                        { !lookup
                             ? <Spinner />
-                            : <WordDetailBody info={info}
+                            : <WordDetailBody lookup={lookup}
                                             selection={selection}
                                             onSelectPOS={onSelectPOS} />
                         }
                     </section>
                 </div>
 
-                { info
+                { lookup
                     ? <div class="attribution">
                         <div class="attribution_dictionary">
-                            <a href={info.attribution_url}>{info.attribution_text}</a>
+                            <a href={lookup.attribution.url}>{lookup.attribution.text}</a>
                         </div>
                         <div class="attribution_api">
                             <img src="/static/img/wordnik_badge.png"/>
@@ -135,7 +136,7 @@ class Analysis extends preact.Component {
     constructor() {
         super();
         this.state.selection = {};
-        this.state.infoByToken = {};
+        this.state.wordLookupByToken = {};
     }
 
     handleSelectWord(word) {
@@ -144,7 +145,7 @@ class Analysis extends preact.Component {
         $.getJSON({url: `/api/words/${word.word.token}`})
             .then((res) => {
                 this.setState((prevState) => {
-                    prevState.infoByToken[word.word.token]  = res
+                    prevState.wordLookupByToken[word.word.token]  = res
                 });
             })
             .catch((err) => {
@@ -168,7 +169,7 @@ class Analysis extends preact.Component {
         return <div class={'analysis ' + (selectedWord ? 'detail' : 'list')}>
             <WordDetail
                 selection={this.state.selection}
-                info={selectedWord ? this.state.infoByToken[selectedWord.word.token] : undefined}
+                lookup={selectedWord ? this.state.wordLookupByToken[selectedWord.word.token] : undefined}
                 onSelectPOS={(p) => this.handleSelectPOS(p)}
                 onUnselectWord={() => this.handleUnselectWord()} />
             <WordList

@@ -84,12 +84,12 @@ var WordExplanations = function (_preact$Component3) {
     _createClass$1(WordExplanations, [{
         key: 'render',
         value: function render(_ref2) {
-            var info = _ref2.info;
+            var definitions = _ref2.definitions;
 
             return preact.h(
                 'div',
                 null,
-                $.map(info, function (entry) {
+                $.map(definitions, function (entry) {
                     return preact.h(
                         'div',
                         { 'class': 'explanation' },
@@ -146,13 +146,14 @@ var WordDetailBody = function (_preact$Component5) {
     _createClass$1(WordDetailBody, [{
         key: 'render',
         value: function render(_ref4) {
-            var info = _ref4.info,
+            var lookup = _ref4.lookup,
                 selection = _ref4.selection,
                 onSelectPOS = _ref4.onSelectPOS;
 
             var headers = [['noun', 'noun'], ['verb', 'verb'], ['adjective', 'adj'], ['adverb', 'adv']];
+
             var selectedPOS = selection.POS || $.grep(headers, function (h) {
-                return info.info_by_pos[h[0]];
+                return lookup[h[0]];
             })[0][0];
 
             return preact.h(
@@ -164,7 +165,7 @@ var WordDetailBody = function (_preact$Component5) {
                     $.map(headers, function (header) {
                         return preact.h(WordDetailHeader, {
                             active: selectedPOS === header[0],
-                            enabled: info.info_by_pos[header[0]],
+                            enabled: lookup[header[0]],
                             code: header[0],
                             label: header[1],
                             onSelectPOS: onSelectPOS });
@@ -179,7 +180,7 @@ var WordDetailBody = function (_preact$Component5) {
                 preact.h(
                     'section',
                     { 'class': 'explanations' },
-                    preact.h(WordExplanations, { info: info.info_by_pos[selectedPOS] })
+                    preact.h(WordExplanations, { definitions: lookup[selectedPOS] })
                 )
             );
         }
@@ -200,7 +201,7 @@ var WordDetail = function (_preact$Component6) {
     _createClass$1(WordDetail, [{
         key: 'render',
         value: function render(_ref5) {
-            var info = _ref5.info,
+            var lookup = _ref5.lookup,
                 selection = _ref5.selection,
                 onSelectPOS = _ref5.onSelectPOS,
                 onUnselectWord = _ref5.onUnselectWord;
@@ -231,12 +232,12 @@ var WordDetail = function (_preact$Component6) {
                         preact.h(
                             'section',
                             { 'class': 'body' },
-                            !info ? preact.h(Spinner, null) : preact.h(WordDetailBody, { info: info,
+                            !lookup ? preact.h(Spinner, null) : preact.h(WordDetailBody, { lookup: lookup,
                                 selection: selection,
                                 onSelectPOS: onSelectPOS })
                         )
                     ),
-                    info ? preact.h(
+                    lookup ? preact.h(
                         'div',
                         { 'class': 'attribution' },
                         preact.h(
@@ -244,8 +245,8 @@ var WordDetail = function (_preact$Component6) {
                             { 'class': 'attribution_dictionary' },
                             preact.h(
                                 'a',
-                                { href: info.attribution_url },
-                                info.attribution_text
+                                { href: lookup.attribution.url },
+                                lookup.attribution.text
                             )
                         ),
                         preact.h(
@@ -336,7 +337,7 @@ var Analysis = function (_preact$Component9) {
         var _this9 = _possibleConstructorReturn$1(this, (Analysis.__proto__ || Object.getPrototypeOf(Analysis)).call(this));
 
         _this9.state.selection = {};
-        _this9.state.infoByToken = {};
+        _this9.state.wordLookupByToken = {};
         return _this9;
     }
 
@@ -349,7 +350,7 @@ var Analysis = function (_preact$Component9) {
 
             $.getJSON({ url: '/api/words/' + word.word.token }).then(function (res) {
                 _this10.setState(function (prevState) {
-                    prevState.infoByToken[word.word.token] = res;
+                    prevState.wordLookupByToken[word.word.token] = res;
                 });
             }).catch(function (err) {
                 console.error(err); // eslint-disable-line
@@ -381,7 +382,7 @@ var Analysis = function (_preact$Component9) {
                 { 'class': 'analysis ' + (selectedWord ? 'detail' : 'list') },
                 preact.h(WordDetail, {
                     selection: this.state.selection,
-                    info: selectedWord ? this.state.infoByToken[selectedWord.word.token] : undefined,
+                    lookup: selectedWord ? this.state.wordLookupByToken[selectedWord.word.token] : undefined,
                     onSelectPOS: function onSelectPOS(p) {
                         return _this11.handleSelectPOS(p);
                     },

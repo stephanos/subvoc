@@ -1,12 +1,13 @@
 from urllib.parse import urlencode
+from collections import OrderedDict
 
-from api.dictionary.model import WordInfo
+from api.dictionary.model import Attribution, WordDefinition, WordLookup
 from api.helper import Fetcher
 
 
+ATTRIBUTION = Attribution('from Wiktionary, CC BY-SA License',
+                          'https://creativecommons.org/licenses/by-sa/3.0')
 WORDNIK_URL = 'http://api.wordnik.com/v4'
-ATTRIBUTION_TEXT = 'from Wiktionary, CC BY-SA License'
-ATTRIBUTION_URL = 'https://creativecommons.org/licenses/by-sa/3.0'
 
 
 class Wordnik:
@@ -16,24 +17,23 @@ class Wordnik:
         self.fetcher = fetcher
 
     def lookup(self, token):
-        query = urlencode({
-            'api_key': self.api_key,
-            'includeRelated': False,
-            'includeTags': False,
-            'limit': 200,
-            'sourceDictionaries': 'wiktionary',
-            'useCanonical': False,
-        })
+        query = urlencode(OrderedDict([
+            ('api_key', self.api_key),
+            ('includeRelated', False),
+            ('includeTags', False),
+            ('limit', 200),
+            ('sourceDictionaries', 'wiktionary'),
+            ('useCanonical', False),
+        ]))
         request_paths = ['/word.json/{}/definitions?{}'.format(token, query)]
 
         responses = self.fetcher.get(request_paths)
         responses_data = [r.json() for r in responses if r and r.status_code == 200]
 
-        info = WordInfo(token, ATTRIBUTION_TEXT, ATTRIBUTION_URL)
+        definitions = []
         for response_data in responses_data:
             for entry in response_data:
-                info.add_info({
-                    'pos': entry['partOfSpeech'],
-                    'definition': entry['text']
-                })
-        return info
+                definition = WordDefinition(entry['partOfSpeech'], entry['text'])
+                definitions.append(definition)
+
+        return WordLookup(token, definitions, ATTRIBUTION)

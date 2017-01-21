@@ -1,12 +1,29 @@
-from collections import defaultdict
+from collections import namedtuple
 
 
-class WordInfo:
-    def __init__(self, token, attribution_text, attribution_url):
-        self.attribution_text = attribution_text
-        self.attribution_url = attribution_url
-        self.info_by_pos = defaultdict(list)
+Attribution = namedtuple('Attribution', ['text', 'url'])
+
+
+class WordDefinition:
+    def __init__(self, partOfSpeach, definition):
+        self.partOfSpeach = partOfSpeach
+        self.definition = definition
+
+    def __eq__(self, other):
+        return self.__dict__ == other.__dict__
+
+    def __ne__(self, other):
+        return not self.__eq__(other)
+
+
+class WordLookup:
+    def __init__(self, token, definitions, attribution):
         self.token = token
+        self.definitions = definitions
+        self.attribution = attribution
 
-    def add_info(self, info):
-        self.info_by_pos[info['pos']].append(info)
+    def __eq__(self, other):
+        return self.__dict__ == other.__dict__
+
+    def __ne__(self, other):
+        return not self.__eq__(other)
