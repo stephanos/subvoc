@@ -424,6 +424,7 @@ var Analysis = function (_preact$Component) {
             var _this2 = this;
 
             this.setState({ selection: { word: word } });
+            this.setState({ listScrollPosition: $(window).scrollTop() });
 
             $.getJSON({ url: '/api/words/' + word.word.token }).then(function (res) {
                 _this2.setState(function (prevState) {
@@ -431,7 +432,6 @@ var Analysis = function (_preact$Component) {
                 });
             }).catch(function (err) {
                 console.error(err); // eslint-disable-line
-                // TODO
             });
         }
     }, {
@@ -472,6 +472,14 @@ var Analysis = function (_preact$Component) {
                         return _this3.handleSelectWord(w);
                     } })
             );
+        }
+    }, {
+        key: 'componentDidUpdate',
+        value: function componentDidUpdate(prevProps, prevState) {
+            var selectedWord = this.state.selection.word;
+            if (!selectedWord) {
+                $(window).scrollTop(this.state.listScrollPosition);
+            }
         }
     }]);
 

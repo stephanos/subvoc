@@ -14,6 +14,7 @@ class Analysis extends preact.Component {
 
     handleSelectWord(word) {
         this.setState({ selection: { word } });
+        this.setState({ listScrollPosition: $(window).scrollTop() });
 
         $.getJSON({url: `/api/words/${word.word.token}`})
             .then((res) => {
@@ -23,7 +24,6 @@ class Analysis extends preact.Component {
             })
             .catch((err) => {
                 console.error(err); // eslint-disable-line
-                // TODO
             });
     }
 
@@ -49,6 +49,13 @@ class Analysis extends preact.Component {
                 data={data}
                 onSelectWord={(w) => this.handleSelectWord(w)} />
         </div>
+    }
+
+    componentDidUpdate(prevProps, prevState) {
+        const selectedWord = this.state.selection.word
+        if (!selectedWord) {
+            $(window).scrollTop(this.state.listScrollPosition);
+        }
     }
 }
 
