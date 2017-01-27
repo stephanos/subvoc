@@ -1,7 +1,7 @@
 import $ from 'jquery';
 import preact from 'preact';
 
-import { WordDefinitionList } from './definition.es6'
+import { WordDefinitionList } from './definition.es6';
 import { WordDetailSelector } from './selector.es6';
 import { WordExcerptList } from './excerpt.es6';
 
@@ -11,10 +11,10 @@ class WordDetailBody extends preact.Component {
         const headers = [['noun', 'noun'],
                          ['verb', 'verb'],
                          ['adjective', 'adj'],
-                         ['adverb', 'adv']]
+                         ['adverb', 'adv']];
 
         const selectedPOS = selection.POS ||
-            $.grep(headers, (h) => lookup[h[0]])[0][0]
+            $.grep(headers, (h) => lookup[h[0]])[0][0];
 
         return <div>
             <header class="tab-group">
@@ -34,9 +34,9 @@ class WordDetailBody extends preact.Component {
             <section class="explanations">
                 <WordDefinitionList definitions={lookup[selectedPOS]} />
             </section>
-        </div>
+        </div>;
     }
 }
 
 
-export { WordDetailBody }
+export { WordDetailBody };

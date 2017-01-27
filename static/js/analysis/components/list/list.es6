@@ -16,9 +16,9 @@ class WordList extends preact.Component {
                 { $.map(data.words, item =>
                     <WordListItem word={item} onSelectWord={onSelectWord} /> )}
             </div>
-        </div>
+        </div>;
     }
 }
 
 
-export { WordList }
+export { WordList };

@@ -10,9 +10,9 @@ class WordDefinitionList extends preact.Component {
                     { entry.definition }
                 </div>
             ) }
-        </div>
+        </div>;
     }
 }
 
 
-export { WordDefinitionList }
+export { WordDefinitionList };

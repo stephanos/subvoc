@@ -7,7 +7,7 @@ import { Analysis } from './analysis.es6';
 class Root extends preact.Component {
     render(props) {
         if (props.data) {
-            return <Analysis data={props.data} />
+            return <Analysis data={props.data} />;
         } else {
             return <div class="error">
                 <div>
@@ -26,7 +26,7 @@ function loadAnalysis() {
     const imdbId = window.location.pathname.split('/').slice(-1)[0];
     return $.getJSON({
         url: `/api/analysis/${imdbId}`,
-    })
+    });
 }
 
 function renderApp(analysis) {
@@ -44,6 +44,6 @@ window.onload = function() {
         .then(analysis => renderApp(analysis))
         .catch(err => {
             console.error(err); // eslint-disable-line
-            renderApp(null)
-        })
-}
+            renderApp(null);
+        });
+};

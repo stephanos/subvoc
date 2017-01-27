@@ -426,6 +426,10 @@ var Analysis = function (_preact$Component) {
             this.setState({ selection: { word: word } });
             this.setState({ listScrollPosition: $(window).scrollTop() });
 
+            if (window.history) {
+                window.history.pushState({}, '' + word, '');
+            }
+
             $.getJSON({ url: '/api/words/' + word.word.token }).then(function (res) {
                 _this2.setState(function (prevState) {
                     prevState.wordLookupByToken[word.word.token] = res;
@@ -445,6 +449,9 @@ var Analysis = function (_preact$Component) {
         key: 'handleUnselectWord',
         value: function handleUnselectWord() {
             this.setState({ selection: { POS: undefined, word: undefined } });
+            if (window.history) {
+                window.history.back();
+            }
         }
     }, {
         key: 'render',

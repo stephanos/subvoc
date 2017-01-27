@@ -7,9 +7,9 @@ class WordDetailSelector extends preact.Component {
         const classNames = `tab ${enabled ? '' : 'empty'} ${active ? 'active' : ''}`;
         return <div onClick={() => enabled ? onSelectPOS(code) : null} class={classNames} >
             <span>{ label }</span>
-        </div>
+        </div>;
     }
 }
 
 
-export { WordDetailSelector }
+export { WordDetailSelector };

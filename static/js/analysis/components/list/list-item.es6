@@ -7,9 +7,9 @@ class WordListItem extends preact.Component {
         return <div class="card word-item" onClick={() => onSelectWord(word)}>
             <div class="label">{ word.word.token }</div>
             <div class="arrow">&gt;</div>
-        </div>
+        </div>;
     }
 }
 
 
-export { WordListItem }
+export { WordListItem };

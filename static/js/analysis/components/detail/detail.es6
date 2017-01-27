@@ -1,9 +1,9 @@
 import $ from 'jquery';
 import preact from 'preact';
 
-import { WordDetailBody } from './body.es6'
+import { WordDetailBody } from './body.es6';
 
-import { Spinner } from '../util/spinner.es6'
+import { Spinner } from '../util/spinner.es6';
 
 
 class WordDetail extends preact.Component {
@@ -36,10 +36,10 @@ class WordDetail extends preact.Component {
                     </div>
                     : <div/>
                 }
-            </div>
+            </div>;
         }
     }
 }
 
 
-export { WordDetail }
+export { WordDetail };

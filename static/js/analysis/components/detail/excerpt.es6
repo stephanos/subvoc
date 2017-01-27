@@ -10,9 +10,9 @@ class WordExcerptList extends preact.Component {
                     { example.text }
                 </div>
             ) }
-        </div>
+        </div>;
     }
 }
 
 
-export { WordExcerptList }
+export { WordExcerptList };
