@@ -373,7 +373,7 @@ var WordList = function (_preact$Component) {
 
             return preact.h(
                 'div',
-                null,
+                { 'class': 'word-list' },
                 preact.h(
                     'div',
                     { 'class': 'media' },
@@ -385,7 +385,7 @@ var WordList = function (_preact$Component) {
                 ),
                 preact.h(
                     'div',
-                    { 'class': 'word-list' },
+                    null,
                     $.map(data.words, function (item) {
                         return preact.h(WordListItem, { word: item, onSelectWord: onSelectWord });
                     })
