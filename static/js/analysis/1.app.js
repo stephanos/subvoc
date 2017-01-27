@@ -243,8 +243,7 @@ var WordDetail = function (_preact$Component) {
         value: function render(_ref) {
             var lookup = _ref.lookup,
                 selection = _ref.selection,
-                onSelectPOS = _ref.onSelectPOS,
-                onUnselectWord = _ref.onUnselectWord;
+                onSelectPOS = _ref.onSelectPOS;
 
             if (selection.word) {
                 return preact.h(
@@ -259,7 +258,7 @@ var WordDetail = function (_preact$Component) {
                             preact.h(
                                 'div',
                                 { 'class': 'arrow', onClick: function onClick() {
-                                        return onUnselectWord();
+                                        return window.history.back();
                                     } },
                                 '<'
                             ),
@@ -423,16 +422,14 @@ var Analysis = function (_preact$Component) {
         value: function handleSelectWord(word) {
             var _this2 = this;
 
-            this.setState({ selection: { word: word } });
-            this.setState({ listScrollPosition: $(window).scrollTop() });
+            var token = word.word.token;
+            window.history.pushState(null, '' + token, window.location.pathname + '#' + token);
 
-            if (window.history) {
-                window.history.pushState({}, '' + word, '');
-            }
+            this.setState({ selection: { word: word }, originScrollPos: $(window).scrollTop() });
 
-            $.getJSON({ url: '/api/words/' + word.word.token }).then(function (res) {
+            $.getJSON({ url: '/api/words/' + token }).then(function (res) {
                 _this2.setState(function (prevState) {
-                    prevState.wordLookupByToken[word.word.token] = res;
+                    prevState.wordLookupByToken[token] = res;
                 });
             }).catch(function (err) {
                 console.error(err); // eslint-disable-line
@@ -449,9 +446,16 @@ var Analysis = function (_preact$Component) {
         key: 'handleUnselectWord',
         value: function handleUnselectWord() {
             this.setState({ selection: { POS: undefined, word: undefined } });
-            if (window.history) {
-                window.history.back();
-            }
+        }
+    }, {
+        key: 'onBackButtonEvent',
+        value: function onBackButtonEvent(evt) {
+            this.handleUnselectWord();
+        }
+    }, {
+        key: 'componentDidMount',
+        value: function componentDidMount() {
+            window.onpopstate = this.onBackButtonEvent.bind(this);
         }
     }, {
         key: 'render',
@@ -469,9 +473,6 @@ var Analysis = function (_preact$Component) {
                     lookup: selectedWord ? this.state.wordLookupByToken[selectedWord.word.token] : undefined,
                     onSelectPOS: function onSelectPOS(p) {
                         return _this3.handleSelectPOS(p);
-                    },
-                    onUnselectWord: function onUnselectWord() {
-                        return _this3.handleUnselectWord();
                     } }),
                 preact.h(WordList, {
                     data: data,
@@ -485,7 +486,7 @@ var Analysis = function (_preact$Component) {
         value: function componentDidUpdate(prevProps, prevState) {
             var selectedWord = this.state.selection.word;
             if (!selectedWord) {
-                $(window).scrollTop(this.state.listScrollPosition);
+                $(window).scrollTop(this.state.originScrollPos);
             }
         }
     }]);

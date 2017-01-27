@@ -13,13 +13,15 @@ class Analysis extends preact.Component {
     }
 
     handleSelectWord(word) {
-        this.setState({ selection: { word } });
-        this.setState({ listScrollPosition: $(window).scrollTop() });
+        const token = word.word.token;
+        window.history.pushState(null, `${token}`, window.location.pathname + '#' + token);
 
-        $.getJSON({url: `/api/words/${word.word.token}`})
+        this.setState({ selection: { word }, originScrollPos: $(window).scrollTop() });
+
+        $.getJSON({url: `/api/words/${token}`})
             .then((res) => {
                 this.setState((prevState) => {
-                    prevState.wordLookupByToken[word.word.token]  = res
+                    prevState.wordLookupByToken[token] = res;
                 });
             })
             .catch((err) => {
@@ -29,35 +31,42 @@ class Analysis extends preact.Component {
 
     handleSelectPOS(POS) {
         this.setState((prevState) => {
-            prevState.selection.POS = POS
-        })
+            prevState.selection.POS = POS;
+        });
     }
 
     handleUnselectWord() {
         this.setState({ selection: { POS: undefined, word: undefined } });
     }
 
+    onBackButtonEvent(evt) {
+        this.handleUnselectWord();
+    }
+
+    componentDidMount() {
+        window.onpopstate = this.onBackButtonEvent.bind(this);
+    }
+
     render({ data }) {
-        const selectedWord = this.state.selection.word
+        const selectedWord = this.state.selection.word;
         return <div class={'analysis ' + (selectedWord ? 'detail' : 'list')}>
             <WordDetail
                 selection={this.state.selection}
                 lookup={selectedWord ? this.state.wordLookupByToken[selectedWord.word.token] : undefined}
-                onSelectPOS={(p) => this.handleSelectPOS(p)}
-                onUnselectWord={() => this.handleUnselectWord()} />
+                onSelectPOS={(p) => this.handleSelectPOS(p)} />
             <WordList
                 data={data}
                 onSelectWord={(w) => this.handleSelectWord(w)} />
-        </div>
+        </div>;
     }
 
     componentDidUpdate(prevProps, prevState) {
-        const selectedWord = this.state.selection.word
+        const selectedWord = this.state.selection.word;
         if (!selectedWord) {
-            $(window).scrollTop(this.state.listScrollPosition);
+            $(window).scrollTop(this.state.originScrollPos);
         }
     }
 }
 
 
-export { Analysis }
+export { Analysis };

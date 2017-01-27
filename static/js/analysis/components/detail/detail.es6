@@ -7,12 +7,12 @@ import { Spinner } from '../util/spinner.es6';
 
 
 class WordDetail extends preact.Component {
-    render({ lookup, selection, onSelectPOS, onUnselectWord }) {
+    render({ lookup, selection, onSelectPOS }) {
         if (selection.word) {
             return <div>
                 <div class="card word-detail">
                     <header class="head">
-                        <div class="arrow" onClick={() => onUnselectWord()}>&lt;</div>
+                        <div class="arrow" onClick={() => window.history.back()}>&lt;</div>
                         <span class="label">{selection.word.word.token}</span>
                     </header>
                     <section class="body">
