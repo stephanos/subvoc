@@ -373,10 +373,23 @@ var WordList = function (_preact$Component) {
 
             return preact.h(
                 'div',
-                { 'class': 'word-list' },
-                $.map(data.words, function (item) {
-                    return preact.h(WordListItem, { word: item, onSelectWord: onSelectWord });
-                })
+                null,
+                preact.h(
+                    'div',
+                    { 'class': 'media' },
+                    preact.h(
+                        'span',
+                        { 'class': 'title' },
+                        data.media.title
+                    )
+                ),
+                preact.h(
+                    'div',
+                    { 'class': 'word-list' },
+                    $.map(data.words, function (item) {
+                        return preact.h(WordListItem, { word: item, onSelectWord: onSelectWord });
+                    })
+                )
             );
         }
     }]);
