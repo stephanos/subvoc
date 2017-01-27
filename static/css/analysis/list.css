@@ -1,0 +1,18 @@
+.media {
+    margin-top: 0.5rem;
+}
+
+.word-list {
+    display: none;
+}
+
+.word-list .word-item {
+    text-align: left;
+    position: relative;
+    cursor: pointer;
+}
+
+.word-list .word-item .arrow {
+    right: 10px;
+    top: 29%;
+}

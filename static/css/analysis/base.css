@@ -1,0 +1,42 @@
+.wrapper > .container {
+    padding: 0 1rem;
+}
+
+
+.error {
+    margin-top: 5rem;
+}
+
+.analysis {
+    margin-bottom: 5rem;
+}
+
+.analysis.list .word-list {
+    display: block;
+}
+
+.analysis.detail .word-detail {
+    display: block;
+}
+
+.card {
+    padding: 1rem;
+    margin-top: 0.8rem;
+    border-radius: .4rem;
+    background: rgba(0, 0, 0, 0.4);
+}
+
+.arrow {
+    position: absolute;
+
+    font-size: 20px;
+    font-weight: bold;
+    line-height: 1;
+    opacity: .75;
+    color: white;
+    -webkit-font-smoothing: antialiased;
+
+    height: 20px;
+    width: 20px;
+}
+
