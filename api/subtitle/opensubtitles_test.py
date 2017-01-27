@@ -47,7 +47,7 @@ def test_find_by_query(api):
         client.LogIn = MagicMock(return_value=successful_login_resp)
         client.SearchSubtitles = MagicMock(return_value=json.load(resp))
 
-        result = openSubtitles.find_by_query('movie name')
+        result = openSubtitles.find_by_query(' Movie name ')
 
         assert len(result) == 78
         assert isinstance(result[0], Subtitle)

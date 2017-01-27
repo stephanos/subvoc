@@ -58,8 +58,9 @@ class OpenSubtitles:
         return resp
 
     def find_by_query(self, query):
-        resp = json_fixture('query', query) \
-            or self.find({'query': query, 'sublanguageid': 'eng'})
+        qry = query.lower().strip()
+        resp = json_fixture('query', qry) \
+            or self.find({'query': qry, 'sublanguageid': 'eng'})
         return resp_to_model(resp)
 
     def find_subtitles_for_movie(self, imdb_id, lang):
