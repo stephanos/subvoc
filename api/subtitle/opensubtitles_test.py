@@ -87,11 +87,11 @@ def test_load_text(api):
         result = openSubtitles.load_text(subtitle)
 
         assert isinstance(result, str)
-        assert len(result) == 96595
+        assert len(result) == 101014
         assert result[:66] == '''\
 1
-00:01:14,080 --> 00:01:17,072
-They were screaming at each other
+00:00:59,085 --> 00:01:03,021
+They were heard screaming at each
 '''
         assert "don't" in result  # test for special characters
 

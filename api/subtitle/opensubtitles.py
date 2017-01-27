@@ -1,9 +1,12 @@
 import base64
+import json
+import os
 import re
 import zlib
 from retrying import retry
 from xmlrpc.client import ServerProxy
 
+from api.fixture import load_fixture
 from api.subtitle.model import to_model
 
 
@@ -21,6 +24,14 @@ def ensure_success(resp):
 
 def create_client():
     return ServerProxy(OPENSUBTITLES_URL, allow_none=True)
+
+
+def json_fixture(directory, arg):
+    return load_fixture(os.path.join('opensubtitles', directory, '{}.json'), arg, json.loads)
+
+
+def resp_to_model(resp):
+    return [to_model(item) for item in resp.get('data')]
 
 
 class OpenSubtitles:
@@ -44,22 +55,26 @@ class OpenSubtitles:
 
         resp = self.xmlrpc.SearchSubtitles(self.token, [query], [{'limit': 500}])
         ensure_success(resp)
-
-        return [to_model(item) for item in resp.get('data')]
+        return resp
 
     def find_by_query(self, query):
-        return self.find({'query': query, 'sublanguageid': 'eng'})
+        resp = json_fixture('query', query) \
+            or self.find({'query': query, 'sublanguageid': 'eng'})
+        return resp_to_model(resp)
 
     def find_subtitles_for_movie(self, imdb_id, lang):
         search_id = imdb_id.replace('tt', '').lstrip('0')
-        return self.find({'imdbid': search_id, 'sublanguageid': lang})
+        resp = json_fixture('id', imdb_id) \
+            or self.find({'imdbid': search_id, 'sublanguageid': lang})
+        return resp_to_model(resp)
 
     @retry(stop_max_delay=5000, stop_max_attempt_number=3)
     def load_text(self, subtitle):
         if not self.token:
             self.login()
 
-        resp = self.xmlrpc.DownloadSubtitles(self.token, [subtitle.id])
+        resp = json_fixture('subtitle', subtitle.id) \
+            or self.xmlrpc.DownloadSubtitles(self.token, [subtitle.id])
         ensure_success(resp)
 
         text = resp.get('data')[0].get('data')
