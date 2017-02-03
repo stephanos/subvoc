@@ -38,6 +38,28 @@
       </form>
     </div>
 
+    {% if result is none %}
+    <div class="step-by-step">
+      <ol>
+        <li>
+          <span>
+            <strong>search</strong> for a movie
+          </span>
+        </li>
+        <li>
+          <span>
+            <strong>browse</strong> its vocabulary
+          </span>
+        </li>
+        <li>
+          <span>
+            <strong>learn</strong> new words
+          </span>
+        </li>
+      </ol>
+    </div>
+    {% endif %}
+
     <div class="search-result-wrapper">
       <div class="search-result">
       {% if result %}

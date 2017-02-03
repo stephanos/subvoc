@@ -1,0 +1,39 @@
+.step-by-step {
+    font-size: 2rem;
+
+    margin: 0 auto;
+    text-align: left;
+    display: inline-block;
+}
+
+.step-by-step ol {
+    counter-reset: li;
+    list-style: none;
+    padding: 0;
+}
+
+.step-by-step ol li {
+    margin-top: 2rem;
+}
+
+.step-by-step span {
+    position: relative;
+    display: block;
+    padding: 0.2rem .2rem .2rem 6rem;
+}
+
+.step-by-step span:before {
+    content: counter(li);
+    counter-increment: li;
+    position: absolute;
+    left: 0;
+    top: 50%;
+    margin-top: -2rem;
+    height: 4rem;
+    width: 4rem;
+    line-height: 4rem;
+    border: .2rem solid #fff;
+    text-align: center;
+    font-weight: bold;
+    border-radius: 0.4rem;
+}
