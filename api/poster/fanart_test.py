@@ -58,5 +58,5 @@ def test_use_preview_url():
     result = api.get_movie_posters(['tt0000001'])
 
     assert result == {
-        'tt0000001': 'http://movieposter.com/preview/tt0000001/0.png'
+        'tt0000001': 'https://movieposter.com/preview/tt0000001/0.png'
     }

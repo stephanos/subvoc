@@ -27,5 +27,7 @@ class FanArt:
                 continue
 
             id = response_data['imdb_id']
-            poster_url_by_id[id] = poster_data[0]['url'].replace('/fanart', '/preview')
+            poster_url_by_id[id] = poster_data[0]['url'] \
+                .replace('/fanart', '/preview') \
+                .replace('http:', 'https:')
         return poster_url_by_id
