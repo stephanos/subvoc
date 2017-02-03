@@ -23,7 +23,7 @@
     padding: 1rem;
     margin-top: 0.8rem;
     border-radius: .4rem;
-    background: rgba(0, 0, 0, 0.4);
+    border: .1rem solid #fff;
 }
 
 .arrow {
