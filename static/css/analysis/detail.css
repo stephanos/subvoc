@@ -6,12 +6,6 @@
     position: relative;
 }
 
-.word-detail .head .arrow {
-    cursor: pointer;
-    left: 10px;
-    top: 29%;
-}
-
 .word-detail .body {
     margin-top: 2.5rem;
 }

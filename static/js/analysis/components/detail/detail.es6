@@ -12,7 +12,6 @@ class WordDetail extends preact.Component {
             return <div>
                 <div class="card word-detail">
                     <header class="head">
-                        <div class="arrow" onClick={() => window.history.back()}>&lt;</div>
                         <span class="label">{selection.word.word.token}</span>
                     </header>
                     <section class="body">

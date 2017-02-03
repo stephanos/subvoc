@@ -256,13 +256,6 @@ var WordDetail = function (_preact$Component) {
                             'header',
                             { 'class': 'head' },
                             preact.h(
-                                'div',
-                                { 'class': 'arrow', onClick: function onClick() {
-                                        return window.history.back();
-                                    } },
-                                '<'
-                            ),
-                            preact.h(
                                 'span',
                                 { 'class': 'label' },
                                 selection.word.word.token
