@@ -38,6 +38,10 @@ class WordDetail extends preact.Component {
             </div>;
         }
     }
+
+    componentDidUpdate(prevProps, prevState) {
+        $(window).scrollTop(0);
+    }
 }
 
 

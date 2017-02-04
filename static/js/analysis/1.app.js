@@ -290,6 +290,11 @@ var WordDetail = function (_preact$Component) {
                 );
             }
         }
+    }, {
+        key: 'componentDidUpdate',
+        value: function componentDidUpdate(prevProps, prevState) {
+            $(window).scrollTop(0);
+        }
     }]);
 
     return WordDetail;
