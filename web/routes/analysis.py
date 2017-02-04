@@ -24,11 +24,21 @@ def analysis_page(subtitle_api, id):
 def analysis_api(subtitle_api, id):
     subtitle, analysis = analyse(subtitle_api, id)
 
+    words = ({
+        'word': w,
+        'difficulty': {
+            'level': analysis.word_with_difficulty[w].value,
+            'label': analysis.word_with_difficulty[w].name,
+        },
+        'sentences': analysis.sentences_with_word[w],
+        'freq': analysis.word_with_lang_freq[w],
+    } for w in sorted(analysis.word_with_lang_freq, key=lambda x: analysis.word_with_lang_freq[x]))
+
     data = json.dumps({
         'media': {
             'title': subtitle.media.title,
         },
-        'words': analysis.words_by_difficulty()
+        'words': words
     }, cls=AnalysisEncoder, iterable_as_array=True)
 
     return Response(response=data, status=200, mimetype='application/json')

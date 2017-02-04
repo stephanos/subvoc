@@ -1,44 +1,66 @@
-import datetime
 import pytest
 from unittest.mock import MagicMock
 
 from domain.analysis import analyse, CORPORA, Word, WordType, WordIgnoreType
-from domain.parser import Sentence
 
 
+cache = {}
 api_mock = MagicMock()
 media_mock = MagicMock()
 subtitle_mock = MagicMock(media=media_mock)
 
 
-def test_analysis_yields_frequencies():
+def cached_analyse(text):
+    if text in cache:
+        return cache[text]
+
+    loader_mock = MagicMock(return_value=(subtitle_mock, text))
+    result = analyse(api_mock, '<id>', CORPORA['min'], loader_mock)
+    loader_mock.assert_called_with(api_mock, '<id>', 'eng')
+
+    cache[text] = result
+    return result
+
+
+def test_analysis_yields_lang_frequencies():
     text = '''\
 1
 02:11:39,473 --> 02:11:42,375
 I hoped to see my friend
 and shake his hand.
-
-2
-02:11:44,176 --> 02:11:48,071
-I hoped the Pacific is as blue
-as it has been in my dreams.
 '''
-    loader_mock = MagicMock(return_value=(subtitle_mock, text))
-    _, analysis = analyse(api_mock, '<id>', CORPORA['min'], loader_mock)
+    _, analysis = cached_analyse(text)
 
-    sentence1 = Sentence('I hoped to see my friend and shake his hand.',
-                         datetime.timedelta(0, 7899, 473000))
-    sentence2 = Sentence('I hoped the Pacific is as blue as it has been in my dreams.',
-                         datetime.timedelta(0, 7904, 176000))
-    assert list(analysis.words_by_difficulty()) == [
-        {'word': Word('hop', WordType.VERB), 'sentences': [sentence1, sentence2], 'freq': 7928},
-        {'word': Word('shake', WordType.VERB), 'sentences': [sentence1], 'freq': 20029},
-        {'word': Word('blue', WordType.ADJ), 'sentences': [sentence2], 'freq': 53435},
-        {'word': Word('dream', WordType.NOUN), 'sentences': [sentence2], 'freq': 75468},
-        {'word': Word('hand', WordType.NOUN), 'sentences': [sentence1], 'freq': 161068},
-        {'word': Word('friend', WordType.NOUN), 'sentences': [sentence1], 'freq': 243502},
-        {'word': Word('see', WordType.VERB), 'sentences': [sentence1], 'freq': 1386818},
-    ]
+    assert dict(analysis.word_with_lang_freq) == {
+        Word('friend', WordType.NOUN): 243502,
+        Word('hand', WordType.NOUN): 161068,
+        Word('hop', WordType.VERB): 7928,
+        Word('see', WordType.VERB): 1386818,
+        Word('shake', WordType.VERB): 20029
+    }
+
+
+def test_analysis_yields_movie_frequencies():
+    text = '''\
+1
+02:11:39,473 --> 02:11:42,375
+I hoped to see my friend
+and shake his hand.
+'''
+    _, analysis = cached_analyse(text)
+
+    assert dict(analysis.word_with_freq) == {
+        Word('I', WordType.OTHER): 1,
+        Word('and', WordType.OTHER): 1,
+        Word('friend', WordType.NOUN): 1,
+        Word('hand', WordType.NOUN): 1,
+        Word('his', WordType.OTHER): 1,
+        Word('hop', WordType.VERB): 1,
+        Word('my', WordType.OTHER): 1,
+        Word('see', WordType.VERB): 1,
+        Word('shake', WordType.VERB): 1,
+        Word('to', WordType.OTHER): 1
+    }
 
 
 def test_analysis_yields_subtitle():
@@ -48,11 +70,8 @@ def test_analysis_yields_subtitle():
 I hoped to see my friend
 and shake his hand.
 '''
-    loader_mock = MagicMock(return_value=(subtitle_mock, text))
-    subtitle, _ = analyse(api_mock, '<id>', CORPORA['min'], loader_mock)
-
+    subtitle, _ = cached_analyse(text)
     assert subtitle == subtitle_mock
-    loader_mock.assert_called_with(api_mock, '<id>', 'eng')
 
 
 def test_analysis_ignores_stopwords():
@@ -62,8 +81,7 @@ def test_analysis_ignores_stopwords():
 I hoped to see my friend
 and shake his hand.
 '''
-    loader_mock = MagicMock(return_value=(subtitle_mock, text))
-    _, analysis = analyse(api_mock, '<id>', CORPORA['min'], loader_mock)
+    _, analysis = cached_analyse(text)
 
     expected_stopwords = set(['and', 'to', 'his', 'my'])
     actual_stopwords = set(w.token for w, r in analysis.ignored_words_with_reason.items()
@@ -81,8 +99,7 @@ def test_analysis_ignores_unknown_words():
 I hoped to see my friend
 and shake his weirdnonsenseword.
 '''
-    loader_mock = MagicMock(return_value=(subtitle_mock, text))
-    _, analysis = analyse(api_mock, '<id>', CORPORA['min'], loader_mock)
+    _, analysis = cached_analyse(text)
 
     unknown_word = Word('weirdnonsenseword', WordType.NOUN)
     assert unknown_word in analysis.ignored_words_with_reason
@@ -95,11 +112,10 @@ def test_analysis_skips_word_subtitle_entirely():
 00:01:00,000 --> 00:01:03,000
 Subtitle ... subtitle ... SUBTITLE!
 '''
-    loader_mock = MagicMock(return_value=(subtitle_mock, text))
-    _, analysis = analyse(api_mock, '<id>', CORPORA['min'], loader_mock)
+    _, analysis = cached_analyse(text)
 
     assert not analysis.ignored_words_with_reason
-    assert not list(analysis.words_by_difficulty())
+    assert not analysis.word_with_lang_freq
 
 
 def test_analysis_skips_non_words_entirely():
@@ -108,11 +124,10 @@ def test_analysis_skips_non_words_entirely():
 00:01:00,000 --> 00:01:03,000
 42! test0.
 '''
-    loader_mock = MagicMock(return_value=(subtitle_mock, text))
-    _, analysis = analyse(api_mock, '<id>', CORPORA['min'], loader_mock)
+    _, analysis = cached_analyse(text)
 
     assert not analysis.ignored_words_with_reason
-    assert not list(analysis.words_by_difficulty())
+    assert not analysis.word_with_lang_freq
 
 
 def test_analysis_ignores_words_with_unknown_frequency():
@@ -122,8 +137,7 @@ def test_analysis_ignores_words_with_unknown_frequency():
 I hoped to see my friend
 and shake his moustache.
 '''
-    loader_mock = MagicMock(return_value=(subtitle_mock, text))
-    _, analysis = analyse(api_mock, '<id>', CORPORA['min'], loader_mock)
+    _, analysis = cached_analyse(text)
 
     unknown_freq_word = Word('moustache', WordType.NOUN)
     assert unknown_freq_word in analysis.ignored_words_with_reason

@@ -38,33 +38,30 @@ class WordIgnoreType(Enum):
     UNKNOWN_FREQ = 4
 
 
+class WordDifficulty(Enum):
+    BASIC = 0
+    EASY = 1
+    MEDIUM = 2
+    HARD = 3
+
+
 class Analysis:
     def __init__(self):
-        self.word_with_freq = {}
-        self.word_with_lang_freq = {}
-        self.sentences_with_word = defaultdict(list)
         self.ignored_words_with_reason = Counter()
+        self.sentences_with_word = defaultdict(list)
+        self.word_with_difficulty = {}
+        self.word_with_freq = defaultdict(int)
+        self.word_with_lang_freq = {}
 
-    def count_occurrence(self, word):
-        self.word_with_freq.setdefault(word, 0)
-        self.word_with_freq[word] += 1
-
-    def add(self, word, sentence, freq):
+    def add(self, word, sentence, freq, diff):
         self.sentences_with_word[word].append(sentence)
+        self.word_with_freq[word] += 1
+        self.word_with_difficulty[word] = diff
         self.word_with_lang_freq[word] = freq
-        self.count_occurrence(word)
 
     def ignore(self, word, reason):
         self.ignored_words_with_reason[word] = reason
-        self.count_occurrence(word)
-
-    def words_by_difficulty(self):
-        data = self.word_with_lang_freq
-        return ({
-            'word': w,
-            'sentences': self.sentences_with_word[w],
-            'freq': data[w],
-        } for w in sorted(data, key=lambda x: data[x]))
+        self.word_with_freq[word] += 1
 
 
 def get_word_type(treebank_tag):
@@ -93,6 +90,16 @@ def get_wordnet_pos(treebank_tag):
 
 def is_known(word):
     return len(wordnet.synsets(word)) != 0
+
+
+def get_difficulty(word, freq):
+    if freq <= 5:
+        return WordDifficulty.HARD
+    elif freq <= 50:
+        return WordDifficulty.MEDIUM
+    elif freq <= 500:
+        return WordDifficulty.EASY
+    return WordDifficulty.BASIC
 
 
 def analyse_subtitles(text, freq_lookup):
@@ -126,7 +133,12 @@ def analyse_subtitles(text, freq_lookup):
                 analysis.ignore(word, WordIgnoreType.UNKNOWN_FREQ)
                 continue
 
-            analysis.add(Word(lemma, word_type), sentence, freq_lookup[lemma])
+            freq = freq_lookup[lemma]
+            analysis.add(
+                Word(lemma, word_type),
+                sentence,
+                freq,
+                get_difficulty(lemma, freq))
 
     return analysis
 
