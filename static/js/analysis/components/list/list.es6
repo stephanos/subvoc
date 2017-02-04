@@ -5,15 +5,15 @@ import { WordListItem } from './list-item.es6';
 
 
 class WordList extends preact.Component {
-    render({ data, onSelectWord }) {
+    render({ analysis, onSelectWord }) {
         return <div class="word-list">
             <div class="media">
                 <span class="title">
-                    { data.media.title }
+                    { analysis.media.title }
                 </span>
             </div>
             <div>
-                { $.map(data.words, item =>
+                { $.map(analysis.words, item =>
                     <WordListItem word={item} onSelectWord={onSelectWord} /> )}
             </div>
         </div>;

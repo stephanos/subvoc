@@ -6,8 +6,8 @@ import { Analysis } from './analysis.es6';
 
 class Root extends preact.Component {
     render(props) {
-        if (props.data) {
-            return <Analysis data={props.data} />;
+        if (props.analysis) {
+            return <Analysis analysis={props.analysis} />;
         } else {
             return <div class="error">
                 <div>
@@ -32,7 +32,7 @@ function loadAnalysis() {
 function renderApp(analysis) {
     const container = document.getElementById('app');
     preact.render(
-        <Root data={ analysis }/>,
+        <Root analysis={ analysis }/>,
         container,
         container.firstElementChild
     );

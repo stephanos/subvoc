@@ -13,7 +13,7 @@ class Analysis extends preact.Component {
     }
 
     handleSelectWord(word) {
-        const token = word.word.token;
+        const token = word.token;
         window.history.pushState(null, `${token}`, window.location.pathname + '#' + token);
 
         this.setState({ selection: { word }, originScrollPos: $(window).scrollTop() });
@@ -47,15 +47,15 @@ class Analysis extends preact.Component {
         window.onpopstate = this.onBackButtonEvent.bind(this);
     }
 
-    render({ data }) {
+    render({ analysis }) {
         const selectedWord = this.state.selection.word;
         return <div class={'analysis ' + (selectedWord ? 'detail' : 'list')}>
             <WordDetail
                 selection={this.state.selection}
-                lookup={selectedWord ? this.state.wordLookupByToken[selectedWord.word.token] : undefined}
+                lookup={selectedWord ? this.state.wordLookupByToken[selectedWord.token] : undefined}
                 onSelectPOS={(p) => this.handleSelectPOS(p)} />
             <WordList
-                data={data}
+                analysis={analysis}
                 onSelectWord={(w) => this.handleSelectWord(w)} />
         </div>;
     }

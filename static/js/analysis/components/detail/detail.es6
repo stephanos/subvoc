@@ -12,7 +12,7 @@ class WordDetail extends preact.Component {
             return <div>
                 <div class="card word-detail">
                     <header class="head">
-                        <span class="label">{selection.word.word.token}</span>
+                        <span class="label">{selection.word.token}</span>
                     </header>
                     <section class="body">
                         { !lookup

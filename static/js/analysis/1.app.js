@@ -258,7 +258,7 @@ var WordDetail = function (_preact$Component) {
                             preact.h(
                                 'span',
                                 { 'class': 'label' },
-                                selection.word.word.token
+                                selection.word.token
                             )
                         ),
                         preact.h(
@@ -331,7 +331,7 @@ var WordListItem = function (_preact$Component) {
                 preact.h(
                     'div',
                     { 'class': 'label' },
-                    word.word.token
+                    word.token
                 ),
                 preact.h(
                     'div',
@@ -365,7 +365,7 @@ var WordList = function (_preact$Component) {
     _createClass$8(WordList, [{
         key: 'render',
         value: function render(_ref) {
-            var data = _ref.data,
+            var analysis = _ref.analysis,
                 onSelectWord = _ref.onSelectWord;
 
             return preact.h(
@@ -377,13 +377,13 @@ var WordList = function (_preact$Component) {
                     preact.h(
                         'span',
                         { 'class': 'title' },
-                        data.media.title
+                        analysis.media.title
                     )
                 ),
                 preact.h(
                     'div',
                     null,
-                    $.map(data.words, function (item) {
+                    $.map(analysis.words, function (item) {
                         return preact.h(WordListItem, { word: item, onSelectWord: onSelectWord });
                     })
                 )
@@ -420,7 +420,7 @@ var Analysis = function (_preact$Component) {
         value: function handleSelectWord(word) {
             var _this2 = this;
 
-            var token = word.word.token;
+            var token = word.token;
             window.history.pushState(null, '' + token, window.location.pathname + '#' + token);
 
             this.setState({ selection: { word: word }, originScrollPos: $(window).scrollTop() });
@@ -460,7 +460,7 @@ var Analysis = function (_preact$Component) {
         value: function render(_ref) {
             var _this3 = this;
 
-            var data = _ref.data;
+            var analysis = _ref.analysis;
 
             var selectedWord = this.state.selection.word;
             return preact.h(
@@ -468,12 +468,12 @@ var Analysis = function (_preact$Component) {
                 { 'class': 'analysis ' + (selectedWord ? 'detail' : 'list') },
                 preact.h(WordDetail, {
                     selection: this.state.selection,
-                    lookup: selectedWord ? this.state.wordLookupByToken[selectedWord.word.token] : undefined,
+                    lookup: selectedWord ? this.state.wordLookupByToken[selectedWord.token] : undefined,
                     onSelectPOS: function onSelectPOS(p) {
                         return _this3.handleSelectPOS(p);
                     } }),
                 preact.h(WordList, {
-                    data: data,
+                    analysis: analysis,
                     onSelectWord: function onSelectWord(w) {
                         return _this3.handleSelectWord(w);
                     } })
@@ -512,8 +512,8 @@ var Root = function (_preact$Component) {
     _createClass(Root, [{
         key: 'render',
         value: function render(props) {
-            if (props.data) {
-                return preact.h(Analysis, { data: props.data });
+            if (props.analysis) {
+                return preact.h(Analysis, { analysis: props.analysis });
             } else {
                 return preact.h(
                     'div',
@@ -545,7 +545,7 @@ function loadAnalysis() {
 
 function renderApp(analysis) {
     var container = document.getElementById('app');
-    preact.render(preact.h(Root, { data: analysis }), container, container.firstElementChild);
+    preact.render(preact.h(Root, { analysis: analysis }), container, container.firstElementChild);
 }
 
 window.onload = function () {

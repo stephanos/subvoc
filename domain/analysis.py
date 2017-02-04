@@ -20,10 +20,10 @@ STOP_WORDS = set(stopwords.words('english'))
 TOKENIZER = WordPunctTokenizer()
 
 
-Word = namedtuple('Word', ['token', 'type'])
+Word = namedtuple('Word', ['token', 'POS'])
 
 
-class WordType(Enum):
+class WordPartOfSpeach(Enum):
     ADJ = 1
     ADV = 2
     NOUN = 3
@@ -47,33 +47,39 @@ class WordDifficulty(Enum):
 
 class Analysis:
     def __init__(self):
-        self.ignored_words_with_reason = Counter()
-        self.sentences_with_word = defaultdict(list)
-        self.word_with_difficulty = {}
-        self.word_with_freq = defaultdict(int)
-        self.word_with_lang_freq = {}
+        self.tokens = set()
+        self.token_with_difficulty = {}
+        self.token_with_lang_freq = {}
+        self.token_with_POS = defaultdict(set)
+        self.word_with_ignore_reason = Counter()
+        self.word_with_movie_freq = defaultdict(int)
+        self.word_with_sentence = defaultdict(list)
 
     def add(self, word, sentence, freq, diff):
-        self.sentences_with_word[word].append(sentence)
-        self.word_with_freq[word] += 1
-        self.word_with_difficulty[word] = diff
-        self.word_with_lang_freq[word] = freq
+        token = word.token
+        self.tokens.add(token)
+        self.token_with_difficulty[token] = diff
+        self.token_with_POS[token].add(word.POS)
+        self.token_with_lang_freq[token] = freq
+        self.word_with_movie_freq[word] += 1
+        self.word_with_sentence[word].append(sentence)
 
     def ignore(self, word, reason):
-        self.ignored_words_with_reason[word] = reason
-        self.word_with_freq[word] += 1
+        self.tokens.add(word.token)
+        self.word_with_ignore_reason[word] = reason
+        self.word_with_movie_freq[word] += 1
 
 
-def get_word_type(treebank_tag):
+def get_word_pos(treebank_tag):
     if treebank_tag.startswith('J'):
-        return WordType.ADJ
+        return WordPartOfSpeach.ADJ
     elif treebank_tag.startswith('V'):
-        return WordType.VERB
+        return WordPartOfSpeach.VERB
     elif treebank_tag.startswith('N'):
-        return WordType.NOUN
+        return WordPartOfSpeach.NOUN
     elif treebank_tag.startswith('R'):
-        return WordType.ADV
-    return WordType.OTHER
+        return WordPartOfSpeach.ADV
+    return WordPartOfSpeach.OTHER
 
 
 def get_wordnet_pos(treebank_tag):
@@ -108,12 +114,12 @@ def analyse_subtitles(text, freq_lookup):
     for sentence in parse(text):
         tokens = pos_tag(TOKENIZER.tokenize(sentence.text))
 
-        for token, token_type in tokens:
+        for token, token_tag in tokens:
             if token.lower() == 'subtitle' or not token.isalpha():
                 continue
 
-            word_type = get_word_type(token_type)
-            word = Word(token, word_type)
+            POS = get_word_pos(token_tag)
+            word = Word(token, POS)
 
             if token in STOP_WORDS:
                 analysis.ignore(word, WordIgnoreType.STOPWORD)
@@ -123,19 +129,19 @@ def analyse_subtitles(text, freq_lookup):
                 analysis.ignore(word, WordIgnoreType.UNKNOWN)
                 continue
 
-            wordnet_pos = get_wordnet_pos(token_type)
-            if wordnet_pos is None:
+            wordnet_POS = get_wordnet_pos(token_tag)
+            if wordnet_POS is None:
                 analysis.ignore(word, WordIgnoreType.UNKNOWN_TYPE)
                 continue
 
-            lemma = LEMMATIZER.lemmatize(token, pos=wordnet_pos)
+            lemma = LEMMATIZER.lemmatize(token, pos=wordnet_POS)
             if lemma not in freq_lookup:
                 analysis.ignore(word, WordIgnoreType.UNKNOWN_FREQ)
                 continue
 
             freq = freq_lookup[lemma]
             analysis.add(
-                Word(lemma, word_type),
+                Word(lemma, POS),
                 sentence,
                 freq,
                 get_difficulty(lemma, freq))
