@@ -107,18 +107,24 @@ var WordExcerptList = function (_preact$Component) {
     _createClass$6(WordExcerptList, [{
         key: 'render',
         value: function render(_ref) {
-            var examples = _ref.examples;
+            var excerpts = _ref.excerpts;
 
             return preact.h(
                 'div',
                 null,
-                $.map(examples, function (example) {
+                excerpts ? $.map(excerpts, function (excerpt) {
                     return preact.h(
                         'div',
                         { 'class': 'example' },
-                        example.text
+                        $.map(excerpt.sentences, function (sentence) {
+                            return preact.h(
+                                'span',
+                                null,
+                                sentence.text
+                            );
+                        })
                     );
-                })
+                }) : preact.h('div', null)
             );
         }
     }]);
@@ -155,6 +161,7 @@ var WordDetailBody = function (_preact$Component) {
             var selectedPOS = selection.POS || $.grep(headers, function (h) {
                 return lookup[h[0]];
             })[0][0];
+            var excerpts = (selection.word.byPOS[selectedPOS] || {}).excerpts;
 
             return preact.h(
                 'div',
@@ -174,7 +181,7 @@ var WordDetailBody = function (_preact$Component) {
                 preact.h(
                     'section',
                     { 'class': 'examples' },
-                    preact.h(WordExcerptList, { examples: selection.word.sentences })
+                    preact.h(WordExcerptList, { excerpts: excerpts })
                 ),
                 preact.h('hr', null),
                 preact.h(

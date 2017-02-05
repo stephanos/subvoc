@@ -15,6 +15,7 @@ class WordDetailBody extends preact.Component {
 
         const selectedPOS = selection.POS ||
             $.grep(headers, (h) => lookup[h[0]])[0][0];
+        const excerpts = (selection.word.byPOS[selectedPOS] || {}).excerpts;
 
         return <div>
             <header class="tab-group">
@@ -28,7 +29,7 @@ class WordDetailBody extends preact.Component {
                 )}
             </header>
             <section class="examples">
-                <WordExcerptList examples={selection.word.sentences} />
+                <WordExcerptList excerpts={excerpts} />
             </section>
             <hr/>
             <section class="explanations">

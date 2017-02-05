@@ -3,14 +3,18 @@ import preact from 'preact';
 
 
 class WordExcerptList extends preact.Component {
-    render({ examples }) {
+    render({ excerpts }) {
         return <div>
-            { $.map(examples, (example) =>
-                <div class="example">
-                    { example.text }
-                </div>
-            ) }
-        </div>;
+            { excerpts
+                ? $.map(excerpts, (excerpt) =>
+                    <div class="example">
+                        { $.map(excerpt.sentences, (sentence) =>
+                            <span>{ sentence.text }</span>
+                        ) }
+                    </div> )
+                : <div></div>
+            }
+        </div>
     }
 }
 

@@ -20,6 +20,7 @@ STOP_WORDS = set(stopwords.words('english'))
 TOKENIZER = WordPunctTokenizer()
 
 
+Excerpt = namedtuple('Excerpt', ['sentences', 'token'])
 Word = namedtuple('Word', ['token', 'POS'])
 
 
@@ -51,22 +52,23 @@ class Analysis:
         self.token_with_difficulty = {}
         self.token_with_lang_freq = {}
         self.token_with_POS = defaultdict(set)
+        self.word_with_excerpts = defaultdict(list)
         self.word_with_ignore_reason = Counter()
         self.word_with_movie_freq = defaultdict(int)
-        self.word_with_sentence = defaultdict(list)
 
-    def add(self, word, sentence, freq, diff):
+    def add(self, word, excerpt, freq, diff):
         token = word.token
         self.tokens.add(token)
         self.token_with_difficulty[token] = diff
         self.token_with_POS[token].add(word.POS)
         self.token_with_lang_freq[token] = freq
+        self.word_with_excerpts[word].append(excerpt)
         self.word_with_movie_freq[word] += 1
-        self.word_with_sentence[word].append(sentence)
 
-    def ignore(self, word, reason):
+    def ignore(self, word, excerpt, reason):
         self.tokens.add(word.token)
         self.word_with_ignore_reason[word] = reason
+        self.word_with_excerpts[word].append(excerpt)
         self.word_with_movie_freq[word] += 1
 
 
@@ -118,31 +120,32 @@ def analyse_subtitles(text, freq_lookup):
             if token.lower() == 'subtitle' or not token.isalpha():
                 continue
 
+            excerpt = Excerpt([sentence], token)
             POS = get_word_pos(token_tag)
             word = Word(token, POS)
 
             if token in STOP_WORDS:
-                analysis.ignore(word, WordIgnoreType.STOPWORD)
+                analysis.ignore(word, excerpt, WordIgnoreType.STOPWORD)
                 continue
 
             if not is_known(token):
-                analysis.ignore(word, WordIgnoreType.UNKNOWN)
+                analysis.ignore(word, excerpt, WordIgnoreType.UNKNOWN)
                 continue
 
             wordnet_POS = get_wordnet_pos(token_tag)
             if wordnet_POS is None:
-                analysis.ignore(word, WordIgnoreType.UNKNOWN_TYPE)
+                analysis.ignore(word, excerpt, WordIgnoreType.UNKNOWN_TYPE)
                 continue
 
             lemma = LEMMATIZER.lemmatize(token, pos=wordnet_POS)
             if lemma not in freq_lookup:
-                analysis.ignore(word, WordIgnoreType.UNKNOWN_FREQ)
+                analysis.ignore(word, excerpt, WordIgnoreType.UNKNOWN_FREQ)
                 continue
 
             freq = freq_lookup[lemma]
             analysis.add(
                 Word(lemma, POS),
-                sentence,
+                excerpt,
                 freq,
                 get_difficulty(lemma, freq))
 

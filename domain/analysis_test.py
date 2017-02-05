@@ -1,7 +1,9 @@
 import pytest
+from datetime import timedelta
 from unittest.mock import MagicMock
 
-from domain.analysis import analyse, CORPORA, Word, WordPartOfSpeach, WordIgnoreType
+from domain.parser import Sentence
+from domain.analysis import analyse, CORPORA, Excerpt, Word, WordPartOfSpeach, WordIgnoreType
 
 
 cache = {}
@@ -63,12 +65,34 @@ and shake his hand.
     }
 
 
+def test_analysis_yields_excerpts():
+    text = '''\
+1
+02:11:39,473 --> 02:11:42,375
+I hoped to see my friend.
+I hoped.
+'''
+    _, analysis = cached_analyse(text)
+
+    s1 = Sentence('I hoped to see my friend.', timedelta(0, 7899, 473000))
+    s2 = Sentence('I hoped.', timedelta(0, 7899, 473000))
+
+    assert dict(analysis.word_with_excerpts) == {
+        Word('I', WordPartOfSpeach.OTHER): [Excerpt([s1], 'I'), Excerpt([s2], 'I')],
+        Word('friend', WordPartOfSpeach.NOUN): [Excerpt([s1], 'friend')],
+        Word('hop', WordPartOfSpeach.VERB): [Excerpt([s1], 'hoped'), Excerpt([s2], 'hoped')],
+        Word('my', WordPartOfSpeach.OTHER): [Excerpt([s1], 'my')],
+        Word('see', WordPartOfSpeach.VERB): [Excerpt([s1], 'see')],
+        Word('to', WordPartOfSpeach.OTHER): [Excerpt([s1], 'to')]
+    }
+
+
 def test_analysis_yields_subtitle():
     text = '''\
 1
 00:01:00,000 --> 00:01:03,000
 I hoped to see my friend
-and shake his hand.F
+and shake his hand.
 '''
     subtitle, _ = cached_analyse(text)
     assert subtitle == subtitle_mock
