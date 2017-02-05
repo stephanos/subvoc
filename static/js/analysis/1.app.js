@@ -375,6 +375,9 @@ var WordList = function (_preact$Component) {
             var analysis = _ref.analysis,
                 onSelectWord = _ref.onSelectWord;
 
+            var sortedWords = analysis.words.sort(function (a, b) {
+                return a.freq - b.freq;
+            });
             return preact.h(
                 'div',
                 { 'class': 'word-list' },
@@ -390,7 +393,7 @@ var WordList = function (_preact$Component) {
                 preact.h(
                     'div',
                     null,
-                    $.map(analysis.words, function (item) {
+                    $.map(sortedWords, function (item) {
                         return preact.h(WordListItem, { word: item, onSelectWord: onSelectWord });
                     })
                 )
