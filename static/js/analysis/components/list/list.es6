@@ -6,7 +6,7 @@ import { WordListItem } from './list-item.es6';
 
 class WordList extends preact.Component {
     render({ analysis, onSelectWord }) {
-        const sortedWords = analysis.words.sort((a, b) => a.freq - b.freq);
+        const sortedWords = analysis.words.sort((a, b) => a.difficulty.value - b.difficulty.value);
         return <div class="word-list">
             <div class="media">
                 <span class="title">

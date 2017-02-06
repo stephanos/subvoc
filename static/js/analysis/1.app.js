@@ -338,7 +338,14 @@ var WordListItem = function (_preact$Component) {
                 preact.h(
                     'div',
                     { 'class': 'label' },
-                    word.token
+                    word.token,
+                    word.freq > 1 ? preact.h(
+                        'span',
+                        null,
+                        ' (',
+                        word.freq,
+                        'x)'
+                    ) : preact.h('span', null)
                 ),
                 preact.h(
                     'div',
@@ -376,7 +383,7 @@ var WordList = function (_preact$Component) {
                 onSelectWord = _ref.onSelectWord;
 
             var sortedWords = analysis.words.sort(function (a, b) {
-                return a.freq - b.freq;
+                return a.difficulty.value - b.difficulty.value;
             });
             return preact.h(
                 'div',

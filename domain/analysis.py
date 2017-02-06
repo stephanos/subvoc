@@ -48,9 +48,11 @@ class WordDifficulty(Enum):
 
 class Analysis:
     def __init__(self):
+        self.least_freq = 1
         self.tokens = set()
         self.token_with_difficulty = {}
         self.token_with_lang_freq = {}
+        self.token_with_movie_freq = defaultdict(int)
         self.token_with_POS = defaultdict(set)
         self.word_with_excerpts = defaultdict(list)
         self.word_with_ignore_reason = Counter()
@@ -58,10 +60,12 @@ class Analysis:
 
     def add(self, word, excerpt, freq, diff):
         token = word.token
+        self.least_freq = min(freq, self.least_freq)
         self.tokens.add(token)
         self.token_with_difficulty[token] = diff
-        self.token_with_POS[token].add(word.POS)
         self.token_with_lang_freq[token] = freq
+        self.token_with_movie_freq[token] += 1
+        self.token_with_POS[token].add(word.POS)
         self.word_with_excerpts[word].append(excerpt)
         self.word_with_movie_freq[word] += 1
 

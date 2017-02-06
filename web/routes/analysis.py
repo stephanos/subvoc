@@ -44,8 +44,9 @@ def analysis_api(subtitle_api, id):
             'difficulty': {
                 'level': analysis.token_with_difficulty[token].value,
                 'label': analysis.token_with_difficulty[token].name,
+                'value': 1 - (analysis.least_freq / analysis.token_with_lang_freq[token]),
             },
-            'freq': analysis.token_with_lang_freq[token],
+            'freq': analysis.token_with_movie_freq[token],
             'token': token,
         }
 
