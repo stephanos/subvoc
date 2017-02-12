@@ -4,12 +4,12 @@ import preact from 'preact';
 
 class WordDetailSelector extends preact.Component {
     render({ active, enabled, code, label, freq, onSelectPOS }) {
-        const classNames = `tab ${enabled ? '' : 'empty'} ${active ? 'active' : ''}`;
+        const classNames = `tab card ${enabled ? '' : 'empty'} ${active ? 'active' : ''}`;
         return <div onClick={() => enabled ? onSelectPOS(code) : null} class={classNames} >
-            <span>
+            <div class="label">
                 { label }
-                { freq ? <span> ({ freq })</span> : <span></span> }
-            </span>
+            </div>
+            { freq ? <div class="count badge">{ freq }</div> : <div class="count">&nbsp;</div> }
         </div>;
     }
 }

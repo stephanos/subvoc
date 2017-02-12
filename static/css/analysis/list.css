@@ -17,16 +17,10 @@
     width: 7rem;
     height: 7rem;
     text-align: center;
-    border-color: rgba(255, 255, 255, 0.3);
 }
 
 .word-list .difficulty .group:first-child {
     margin-left: 0;
-}
-
-.word-list .difficulty .group.active {
-    font-weight: bold;
-    border-color: #fff;
 }
 
 .word-list .difficulty .label {

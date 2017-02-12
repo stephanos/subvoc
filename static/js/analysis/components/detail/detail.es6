@@ -14,16 +14,15 @@ class WordDetail extends preact.Component {
                     <span class="label">{selection.word.token}</span>
                 </h3>
 
-                <div class="card">
-                    <section class="body">
-                        { !lookup
-                            ? <Spinner />
-                            : <WordDetailBody lookup={lookup}
-                                            selection={selection}
-                                            onSelectPOS={onSelectPOS} />
-                        }
-                    </section>
-                </div>
+                <section class="body">
+                    { !lookup
+                        ? <Spinner />
+                        : <WordDetailBody
+                            lookup={lookup}
+                            selection={selection}
+                            onSelectPOS={onSelectPOS} />
+                    }
+                </section>
 
                 { lookup
                     ? <div class="attribution">

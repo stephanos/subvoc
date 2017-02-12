@@ -70,23 +70,25 @@ var WordDetailSelector = function (_preact$Component) {
                 freq = _ref.freq,
                 onSelectPOS = _ref.onSelectPOS;
 
-            var classNames = 'tab ' + (enabled ? '' : 'empty') + ' ' + (active ? 'active' : '');
+            var classNames = 'tab card ' + (enabled ? '' : 'empty') + ' ' + (active ? 'active' : '');
             return preact.h(
                 'div',
                 { onClick: function onClick() {
                         return enabled ? onSelectPOS(code) : null;
                     }, 'class': classNames },
                 preact.h(
-                    'span',
-                    null,
-                    label,
-                    freq ? preact.h(
-                        'span',
-                        null,
-                        ' (',
-                        freq,
-                        ')'
-                    ) : preact.h('span', null)
+                    'div',
+                    { 'class': 'label' },
+                    label
+                ),
+                freq ? preact.h(
+                    'div',
+                    { 'class': 'count badge' },
+                    freq
+                ) : preact.h(
+                    'div',
+                    { 'class': 'count' },
+                    '\xA0'
                 )
             );
         }
@@ -277,15 +279,12 @@ var WordDetail = function (_preact$Component) {
                         )
                     ),
                     preact.h(
-                        'div',
-                        { 'class': 'card' },
-                        preact.h(
-                            'section',
-                            { 'class': 'body' },
-                            !lookup ? preact.h(Spinner, null) : preact.h(WordDetailBody, { lookup: lookup,
-                                selection: selection,
-                                onSelectPOS: onSelectPOS })
-                        )
+                        'section',
+                        { 'class': 'body' },
+                        !lookup ? preact.h(Spinner, null) : preact.h(WordDetailBody, {
+                            lookup: lookup,
+                            selection: selection,
+                            onSelectPOS: onSelectPOS })
                     ),
                     lookup ? preact.h(
                         'div',

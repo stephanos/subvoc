@@ -12,18 +12,26 @@
 }
 
 .word-detail .body .tab-group .tab {
-    display: inline;
-    padding: 0 1.5rem;
+    margin: 1rem 0 0 0.5rem;
+    display: inline-block;
     cursor: pointer;
+    text-align: center;
+    width: 7rem;
+    height: 7rem;
 }
 
-.word-detail .body .tab-group .tab.active {
-    text-decoration: underline;
+.word-detail .body .tab-group .tab:first-child {
+    margin-left: 0;
+}
+
+.word-detail .body .tab-group .tab .count {
+    display: inline-block;
 }
 
 .word-detail .body .tab-group .tab.empty {
     cursor: default;
     color: #aaa;
+    border: none;
 }
 
 .word-detail .body .examples .example {
@@ -38,7 +46,7 @@
 
 
 .analysis.detail .attribution {
-    margin-top: 1rem;
+    margin-top: 3rem;
     font-size: 0.5rem;
 }
 
