@@ -187,27 +187,26 @@ function getFreq(word, pos) {
     return (word.byPOS[pos] || {}).freq || 0;
 }
 
-function getDefinitions(lookup, pos) {
-    return lookup[pos] || [];
+function getDefinitions(word, pos) {
+    return word.lookup[pos] || [];
 }
 
-function hasDetails(word, lookup, pos) {
-    return getDefinitions(lookup, pos).length > 0 || getExcerpts(word, pos).length > 0;
+function hasDetails(word, pos) {
+    return getDefinitions(word, pos).length > 0 || getExcerpts(word, pos).length > 0;
 }
 
 var WordDetailBody = function (_preact$Component) {
     _inherits$3(WordDetailBody, _preact$Component);
 
     function WordDetailBody(_ref) {
-        var lookup = _ref.lookup,
-            selection = _ref.selection;
+        var selection = _ref.selection;
 
         _classCallCheck$3(this, WordDetailBody);
 
         var _this = _possibleConstructorReturn$3(this, (WordDetailBody.__proto__ || Object.getPrototypeOf(WordDetailBody)).call(this));
 
         _this.state.selectedPOS = selection.POS || $.grep(PARTS_OF_SPEACH, function (pos) {
-            return hasDetails(selection.word, lookup, pos);
+            return hasDetails(selection.word, pos);
         });
         return _this;
     }
@@ -217,11 +216,8 @@ var WordDetailBody = function (_preact$Component) {
         value: function render(_ref2) {
             var _this2 = this;
 
-            var lookup = _ref2.lookup,
-                selection = _ref2.selection,
+            var selection = _ref2.selection,
                 onSelectPOS = _ref2.onSelectPOS;
-
-            console.log(selection.word, this.state);
 
             return preact.h(
                 'div',
@@ -232,7 +228,7 @@ var WordDetailBody = function (_preact$Component) {
                     $.map(PARTS_OF_SPEACH, function (pos) {
                         return preact.h(WordPartOfSpeachHeader, {
                             active: _this2.state.selectedPOS === pos,
-                            enabled: hasDetails(selection.word, lookup, pos),
+                            enabled: hasDetails(selection.word, pos),
                             label: pos,
                             freq: getFreq(selection.word, pos),
                             onSelectPOS: onSelectPOS });
@@ -246,7 +242,7 @@ var WordDetailBody = function (_preact$Component) {
                 preact.h(
                     'section',
                     null,
-                    preact.h(WordDefinitionList, { definitions: getDefinitions(lookup, this.state.selectedPOS) })
+                    preact.h(WordDefinitionList, { definitions: getDefinitions(selection.word, this.state.selectedPOS) })
                 )
             );
         }
@@ -307,8 +303,7 @@ var WordDetail = function (_preact$Component) {
     _createClass$2(WordDetail, [{
         key: 'render',
         value: function render(_ref) {
-            var lookup = _ref.lookup,
-                selection = _ref.selection,
+            var selection = _ref.selection,
                 onSelectPOS = _ref.onSelectPOS;
 
             if (selection.word) {
@@ -327,12 +322,11 @@ var WordDetail = function (_preact$Component) {
                     preact.h(
                         'section',
                         { 'class': 'body' },
-                        !lookup ? preact.h(Spinner, null) : preact.h(WordDetailBody, {
-                            lookup: lookup,
+                        !selection.word.lookup ? preact.h(Spinner, null) : preact.h(WordDetailBody, {
                             selection: selection,
                             onSelectPOS: onSelectPOS })
                     ),
-                    lookup ? preact.h(
+                    selection.word.lookup ? preact.h(
                         'div',
                         { 'class': 'attribution' },
                         preact.h(
@@ -340,8 +334,8 @@ var WordDetail = function (_preact$Component) {
                             { 'class': 'attribution_dictionary' },
                             preact.h(
                                 'a',
-                                { href: lookup.attribution.url },
-                                lookup.attribution.text
+                                { href: selection.word.lookup.attribution.url },
+                                selection.word.lookup.attribution.text
                             )
                         ),
                         preact.h(
@@ -592,7 +586,6 @@ var Analysis = function (_preact$Component) {
         var _this = _possibleConstructorReturn$1(this, (Analysis.__proto__ || Object.getPrototypeOf(Analysis)).call(this));
 
         _this.state.selection = { difficulty: 3 };
-        _this.state.wordLookupByToken = {};
         return _this;
     }
 
@@ -611,7 +604,7 @@ var Analysis = function (_preact$Component) {
 
             $.getJSON({ url: '/api/words/' + token }).then(function (res) {
                 _this2.setState(function (prevState) {
-                    prevState.wordLookupByToken[token] = res;
+                    prevState.selection.word.lookup = res;
                 });
             }).catch(function (err) {
                 console.error(err); // eslint-disable-line
@@ -650,6 +643,14 @@ var Analysis = function (_preact$Component) {
             window.onpopstate = this.onBackButtonEvent.bind(this);
         }
     }, {
+        key: 'componentDidUpdate',
+        value: function componentDidUpdate(prevProps, prevState) {
+            if (!this.state.selection.word && this.state.listScrollPos) {
+                $(window).scrollTop(this.state.listScrollPos);
+                delete this.state.listScrollPos;
+            }
+        }
+    }, {
         key: 'render',
         value: function render(_ref) {
             var _this3 = this;
@@ -662,7 +663,6 @@ var Analysis = function (_preact$Component) {
                 { 'class': 'analysis ' + (selectedWord ? 'detail' : 'list') },
                 preact.h(WordDetail, {
                     selection: this.state.selection,
-                    lookup: selectedWord ? this.state.wordLookupByToken[selectedWord.token] : undefined,
                     onSelectPOS: function onSelectPOS(p) {
                         return _this3.handleSelectPOS(p);
                     } }),
@@ -676,15 +676,6 @@ var Analysis = function (_preact$Component) {
                         return _this3.handleSelectWord(w);
                     } })
             );
-        }
-    }, {
-        key: 'componentDidUpdate',
-        value: function componentDidUpdate(prevProps, prevState) {
-            var selectedWord = this.state.selection.word;
-            if (!selectedWord && this.state.listScrollPos) {
-                $(window).scrollTop(this.state.listScrollPos);
-                delete this.state.listScrollPos;
-            }
         }
     }]);
 

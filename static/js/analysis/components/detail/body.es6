@@ -18,32 +18,30 @@ function getFreq(word, pos) {
     return (word.byPOS[pos] || {}).freq || 0;
 }
 
-function getDefinitions(lookup, pos) {
-    return lookup[pos] || [];
+function getDefinitions(word, pos) {
+    return word.lookup[pos] || [];
 }
 
-function hasDetails(word, lookup, pos) {
-    return getDefinitions(lookup, pos).length > 0 || getExcerpts(word, pos).length > 0;
+function hasDetails(word, pos) {
+    return getDefinitions(word, pos).length > 0 || getExcerpts(word, pos).length > 0;
 }
 
 
 class WordDetailBody extends preact.Component {
 
-    constructor({ lookup, selection }) {
+    constructor({ selection }) {
         super();
         this.state.selectedPOS = selection.POS ||
-            $.grep(PARTS_OF_SPEACH, (pos) => hasDetails(selection.word, lookup, pos));
+            $.grep(PARTS_OF_SPEACH, (pos) => hasDetails(selection.word, pos));
     }
 
-    render({ lookup, selection, onSelectPOS }) {
-        console.log(selection.word, this.state);
-
+    render({ selection, onSelectPOS }) {
         return <div>
             <header class="tab-group">
                 { $.map(PARTS_OF_SPEACH, (pos) => {
                     return <WordPartOfSpeachHeader
                         active={this.state.selectedPOS === pos}
-                        enabled={hasDetails(selection.word, lookup, pos)}
+                        enabled={hasDetails(selection.word, pos)}
                         label={pos}
                         freq={getFreq(selection.word, pos)}
                         onSelectPOS={onSelectPOS} />
@@ -55,7 +53,7 @@ class WordDetailBody extends preact.Component {
             </section>
 
             <section>
-                <WordDefinitionList definitions={getDefinitions(lookup, this.state.selectedPOS)} />
+                <WordDefinitionList definitions={getDefinitions(selection.word, this.state.selectedPOS)} />
             </section>
         </div>;
     }

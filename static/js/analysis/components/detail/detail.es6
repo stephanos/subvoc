@@ -7,7 +7,7 @@ import { Spinner } from '../util/spinner.es6';
 
 
 class WordDetail extends preact.Component {
-    render({ lookup, selection, onSelectPOS }) {
+    render({ selection, onSelectPOS }) {
         if (selection.word) {
             return <div class="word-detail">
                 <h2 class="head">
@@ -15,19 +15,20 @@ class WordDetail extends preact.Component {
                 </h2>
 
                 <section class="body">
-                    { !lookup
+                    { !selection.word.lookup
                         ? <Spinner />
                         : <WordDetailBody
-                            lookup={lookup}
                             selection={selection}
                             onSelectPOS={onSelectPOS} />
                     }
                 </section>
 
-                { lookup
+                { selection.word.lookup
                     ? <div class="attribution">
                         <div class="attribution_dictionary">
-                            <a href={lookup.attribution.url}>{lookup.attribution.text}</a>
+                            <a href={selection.word.lookup.attribution.url}>{
+                                selection.word.lookup.attribution.text
+                            }</a>
                         </div>
                         <div class="attribution_api">
                             <img src="/static/img/wordnik_badge.png"/>
