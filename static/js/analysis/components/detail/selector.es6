@@ -2,7 +2,7 @@ import $ from 'jquery';
 import preact from 'preact';
 
 
-class WordDetailSelector extends preact.Component {
+class WordPartOfSpeachHeader extends preact.Component {
     render({ active, enabled, code, label, freq, onSelectPOS }) {
         const classNames = `tab card ${enabled ? '' : 'empty'} ${active ? 'active' : ''}`;
         return <div onClick={() => enabled ? onSelectPOS(code) : null} class={classNames} >
@@ -15,4 +15,4 @@ class WordDetailSelector extends preact.Component {
 }
 
 
-export { WordDetailSelector };
+export { WordPartOfSpeachHeader };

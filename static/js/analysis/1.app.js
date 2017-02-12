@@ -60,16 +60,72 @@ function _possibleConstructorReturn$5(self, call) { if (!self) { throw new Refer
 
 function _inherits$5(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-var WordDetailSelector = function (_preact$Component) {
-    _inherits$5(WordDetailSelector, _preact$Component);
+var WordExcerptList = function (_preact$Component) {
+    _inherits$5(WordExcerptList, _preact$Component);
 
-    function WordDetailSelector() {
-        _classCallCheck$5(this, WordDetailSelector);
+    function WordExcerptList() {
+        _classCallCheck$5(this, WordExcerptList);
 
-        return _possibleConstructorReturn$5(this, (WordDetailSelector.__proto__ || Object.getPrototypeOf(WordDetailSelector)).apply(this, arguments));
+        return _possibleConstructorReturn$5(this, (WordExcerptList.__proto__ || Object.getPrototypeOf(WordExcerptList)).apply(this, arguments));
     }
 
-    _createClass$5(WordDetailSelector, [{
+    _createClass$5(WordExcerptList, [{
+        key: 'render',
+        value: function render(_ref) {
+            var excerpts = _ref.excerpts;
+
+            return preact.h(
+                'div',
+                null,
+                ' ',
+                excerpts && excerpts.length > 0 ? preact.h(
+                    'div',
+                    { 'class': 'excerpts' },
+                    preact.h(
+                        'h4',
+                        null,
+                        'Excerpt'
+                    ),
+                    $.map(excerpts, function (excerpt) {
+                        return preact.h(
+                            'div',
+                            { 'class': 'example' },
+                            $.map(excerpt.sentences, function (sentence) {
+                                return preact.h(
+                                    'span',
+                                    null,
+                                    sentence.text
+                                );
+                            })
+                        );
+                    })
+                ) : preact.h('div', null),
+                ' '
+            );
+        }
+    }]);
+
+    return WordExcerptList;
+}(preact.Component);
+
+var _createClass$6 = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+function _classCallCheck$6(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn$6(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits$6(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var WordPartOfSpeachHeader = function (_preact$Component) {
+    _inherits$6(WordPartOfSpeachHeader, _preact$Component);
+
+    function WordPartOfSpeachHeader() {
+        _classCallCheck$6(this, WordPartOfSpeachHeader);
+
+        return _possibleConstructorReturn$6(this, (WordPartOfSpeachHeader.__proto__ || Object.getPrototypeOf(WordPartOfSpeachHeader)).apply(this, arguments));
+    }
+
+    _createClass$6(WordPartOfSpeachHeader, [{
         key: 'render',
         value: function render(_ref) {
             var active = _ref.active,
@@ -103,57 +159,7 @@ var WordDetailSelector = function (_preact$Component) {
         }
     }]);
 
-    return WordDetailSelector;
-}(preact.Component);
-
-var _createClass$6 = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-function _classCallCheck$6(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _possibleConstructorReturn$6(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-function _inherits$6(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-var WordExcerptList = function (_preact$Component) {
-    _inherits$6(WordExcerptList, _preact$Component);
-
-    function WordExcerptList() {
-        _classCallCheck$6(this, WordExcerptList);
-
-        return _possibleConstructorReturn$6(this, (WordExcerptList.__proto__ || Object.getPrototypeOf(WordExcerptList)).apply(this, arguments));
-    }
-
-    _createClass$6(WordExcerptList, [{
-        key: 'render',
-        value: function render(_ref) {
-            var excerpts = _ref.excerpts;
-
-            return preact.h(
-                'div',
-                null,
-                preact.h(
-                    'h4',
-                    null,
-                    'Excerpt'
-                ),
-                excerpts ? $.map(excerpts, function (excerpt) {
-                    return preact.h(
-                        'div',
-                        { 'class': 'example' },
-                        $.map(excerpt.sentences, function (sentence) {
-                            return preact.h(
-                                'span',
-                                null,
-                                sentence.text
-                            );
-                        })
-                    );
-                }) : preact.h('div', null)
-            );
-        }
-    }]);
-
-    return WordExcerptList;
+    return WordPartOfSpeachHeader;
 }(preact.Component);
 
 var _createClass$3 = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
@@ -185,9 +191,9 @@ var WordDetailBody = function (_preact$Component) {
             var selectedPOS = selection.POS || $.grep(headers, function (h) {
                 return lookup[h[0]];
             })[0][0];
+            var wordForPOS = selection.word.byPOS[selectedPOS];
 
-            var wordWithPOS = selection.word.byPOS[selectedPOS];
-            var excerpts = (wordWithPOS || {}).excerpts;
+            console.log(selection.word);
 
             return preact.h(
                 'div',
@@ -196,7 +202,7 @@ var WordDetailBody = function (_preact$Component) {
                     'header',
                     { 'class': 'tab-group' },
                     $.map(headers, function (header) {
-                        return preact.h(WordDetailSelector, {
+                        return preact.h(WordPartOfSpeachHeader, {
                             active: selectedPOS === header[0],
                             enabled: lookup[header[0]],
                             code: header[0],
@@ -207,8 +213,8 @@ var WordDetailBody = function (_preact$Component) {
                 ),
                 preact.h(
                     'section',
-                    { 'class': 'examples' },
-                    preact.h(WordExcerptList, { excerpts: excerpts })
+                    null,
+                    preact.h(WordExcerptList, { excerpts: (wordForPOS || {}).excerpts })
                 ),
                 preact.h(
                     'section',

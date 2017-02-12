@@ -19,7 +19,7 @@
     cursor: pointer;
     text-align: center;
     width: 7rem;
-    height: 7rem;
+    height: 5rem;
 }
 
 .word-detail .body .tab-group .tab:first-child {
@@ -36,11 +36,11 @@
 }
 
 
-.word-detail .body .examples {
+.word-detail .body .excerpts {
     margin-top: 4rem;
 }
 
-.word-detail .body .examples .example {
+.word-detail .body .excerpts .example {
     margin-top: 2rem;
     text-align: left;
 }
