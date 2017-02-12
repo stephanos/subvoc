@@ -3,9 +3,9 @@ import preact from 'preact';
 
 
 class WordPartOfSpeachHeader extends preact.Component {
-    render({ active, enabled, code, label, freq, onSelectPOS }) {
+    render({ active, enabled, label, freq, onSelectPOS }) {
         const classNames = `tab card ${enabled ? '' : 'empty'} ${active ? 'active' : ''}`;
-        return <div onClick={() => enabled ? onSelectPOS(code) : null} class={classNames} >
+        return <div onClick={() => enabled ? onSelectPOS(label) : null} class={classNames} >
             <div class="label">
                 { label }
             </div>

@@ -4,7 +4,7 @@ import preact from 'preact';
 
 class WordExcerptList extends preact.Component {
     render({ excerpts }) {
-        return <div> { (excerpts && excerpts.length > 0)
+        return <div> { excerpts.length > 0
             ? <div class="excerpts">
                 <h4>
                     Excerpt

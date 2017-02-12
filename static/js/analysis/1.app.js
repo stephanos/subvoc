@@ -28,22 +28,30 @@ var WordDefinitionList = function (_preact$Component) {
 
             return preact.h(
                 'div',
-                null,
+                { 'class': 'definitions' },
                 preact.h(
                     'h4',
                     null,
                     'Definition'
                 ),
-                preact.h(
-                    'ol',
+                definitions.length > 0 ? preact.h(
+                    'div',
                     null,
-                    $.map(definitions, function (entry) {
-                        return preact.h(
-                            'li',
-                            { 'class': 'explanation' },
-                            entry.definition
-                        );
-                    })
+                    preact.h(
+                        'ol',
+                        null,
+                        $.map(definitions, function (entry) {
+                            return preact.h(
+                                'li',
+                                { 'class': 'definition' },
+                                entry.definition
+                            );
+                        })
+                    )
+                ) : preact.h(
+                    'div',
+                    null,
+                    'None were found.'
                 )
             );
         }
@@ -78,7 +86,7 @@ var WordExcerptList = function (_preact$Component) {
                 'div',
                 null,
                 ' ',
-                excerpts && excerpts.length > 0 ? preact.h(
+                excerpts.length > 0 ? preact.h(
                     'div',
                     { 'class': 'excerpts' },
                     preact.h(
@@ -130,7 +138,6 @@ var WordPartOfSpeachHeader = function (_preact$Component) {
         value: function render(_ref) {
             var active = _ref.active,
                 enabled = _ref.enabled,
-                code = _ref.code,
                 label = _ref.label,
                 freq = _ref.freq,
                 onSelectPOS = _ref.onSelectPOS;
@@ -139,7 +146,7 @@ var WordPartOfSpeachHeader = function (_preact$Component) {
             return preact.h(
                 'div',
                 { onClick: function onClick() {
-                        return enabled ? onSelectPOS(code) : null;
+                        return enabled ? onSelectPOS(label) : null;
                     }, 'class': classNames },
                 preact.h(
                     'div',
@@ -170,30 +177,51 @@ function _possibleConstructorReturn$3(self, call) { if (!self) { throw new Refer
 
 function _inherits$3(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
+var PARTS_OF_SPEACH = ['noun', 'verb', 'adj', 'adv'];
+
+function getExcerpts(word, pos) {
+    return (word.byPOS[pos] || {}).excerpts || [];
+}
+
+function getFreq(word, pos) {
+    return (word.byPOS[pos] || {}).freq || 0;
+}
+
+function getDefinitions(lookup, pos) {
+    return lookup[pos] || [];
+}
+
+function hasDetails(word, lookup, pos) {
+    return getDefinitions(lookup, pos).length > 0 || getExcerpts(word, pos).length > 0;
+}
+
 var WordDetailBody = function (_preact$Component) {
     _inherits$3(WordDetailBody, _preact$Component);
 
-    function WordDetailBody() {
+    function WordDetailBody(_ref) {
+        var lookup = _ref.lookup,
+            selection = _ref.selection;
+
         _classCallCheck$3(this, WordDetailBody);
 
-        return _possibleConstructorReturn$3(this, (WordDetailBody.__proto__ || Object.getPrototypeOf(WordDetailBody)).apply(this, arguments));
+        var _this = _possibleConstructorReturn$3(this, (WordDetailBody.__proto__ || Object.getPrototypeOf(WordDetailBody)).call(this));
+
+        _this.state.selectedPOS = selection.POS || $.grep(PARTS_OF_SPEACH, function (pos) {
+            return hasDetails(selection.word, lookup, pos);
+        });
+        return _this;
     }
 
     _createClass$3(WordDetailBody, [{
         key: 'render',
-        value: function render(_ref) {
-            var lookup = _ref.lookup,
-                selection = _ref.selection,
-                onSelectPOS = _ref.onSelectPOS;
+        value: function render(_ref2) {
+            var _this2 = this;
 
-            var headers = [['noun', 'noun'], ['verb', 'verb'], ['adjective', 'adj'], ['adverb', 'adv']];
+            var lookup = _ref2.lookup,
+                selection = _ref2.selection,
+                onSelectPOS = _ref2.onSelectPOS;
 
-            var selectedPOS = selection.POS || $.grep(headers, function (h) {
-                return lookup[h[0]];
-            })[0][0];
-            var wordForPOS = selection.word.byPOS[selectedPOS];
-
-            console.log(selection.word);
+            console.log(selection.word, this.state);
 
             return preact.h(
                 'div',
@@ -201,25 +229,24 @@ var WordDetailBody = function (_preact$Component) {
                 preact.h(
                     'header',
                     { 'class': 'tab-group' },
-                    $.map(headers, function (header) {
+                    $.map(PARTS_OF_SPEACH, function (pos) {
                         return preact.h(WordPartOfSpeachHeader, {
-                            active: selectedPOS === header[0],
-                            enabled: lookup[header[0]],
-                            code: header[0],
-                            label: header[1],
-                            freq: (selection.word.byPOS[header[0]] || {}).freq,
+                            active: _this2.state.selectedPOS === pos,
+                            enabled: hasDetails(selection.word, lookup, pos),
+                            label: pos,
+                            freq: getFreq(selection.word, pos),
                             onSelectPOS: onSelectPOS });
                     })
                 ),
                 preact.h(
                     'section',
                     null,
-                    preact.h(WordExcerptList, { excerpts: (wordForPOS || {}).excerpts })
+                    preact.h(WordExcerptList, { excerpts: getExcerpts(selection.word, this.state.selectedPOS) })
                 ),
                 preact.h(
                     'section',
-                    { 'class': 'explanations' },
-                    preact.h(WordDefinitionList, { definitions: lookup[selectedPOS] })
+                    null,
+                    preact.h(WordDefinitionList, { definitions: getDefinitions(lookup, this.state.selectedPOS) })
                 )
             );
         }

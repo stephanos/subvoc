@@ -43,14 +43,15 @@
 .word-detail .body .excerpts .example {
     margin-top: 2rem;
     text-align: left;
+    font-style: italic;
 }
 
 
-.word-detail .body .explanations {
+.word-detail .body .definitions {
     margin-top: 4rem;
 }
 
-.word-detail .body .explanations .explanation {
+.word-detail .body .definitions .definition {
     margin-top: 2rem;
     text-align: left;
 }
