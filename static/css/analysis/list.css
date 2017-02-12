@@ -43,6 +43,10 @@
     cursor: pointer;
 }
 
+.word-list .word-item .count {
+    margin-left: 1rem;
+}
+
 .word-list .word-item .arrow {
     right: 1rem;
     top: 29%;

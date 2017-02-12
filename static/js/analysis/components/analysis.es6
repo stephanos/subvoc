@@ -60,8 +60,6 @@ class Analysis extends preact.Component {
     }
 
     render({ analysis }) {
-        console.log(this.state);
-
         const selectedWord = this.state.selection.word;
         return <div class={'analysis ' + (selectedWord ? 'detail' : 'list')}>
             <WordDetail

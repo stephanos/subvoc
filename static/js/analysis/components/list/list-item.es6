@@ -7,7 +7,7 @@ class WordListItem extends preact.Component {
         return <div class="card word-item" onClick={() => onSelectWord(word)}>
             <div class="label">
                 { word.token }
-                { word.freq > 1 ? <span> ({word.freq}x)</span> : <span></span> }
+                { word.freq > 1 ? <span class="count badge">{word.freq}</span> : <span></span> }
             </div>
             <div class="arrow">&gt;</div>
         </div>;

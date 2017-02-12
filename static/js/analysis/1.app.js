@@ -352,10 +352,8 @@ var WordListItem = function (_preact$Component) {
                     word.token,
                     word.freq > 1 ? preact.h(
                         'span',
-                        null,
-                        ' (',
-                        word.freq,
-                        'x)'
+                        { 'class': 'count badge' },
+                        word.freq
                     ) : preact.h('span', null)
                 ),
                 preact.h(
@@ -612,8 +610,6 @@ var Analysis = function (_preact$Component) {
             var _this3 = this;
 
             var analysis = _ref.analysis;
-
-            console.log(this.state);
 
             var selectedWord = this.state.selection.word;
             return preact.h(
