@@ -577,38 +577,49 @@ function _possibleConstructorReturn$1(self, call) { if (!self) { throw new Refer
 
 function _inherits$1(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
+function lookupWord(word) {
+    var _this = this;
+
+    $.getJSON({ url: '/api/words/' + word.token }).then(function (res) {
+        _this.setState(function (prevState) {
+            prevState.selection.word.lookup = res;
+        });
+    }).catch(function (err) {
+        console.error(err); // eslint-disable-line
+    });
+}
+
 var Analysis = function (_preact$Component) {
     _inherits$1(Analysis, _preact$Component);
 
-    function Analysis() {
+    function Analysis(_ref) {
+        var analysis = _ref.analysis;
+
         _classCallCheck$1(this, Analysis);
 
-        var _this = _possibleConstructorReturn$1(this, (Analysis.__proto__ || Object.getPrototypeOf(Analysis)).call(this));
+        var _this2 = _possibleConstructorReturn$1(this, (Analysis.__proto__ || Object.getPrototypeOf(Analysis)).call(this));
 
-        _this.state.selection = { difficulty: 3 };
-        return _this;
+        var selectedWord = undefined;
+        var wordMatch = $.grep(analysis.words, function (w) {
+            return w.token === window.location.hash.replace('#', '');
+        });
+        if (wordMatch.length > 0) {
+            selectedWord = wordMatch[0];
+            lookupWord.bind(_this2)(selectedWord);
+        }
+        _this2.state.selection = { difficulty: 3, word: selectedWord };
+        return _this2;
     }
 
     _createClass$1(Analysis, [{
         key: 'handleSelectWord',
         value: function handleSelectWord(word) {
-            var _this2 = this;
-
-            var token = word.token;
-            window.history.pushState(null, '' + token, window.location.pathname + '#' + token);
-
+            window.history.pushState(null, '' + word.token, window.location.pathname + '#' + word.token);
             this.setState(function (prevState) {
                 prevState.listScrollPos = $(window).scrollTop();
                 prevState.selection.word = word;
             });
-
-            $.getJSON({ url: '/api/words/' + token }).then(function (res) {
-                _this2.setState(function (prevState) {
-                    prevState.selection.word.lookup = res;
-                });
-            }).catch(function (err) {
-                console.error(err); // eslint-disable-line
-            });
+            lookupWord.bind(this)(word);
         }
     }, {
         key: 'handleSelectDifficulty',
@@ -652,15 +663,14 @@ var Analysis = function (_preact$Component) {
         }
     }, {
         key: 'render',
-        value: function render(_ref) {
+        value: function render(_ref2) {
             var _this3 = this;
 
-            var analysis = _ref.analysis;
+            var analysis = _ref2.analysis;
 
-            var selectedWord = this.state.selection.word;
             return preact.h(
                 'div',
-                { 'class': 'analysis ' + (selectedWord ? 'detail' : 'list') },
+                { 'class': 'analysis ' + (this.state.selection.word ? 'detail' : 'list') },
                 preact.h(WordDetail, {
                     selection: this.state.selection,
                     onSelectPOS: function onSelectPOS(p) {

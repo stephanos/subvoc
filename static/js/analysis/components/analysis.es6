@@ -5,32 +5,41 @@ import { WordDetail } from './detail/detail.es6';
 import { WordList } from './list/list.es6';
 
 
+function lookupWord(word) {
+    $.getJSON({url: `/api/words/${word.token}`})
+        .then((res) => {
+            this.setState((prevState) => {
+                prevState.selection.word.lookup = res;
+            });
+        })
+        .catch((err) => {
+            console.error(err); // eslint-disable-line
+        });
+}
+
+
 class Analysis extends preact.Component {
 
-    constructor() {
+    constructor({ analysis }) {
         super();
-        this.state.selection = { difficulty: 3 };
+
+        let selectedWord = undefined;
+        const wordMatch = $.grep(analysis.words, (w) => w.token === window.location.hash.replace('#', ''));
+        if (wordMatch.length > 0) {
+            selectedWord = wordMatch[0];
+            lookupWord.bind(this)(selectedWord);
+        }
+        this.state.selection = { difficulty: 3, word: selectedWord };
     }
 
 
     handleSelectWord(word) {
-        const token = word.token;
-        window.history.pushState(null, `${token}`, window.location.pathname + '#' + token);
-
+        window.history.pushState(null, `${word.token}`, window.location.pathname + '#' + word.token);
         this.setState((prevState) => {
             prevState.listScrollPos = $(window).scrollTop();
             prevState.selection.word = word;
         });
-
-        $.getJSON({url: `/api/words/${token}`})
-            .then((res) => {
-                this.setState((prevState) => {
-                    prevState.selection.word.lookup = res;
-                });
-            })
-            .catch((err) => {
-                console.error(err); // eslint-disable-line
-            });
+        lookupWord.bind(this)(word);
     }
 
     handleSelectDifficulty(difficulty) {
@@ -70,8 +79,7 @@ class Analysis extends preact.Component {
 
 
     render({ analysis }) {
-        const selectedWord = this.state.selection.word;
-        return <div class={'analysis ' + (selectedWord ? 'detail' : 'list')}>
+        return <div class={'analysis ' + (this.state.selection.word ? 'detail' : 'list')}>
             <WordDetail
                 selection={this.state.selection}
                 onSelectPOS={(p) => this.handleSelectPOS(p)} />
