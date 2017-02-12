@@ -29,18 +29,15 @@ function hasDetails(word, pos) {
 
 class WordDetailBody extends preact.Component {
 
-    constructor({ selection }) {
-        super();
-        this.state.selectedPOS = selection.POS ||
-            $.grep(PARTS_OF_SPEACH, (pos) => hasDetails(selection.word, pos));
-    }
-
     render({ selection, onSelectPOS }) {
+        const selectedPOS = selection.POS ||
+            $.grep(PARTS_OF_SPEACH, (pos) => hasDetails(selection.word, pos))[0];
+
         return <div>
             <header class="tab-group">
                 { $.map(PARTS_OF_SPEACH, (pos) => {
                     return <WordPartOfSpeachHeader
-                        active={this.state.selectedPOS === pos}
+                        active={selectedPOS === pos}
                         enabled={hasDetails(selection.word, pos)}
                         label={pos}
                         freq={getFreq(selection.word, pos)}
@@ -49,11 +46,11 @@ class WordDetailBody extends preact.Component {
             </header>
 
             <section>
-                <WordExcerptList excerpts={getExcerpts(selection.word, this.state.selectedPOS)} />
+                <WordExcerptList excerpts={getExcerpts(selection.word, selectedPOS)} />
             </section>
 
             <section>
-                <WordDefinitionList definitions={getDefinitions(selection.word, this.state.selectedPOS)} />
+                <WordDefinitionList definitions={getDefinitions(selection.word, selectedPOS)} />
             </section>
         </div>;
     }

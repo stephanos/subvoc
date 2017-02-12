@@ -198,26 +198,21 @@ function hasDetails(word, pos) {
 var WordDetailBody = function (_preact$Component) {
     _inherits$3(WordDetailBody, _preact$Component);
 
-    function WordDetailBody(_ref) {
-        var selection = _ref.selection;
-
+    function WordDetailBody() {
         _classCallCheck$3(this, WordDetailBody);
 
-        var _this = _possibleConstructorReturn$3(this, (WordDetailBody.__proto__ || Object.getPrototypeOf(WordDetailBody)).call(this));
-
-        _this.state.selectedPOS = selection.POS || $.grep(PARTS_OF_SPEACH, function (pos) {
-            return hasDetails(selection.word, pos);
-        });
-        return _this;
+        return _possibleConstructorReturn$3(this, (WordDetailBody.__proto__ || Object.getPrototypeOf(WordDetailBody)).apply(this, arguments));
     }
 
     _createClass$3(WordDetailBody, [{
         key: 'render',
-        value: function render(_ref2) {
-            var _this2 = this;
+        value: function render(_ref) {
+            var selection = _ref.selection,
+                onSelectPOS = _ref.onSelectPOS;
 
-            var selection = _ref2.selection,
-                onSelectPOS = _ref2.onSelectPOS;
+            var selectedPOS = selection.POS || $.grep(PARTS_OF_SPEACH, function (pos) {
+                return hasDetails(selection.word, pos);
+            })[0];
 
             return preact.h(
                 'div',
@@ -227,7 +222,7 @@ var WordDetailBody = function (_preact$Component) {
                     { 'class': 'tab-group' },
                     $.map(PARTS_OF_SPEACH, function (pos) {
                         return preact.h(WordPartOfSpeachHeader, {
-                            active: _this2.state.selectedPOS === pos,
+                            active: selectedPOS === pos,
                             enabled: hasDetails(selection.word, pos),
                             label: pos,
                             freq: getFreq(selection.word, pos),
@@ -237,12 +232,12 @@ var WordDetailBody = function (_preact$Component) {
                 preact.h(
                     'section',
                     null,
-                    preact.h(WordExcerptList, { excerpts: getExcerpts(selection.word, this.state.selectedPOS) })
+                    preact.h(WordExcerptList, { excerpts: getExcerpts(selection.word, selectedPOS) })
                 ),
                 preact.h(
                     'section',
                     null,
-                    preact.h(WordDefinitionList, { definitions: getDefinitions(selection.word, this.state.selectedPOS) })
+                    preact.h(WordDefinitionList, { definitions: getDefinitions(selection.word, selectedPOS) })
                 )
             );
         }
