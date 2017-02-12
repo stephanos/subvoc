@@ -5,6 +5,9 @@ import preact from 'preact';
 class WordExcerptList extends preact.Component {
     render({ excerpts }) {
         return <div>
+            <h4>
+                Excerpt
+            </h4>
             { excerpts
                 ? $.map(excerpts, (excerpt) =>
                     <div class="example">

@@ -35,6 +35,7 @@
     text-align: left;
     position: relative;
     cursor: pointer;
+    border-color: rgba(255,255,255,0.7);
 }
 
 .word-list .word-item .count {

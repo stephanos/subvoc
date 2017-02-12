@@ -31,10 +31,11 @@ class WordDetailBody extends preact.Component {
                         onSelectPOS={onSelectPOS} />
                 )}
             </header>
+
             <section class="examples">
                 <WordExcerptList excerpts={excerpts} />
             </section>
-            <hr/>
+
             <section class="explanations">
                 <WordDefinitionList definitions={lookup[selectedPOS]} />
             </section>

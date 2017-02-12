@@ -29,13 +29,22 @@ var WordDefinitionList = function (_preact$Component) {
             return preact.h(
                 'div',
                 null,
-                $.map(definitions, function (entry) {
-                    return preact.h(
-                        'div',
-                        { 'class': 'explanation' },
-                        entry.definition
-                    );
-                })
+                preact.h(
+                    'h4',
+                    null,
+                    'Definition'
+                ),
+                preact.h(
+                    'ol',
+                    null,
+                    $.map(definitions, function (entry) {
+                        return preact.h(
+                            'li',
+                            { 'class': 'explanation' },
+                            entry.definition
+                        );
+                    })
+                )
             );
         }
     }]);
@@ -122,6 +131,11 @@ var WordExcerptList = function (_preact$Component) {
             return preact.h(
                 'div',
                 null,
+                preact.h(
+                    'h4',
+                    null,
+                    'Excerpt'
+                ),
                 excerpts ? $.map(excerpts, function (excerpt) {
                     return preact.h(
                         'div',
@@ -196,7 +210,6 @@ var WordDetailBody = function (_preact$Component) {
                     { 'class': 'examples' },
                     preact.h(WordExcerptList, { excerpts: excerpts })
                 ),
-                preact.h('hr', null),
                 preact.h(
                     'section',
                     { 'class': 'explanations' },
@@ -270,7 +283,7 @@ var WordDetail = function (_preact$Component) {
                     'div',
                     { 'class': 'word-detail' },
                     preact.h(
-                        'h3',
+                        'h2',
                         { 'class': 'head' },
                         preact.h(
                             'span',

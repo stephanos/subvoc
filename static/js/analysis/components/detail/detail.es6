@@ -10,9 +10,9 @@ class WordDetail extends preact.Component {
     render({ lookup, selection, onSelectPOS }) {
         if (selection.word) {
             return <div class="word-detail">
-                <h3 class="head">
+                <h2 class="head">
                     <span class="label">{selection.word.token}</span>
-                </h3>
+                </h2>
 
                 <section class="body">
                     { !lookup

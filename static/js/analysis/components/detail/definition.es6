@@ -5,11 +5,16 @@ import preact from 'preact';
 class WordDefinitionList extends preact.Component {
     render({ definitions }) {
         return <div>
-            { $.map(definitions, (entry) =>
-                <div class="explanation">
-                    { entry.definition }
-                </div>
-            ) }
+            <h4>
+                Definition
+            </h4>
+            <ol>
+                { $.map(definitions, (entry) =>
+                    <li class="explanation">
+                        { entry.definition }
+                    </li>
+                ) }
+            </ol>
         </div>;
     }
 }

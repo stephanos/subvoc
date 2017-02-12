@@ -2,10 +2,12 @@
     display: none;
 }
 
+
 .word-detail .head {
     position: relative;
     margin-top: 3rem;
 }
+
 
 .word-detail .body {
     margin-top: 2.5rem;
@@ -31,12 +33,21 @@
 .word-detail .body .tab-group .tab.empty {
     cursor: default;
     color: #aaa;
-    border: none;
+}
+
+
+.word-detail .body .examples {
+    margin-top: 4rem;
 }
 
 .word-detail .body .examples .example {
     margin-top: 2rem;
     text-align: left;
+}
+
+
+.word-detail .body .explanations {
+    margin-top: 4rem;
 }
 
 .word-detail .body .explanations .explanation {
@@ -45,17 +56,17 @@
 }
 
 
-.analysis.detail .attribution {
+.word-detail .attribution {
     margin-top: 3rem;
     font-size: 0.5rem;
 }
 
-.analysis.detail .attribution .attribution_dictionary {
+.word-detail .attribution .attribution_dictionary {
     float: left;
     padding: 0.4rem;
 }
 
-.analysis.detail .attribution .attribution_api {
+.word-detail .attribution .attribution_api {
     float: right;
     padding: 0 0.4rem;
 }
