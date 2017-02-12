@@ -15,11 +15,11 @@ class WordList extends preact.Component {
             $.grep(sortedWords, (w) => w.difficulty.level === selection.difficulty)
 
         return <div class="word-list">
-            <div class="media">
+            <h2 class="media">
                 <span class="title">
                     Words in '{ analysis.media.title }'
                 </span>
-            </div>
+            </h2>
 
             <DifficultySelector
                 selected={selection.difficulty}

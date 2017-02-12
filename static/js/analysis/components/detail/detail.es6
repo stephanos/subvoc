@@ -9,11 +9,12 @@ import { Spinner } from '../util/spinner.es6';
 class WordDetail extends preact.Component {
     render({ lookup, selection, onSelectPOS }) {
         if (selection.word) {
-            return <div>
-                <div class="card word-detail">
-                    <header class="head">
-                        <span class="label">{selection.word.token}</span>
-                    </header>
+            return <div class="word-detail">
+                <h3 class="head">
+                    <span class="label">{selection.word.token}</span>
+                </h3>
+
+                <div class="card">
                     <section class="body">
                         { !lookup
                             ? <Spinner />

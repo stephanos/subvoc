@@ -266,19 +266,19 @@ var WordDetail = function (_preact$Component) {
             if (selection.word) {
                 return preact.h(
                     'div',
-                    null,
+                    { 'class': 'word-detail' },
+                    preact.h(
+                        'h3',
+                        { 'class': 'head' },
+                        preact.h(
+                            'span',
+                            { 'class': 'label' },
+                            selection.word.token
+                        )
+                    ),
                     preact.h(
                         'div',
-                        { 'class': 'card word-detail' },
-                        preact.h(
-                            'header',
-                            { 'class': 'head' },
-                            preact.h(
-                                'span',
-                                { 'class': 'label' },
-                                selection.word.token
-                            )
-                        ),
+                        { 'class': 'card' },
                         preact.h(
                             'section',
                             { 'class': 'body' },
@@ -504,7 +504,7 @@ var WordList = function (_preact$Component) {
                 'div',
                 { 'class': 'word-list' },
                 preact.h(
-                    'div',
+                    'h2',
                     { 'class': 'media' },
                     preact.h(
                         'span',

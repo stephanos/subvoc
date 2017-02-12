@@ -4,6 +4,7 @@
 
 .word-detail .head {
     position: relative;
+    margin-top: 3rem;
 }
 
 .word-detail .body {
