@@ -67,6 +67,7 @@ var WordDetailSelector = function (_preact$Component) {
                 enabled = _ref.enabled,
                 code = _ref.code,
                 label = _ref.label,
+                freq = _ref.freq,
                 onSelectPOS = _ref.onSelectPOS;
 
             var classNames = 'tab ' + (enabled ? '' : 'empty') + ' ' + (active ? 'active' : '');
@@ -78,7 +79,14 @@ var WordDetailSelector = function (_preact$Component) {
                 preact.h(
                     'span',
                     null,
-                    label
+                    label,
+                    freq ? preact.h(
+                        'span',
+                        null,
+                        ' (',
+                        freq,
+                        ')'
+                    ) : preact.h('span', null)
                 )
             );
         }
@@ -161,7 +169,9 @@ var WordDetailBody = function (_preact$Component) {
             var selectedPOS = selection.POS || $.grep(headers, function (h) {
                 return lookup[h[0]];
             })[0][0];
-            var excerpts = (selection.word.byPOS[selectedPOS] || {}).excerpts;
+
+            var wordWithPOS = selection.word.byPOS[selectedPOS];
+            var excerpts = (wordWithPOS || {}).excerpts;
 
             return preact.h(
                 'div',
@@ -175,6 +185,7 @@ var WordDetailBody = function (_preact$Component) {
                             enabled: lookup[header[0]],
                             code: header[0],
                             label: header[1],
+                            freq: (selection.word.byPOS[header[0]] || {}).freq,
                             onSelectPOS: onSelectPOS });
                     })
                 ),
@@ -359,6 +370,103 @@ var WordListItem = function (_preact$Component) {
     return WordListItem;
 }(preact.Component);
 
+var _createClass$10 = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+function _classCallCheck$10(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn$10(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits$10(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var DifficultyGroup = function (_preact$Component) {
+    _inherits$10(DifficultyGroup, _preact$Component);
+
+    function DifficultyGroup() {
+        _classCallCheck$10(this, DifficultyGroup);
+
+        return _possibleConstructorReturn$10(this, (DifficultyGroup.__proto__ || Object.getPrototypeOf(DifficultyGroup)).apply(this, arguments));
+    }
+
+    _createClass$10(DifficultyGroup, [{
+        key: 'render',
+        value: function render(_ref) {
+            var level = _ref.level,
+                label = _ref.label,
+                count = _ref.count,
+                active = _ref.active,
+                onSelect = _ref.onSelect;
+
+            var classNames = 'group card ' + (active ? 'active' : '');
+            return preact.h(
+                'div',
+                { 'class': classNames, onclick: function onclick() {
+                        return onSelect(level);
+                    } },
+                preact.h(
+                    'div',
+                    { 'class': 'label' },
+                    label.toLowerCase()
+                ),
+                preact.h(
+                    'div',
+                    { 'class': 'count badge' },
+                    count
+                )
+            );
+        }
+    }]);
+
+    return DifficultyGroup;
+}(preact.Component);
+
+var DifficultySelector = function (_preact$Component2) {
+    _inherits$10(DifficultySelector, _preact$Component2);
+
+    function DifficultySelector(props) {
+        _classCallCheck$10(this, DifficultySelector);
+
+        var _this2 = _possibleConstructorReturn$10(this, (DifficultySelector.__proto__ || Object.getPrototypeOf(DifficultySelector)).call(this, props));
+
+        var groups = {};
+        $(props.words).each(function (idx, word) {
+            groups[word.difficulty.label] = {
+                level: word.difficulty.level,
+                count: (groups[word.difficulty.label] || { count: 0 }).count + 1
+            };
+        });
+
+        _this2.state = { groups: groups };
+        return _this2;
+    }
+
+    _createClass$10(DifficultySelector, [{
+        key: 'render',
+        value: function render(_ref2) {
+            var _this3 = this;
+
+            var selected = _ref2.selected,
+                onSelect = _ref2.onSelect,
+                words = _ref2.words;
+
+            return preact.h(
+                'div',
+                { 'class': 'difficulty' },
+                $.map(Object.keys(this.state.groups), function (label) {
+                    var group = _this3.state.groups[label];
+                    return preact.h(DifficultyGroup, {
+                        level: group.level,
+                        count: group.count,
+                        active: selected === group.level,
+                        label: label.toLowerCase(),
+                        onSelect: onSelect });
+                })
+            );
+        }
+    }]);
+
+    return DifficultySelector;
+}(preact.Component);
+
 var _createClass$8 = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
 function _classCallCheck$8(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -380,11 +488,18 @@ var WordList = function (_preact$Component) {
         key: 'render',
         value: function render(_ref) {
             var analysis = _ref.analysis,
-                onSelectWord = _ref.onSelectWord;
+                selection = _ref.selection,
+                onSelectWord = _ref.onSelectWord,
+                onSelectDifficulty = _ref.onSelectDifficulty;
 
             var sortedWords = analysis.words.sort(function (a, b) {
                 return a.difficulty.value - b.difficulty.value;
             });
+
+            var wordsWithDifficulty = $.grep(sortedWords, function (w) {
+                return w.difficulty.level === selection.difficulty;
+            });
+
             return preact.h(
                 'div',
                 { 'class': 'word-list' },
@@ -394,13 +509,19 @@ var WordList = function (_preact$Component) {
                     preact.h(
                         'span',
                         { 'class': 'title' },
-                        analysis.media.title
+                        'Words in \'',
+                        analysis.media.title,
+                        '\''
                     )
                 ),
+                preact.h(DifficultySelector, {
+                    selected: selection.difficulty,
+                    onSelect: onSelectDifficulty,
+                    words: sortedWords }),
                 preact.h(
                     'div',
-                    null,
-                    $.map(sortedWords, function (item) {
+                    { 'class': 'list' },
+                    $.map(wordsWithDifficulty, function (item) {
                         return preact.h(WordListItem, { word: item, onSelectWord: onSelectWord });
                     })
                 )
@@ -427,7 +548,7 @@ var Analysis = function (_preact$Component) {
 
         var _this = _possibleConstructorReturn$1(this, (Analysis.__proto__ || Object.getPrototypeOf(Analysis)).call(this));
 
-        _this.state.selection = {};
+        _this.state.selection = { difficulty: 3 };
         _this.state.wordLookupByToken = {};
         return _this;
     }
@@ -440,7 +561,10 @@ var Analysis = function (_preact$Component) {
             var token = word.token;
             window.history.pushState(null, '' + token, window.location.pathname + '#' + token);
 
-            this.setState({ selection: { word: word }, originScrollPos: $(window).scrollTop() });
+            this.setState(function (prevState) {
+                prevState.listScrollPos = $(window).scrollTop();
+                prevState.selection.word = word;
+            });
 
             $.getJSON({ url: '/api/words/' + token }).then(function (res) {
                 _this2.setState(function (prevState) {
@@ -448,6 +572,13 @@ var Analysis = function (_preact$Component) {
                 });
             }).catch(function (err) {
                 console.error(err); // eslint-disable-line
+            });
+        }
+    }, {
+        key: 'handleSelectDifficulty',
+        value: function handleSelectDifficulty(difficulty) {
+            this.setState(function (prevState) {
+                prevState.selection.difficulty = difficulty;
             });
         }
     }, {
@@ -460,7 +591,10 @@ var Analysis = function (_preact$Component) {
     }, {
         key: 'handleUnselectWord',
         value: function handleUnselectWord() {
-            this.setState({ selection: { POS: undefined, word: undefined } });
+            this.setState(function (prevState) {
+                delete prevState.selection.POS;
+                delete prevState.selection.word;
+            });
         }
     }, {
         key: 'onBackButtonEvent',
@@ -479,6 +613,8 @@ var Analysis = function (_preact$Component) {
 
             var analysis = _ref.analysis;
 
+            console.log(this.state);
+
             var selectedWord = this.state.selection.word;
             return preact.h(
                 'div',
@@ -491,6 +627,10 @@ var Analysis = function (_preact$Component) {
                     } }),
                 preact.h(WordList, {
                     analysis: analysis,
+                    selection: this.state.selection,
+                    onSelectDifficulty: function onSelectDifficulty(d) {
+                        return _this3.handleSelectDifficulty(d);
+                    },
                     onSelectWord: function onSelectWord(w) {
                         return _this3.handleSelectWord(w);
                     } })
@@ -500,8 +640,9 @@ var Analysis = function (_preact$Component) {
         key: 'componentDidUpdate',
         value: function componentDidUpdate(prevProps, prevState) {
             var selectedWord = this.state.selection.word;
-            if (!selectedWord) {
-                $(window).scrollTop(this.state.originScrollPos);
+            if (!selectedWord && this.state.listScrollPos) {
+                $(window).scrollTop(this.state.listScrollPos);
+                delete this.state.listScrollPos;
             }
         }
     }]);

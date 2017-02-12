@@ -8,7 +8,7 @@ import { WordList } from './list/list.es6';
 class Analysis extends preact.Component {
     constructor() {
         super();
-        this.state.selection = {};
+        this.state.selection = { difficulty: 3 };
         this.state.wordLookupByToken = {};
     }
 
@@ -16,7 +16,10 @@ class Analysis extends preact.Component {
         const token = word.token;
         window.history.pushState(null, `${token}`, window.location.pathname + '#' + token);
 
-        this.setState({ selection: { word }, originScrollPos: $(window).scrollTop() });
+        this.setState((prevState) => {
+            prevState.listScrollPos = $(window).scrollTop();
+            prevState.selection.word = word;
+        });
 
         $.getJSON({url: `/api/words/${token}`})
             .then((res) => {
@@ -29,6 +32,12 @@ class Analysis extends preact.Component {
             });
     }
 
+    handleSelectDifficulty(difficulty) {
+        this.setState((prevState) => {
+            prevState.selection.difficulty = difficulty;
+        });
+    }
+
     handleSelectPOS(POS) {
         this.setState((prevState) => {
             prevState.selection.POS = POS;
@@ -36,7 +45,10 @@ class Analysis extends preact.Component {
     }
 
     handleUnselectWord() {
-        this.setState({ selection: { POS: undefined, word: undefined } });
+        this.setState((prevState) => {
+            delete prevState.selection.POS;
+            delete prevState.selection.word;
+        });
     }
 
     onBackButtonEvent(evt) {
@@ -48,6 +60,8 @@ class Analysis extends preact.Component {
     }
 
     render({ analysis }) {
+        console.log(this.state);
+
         const selectedWord = this.state.selection.word;
         return <div class={'analysis ' + (selectedWord ? 'detail' : 'list')}>
             <WordDetail
@@ -56,14 +70,17 @@ class Analysis extends preact.Component {
                 onSelectPOS={(p) => this.handleSelectPOS(p)} />
             <WordList
                 analysis={analysis}
+                selection={this.state.selection}
+                onSelectDifficulty={(d) => this.handleSelectDifficulty(d)}
                 onSelectWord={(w) => this.handleSelectWord(w)} />
         </div>;
     }
 
     componentDidUpdate(prevProps, prevState) {
         const selectedWord = this.state.selection.word;
-        if (!selectedWord) {
-            $(window).scrollTop(this.state.originScrollPos);
+        if (!selectedWord && this.state.listScrollPos) {
+            $(window).scrollTop(this.state.listScrollPos);
+            delete this.state.listScrollPos;
         }
     }
 }

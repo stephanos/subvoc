@@ -42,7 +42,7 @@ class WordIgnoreType(Enum):
 class WordDifficulty(Enum):
     BASIC = 0
     EASY = 1
-    MEDIUM = 2
+    MED = 2
     HARD = 3
 
 
@@ -108,7 +108,7 @@ def get_difficulty(word, freq):
     if freq <= 5:
         return WordDifficulty.HARD
     elif freq <= 50:
-        return WordDifficulty.MEDIUM
+        return WordDifficulty.MED
     elif freq <= 500:
         return WordDifficulty.EASY
     return WordDifficulty.BASIC

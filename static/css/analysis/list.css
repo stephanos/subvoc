@@ -1,9 +1,38 @@
-.media {
-    margin-top: 0.5rem;
-}
-
 .word-list {
     display: none;
+}
+
+.word-list .media {
+    margin-top: 2em;
+    font-size: 1.5em;
+    font-weight: bold;
+}
+
+.word-list .difficulty {
+    margin: 3rem 0;
+}
+
+.word-list .difficulty .group {
+    margin: 1rem 1rem 0 1rem;
+    display: inline-block;
+    cursor: pointer;
+    width: 7rem;
+    height: 7rem;
+    text-align: center;
+    border-color: rgba(255, 255, 255, 0.3);
+}
+
+.word-list .difficulty .group.active {
+    font-weight: bold;
+    border-color: #fff;
+}
+
+.word-list .difficulty .label {
+    text-transform: capitalize;
+}
+
+.word-list .difficulty .group .count {
+    display: inline-block;
 }
 
 .word-list .word-item {

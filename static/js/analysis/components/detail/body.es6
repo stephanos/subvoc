@@ -15,7 +15,9 @@ class WordDetailBody extends preact.Component {
 
         const selectedPOS = selection.POS ||
             $.grep(headers, (h) => lookup[h[0]])[0][0];
-        const excerpts = (selection.word.byPOS[selectedPOS] || {}).excerpts;
+
+        const wordWithPOS = selection.word.byPOS[selectedPOS];
+        const excerpts = (wordWithPOS || {}).excerpts;
 
         return <div>
             <header class="tab-group">
@@ -25,6 +27,7 @@ class WordDetailBody extends preact.Component {
                         enabled={lookup[header[0]]}
                         code={header[0]}
                         label={header[1]}
+                        freq={(selection.word.byPOS[header[0]] || {}).freq}
                         onSelectPOS={onSelectPOS} />
                 )}
             </header>

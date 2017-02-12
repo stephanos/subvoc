@@ -10,12 +10,9 @@
     margin-top: 2.5rem;
 }
 
-.word-detail .body .tab-group {
-}
-
 .word-detail .body .tab-group .tab {
     display: inline;
-    padding: 0 2rem;
+    padding: 0 1.5rem;
     cursor: pointer;
 }
 

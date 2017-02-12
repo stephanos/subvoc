@@ -2,9 +2,10 @@
     padding: 0 1rem;
 }
 
-
 .error {
     margin-top: 5rem;
+    font-size: 2rem;
+    line-height: 5rem;
 }
 
 .analysis {
@@ -17,6 +18,20 @@
 
 .analysis.detail .word-detail {
     display: block;
+}
+
+.badge {
+    display: inline-block;
+    min-width: 10px;
+    padding: 3px 7px;
+    font-size: 12px;
+    line-height: 1;
+    color: #fff;
+    text-align: center;
+    white-space: nowrap;
+    vertical-align: middle;
+    background-color: #9b4dca;
+    border-radius: 10px;
 }
 
 .card {

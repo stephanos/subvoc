@@ -23,10 +23,10 @@ def analysis_api(subtitle_api, id):
     subtitle, analysis = analyse(subtitle_api, id)
 
     def excerpt_to_dict(excerpts):
-        return ({
+        return [{
             'token': e.token,
             'sentences': e.sentences,
-        } for e in excerpts)
+        } for e in excerpts]
 
     def word_to_dict(token):
         result = {}
@@ -54,8 +54,10 @@ def analysis_api(subtitle_api, id):
         'media': {
             'title': subtitle.media.title,
         },
-        'words': (token_to_dict(token) for token in analysis.tokens
-                  if token in analysis.token_with_difficulty)
-    }, cls=AnalysisEncoder, iterable_as_array=True)
+        'words': [token_to_dict(token) for token in analysis.tokens
+                  if token in analysis.token_with_difficulty]
+    }, cls=AnalysisEncoder)
 
-    return Response(response=data, status=200, mimetype='application/json')
+    return Response(status=200,
+                    response=data,
+                    mimetype='application/json')
