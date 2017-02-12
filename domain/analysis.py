@@ -105,11 +105,11 @@ def is_known(word):
 
 
 def get_difficulty(word, freq):
-    if freq <= 5:
+    if freq <= 1000:
         return WordDifficulty.HARD
-    elif freq <= 50:
+    elif freq <= 5000:
         return WordDifficulty.MED
-    elif freq <= 500:
+    elif freq <= 10000:
         return WordDifficulty.EASY
     return WordDifficulty.BASIC
 
