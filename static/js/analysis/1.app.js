@@ -541,9 +541,7 @@ var WordList = function (_preact$Component) {
                     preact.h(
                         'span',
                         { 'class': 'title' },
-                        '\'',
-                        analysis.media.title,
-                        '\''
+                        analysis.media.title
                     )
                 ),
                 preact.h(

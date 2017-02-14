@@ -17,7 +17,7 @@ class WordList extends preact.Component {
         return <div class="word-list">
             <h2 class="media">
                 <span class="title">
-                    '{ analysis.media.title }'
+                    { analysis.media.title }
                 </span>
             </h2>
             <div>
