@@ -211,7 +211,7 @@ var WordDetailBody = function (_preact$Component) {
                 onSelectPOS = _ref.onSelectPOS;
 
             var selectedPOS = selection.POS || $.grep(PARTS_OF_SPEACH, function (pos) {
-                return hasDetails(selection.word, pos);
+                return getExcerpts(selection.word, pos).length > 0;
             })[0];
 
             return preact.h(

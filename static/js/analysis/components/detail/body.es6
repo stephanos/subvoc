@@ -31,7 +31,7 @@ class WordDetailBody extends preact.Component {
 
     render({ selection, onSelectPOS }) {
         const selectedPOS = selection.POS ||
-            $.grep(PARTS_OF_SPEACH, (pos) => hasDetails(selection.word, pos))[0];
+            $.grep(PARTS_OF_SPEACH, (pos) => getExcerpts(selection.word, pos).length > 0)[0];
 
         return <div>
             <header class="tab-group">
