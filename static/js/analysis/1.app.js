@@ -541,10 +541,20 @@ var WordList = function (_preact$Component) {
                     preact.h(
                         'span',
                         { 'class': 'title' },
-                        'Words in \'',
+                        '\'',
                         analysis.media.title,
                         '\''
                     )
+                ),
+                preact.h(
+                    'div',
+                    null,
+                    preact.h(
+                        'span',
+                        { 'class': 'badge' },
+                        analysis.words.length
+                    ),
+                    ' words'
                 ),
                 preact.h(DifficultySelector, {
                     selected: selection.difficulty,

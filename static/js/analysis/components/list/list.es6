@@ -17,9 +17,12 @@ class WordList extends preact.Component {
         return <div class="word-list">
             <h2 class="media">
                 <span class="title">
-                    Words in '{ analysis.media.title }'
+                    '{ analysis.media.title }'
                 </span>
             </h2>
+            <div>
+                <span class="badge">{ analysis.words.length }</span> words
+            </div>
 
             <DifficultySelector
                 selected={selection.difficulty}
