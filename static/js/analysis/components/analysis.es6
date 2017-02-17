@@ -29,7 +29,7 @@ class Analysis extends preact.Component {
             selectedWord = wordMatch[0];
             lookupWord.bind(this)(selectedWord);
         }
-        this.state.selection = { difficulty: 3, word: selectedWord };
+        this.state.selection = { difficulty: 3, POS: undefined, word: selectedWord };
     }
 
 
@@ -79,15 +79,17 @@ class Analysis extends preact.Component {
 
 
     render({ analysis }) {
-        return <div class={'analysis ' + (this.state.selection.word ? 'detail' : 'list')}>
-            <WordDetail
-                selection={this.state.selection}
-                onSelectPOS={(p) => this.handleSelectPOS(p)} />
-            <WordList
-                analysis={analysis}
-                selection={this.state.selection}
-                onSelectDifficulty={(d) => this.handleSelectDifficulty(d)}
-                onSelectWord={(w) => this.handleSelectWord(w)} />
+        return <div class='analysis'>
+            { this.state.selection.word
+                ? <WordDetail
+                    selection={this.state.selection}
+                    onSelectPOS={(p) => this.handleSelectPOS(p)} />
+                : <WordList
+                    analysis={analysis}
+                    selection={this.state.selection}
+                    onSelectDifficulty={(d) => this.handleSelectDifficulty(d)}
+                    onSelectWord={(w) => this.handleSelectWord(w)} />
+            }
         </div>;
     }
 }

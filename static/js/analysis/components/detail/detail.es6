@@ -7,6 +7,7 @@ import { Spinner } from '../util/spinner.es6';
 
 
 class WordDetail extends preact.Component {
+
     render({ selection, onSelectPOS }) {
         if (selection.word) {
             return <div class="word-detail">

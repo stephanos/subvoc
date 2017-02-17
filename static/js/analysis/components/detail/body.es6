@@ -27,33 +27,30 @@ function hasDetails(word, pos) {
 }
 
 
-class WordDetailBody extends preact.Component {
+const WordDetailBody = ({ selection, onSelectPOS }) => {
+    const selectedPOS = selection.POS ||
+        $.grep(PARTS_OF_SPEACH, (pos) => getExcerpts(selection.word, pos).length > 0)[0];
 
-    render({ selection, onSelectPOS }) {
-        const selectedPOS = selection.POS ||
-            $.grep(PARTS_OF_SPEACH, (pos) => getExcerpts(selection.word, pos).length > 0)[0];
+    return <div>
+        <header class="tab-group">
+            { $.map(PARTS_OF_SPEACH, (pos) => {
+                return <WordPartOfSpeachHeader
+                    active={selectedPOS === pos}
+                    enabled={hasDetails(selection.word, pos)}
+                    label={pos}
+                    freq={getFreq(selection.word, pos)}
+                    onSelectPOS={onSelectPOS} />
+            } ) }
+        </header>
 
-        return <div>
-            <header class="tab-group">
-                { $.map(PARTS_OF_SPEACH, (pos) => {
-                    return <WordPartOfSpeachHeader
-                        active={selectedPOS === pos}
-                        enabled={hasDetails(selection.word, pos)}
-                        label={pos}
-                        freq={getFreq(selection.word, pos)}
-                        onSelectPOS={onSelectPOS} />
-                } ) }
-            </header>
+        <section>
+            <WordExcerptList excerpts={getExcerpts(selection.word, selectedPOS)} />
+        </section>
 
-            <section>
-                <WordExcerptList excerpts={getExcerpts(selection.word, selectedPOS)} />
-            </section>
-
-            <section>
-                <WordDefinitionList definitions={getDefinitions(selection.word, selectedPOS)} />
-            </section>
-        </div>;
-    }
+        <section>
+            <WordDefinitionList definitions={getDefinitions(selection.word, selectedPOS)} />
+        </section>
+    </div>;
 }
 
 

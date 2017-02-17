@@ -2,22 +2,14 @@ import $ from 'jquery';
 import preact from 'preact';
 
 import { Analysis } from './analysis.es6';
+import { Error } from './error.es6';
 
 
 class Root extends preact.Component {
-    render(props) {
-        if (props.analysis) {
-            return <Analysis analysis={props.analysis} />;
-        } else {
-            return <div class="error">
-                <div>
-                    Unable to analyse movie :(
-                </div>
-                <div>
-                    Sorry!
-                </div>
-            </div>;
-        }
+    render({ analysis }) {
+        return analysis
+            ? <Analysis analysis={analysis} />
+            : <Error />;
     }
 }
 
