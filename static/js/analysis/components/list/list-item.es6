@@ -8,7 +8,7 @@ const WordListItem = ({ word, onSelectWord }) =>
             { word.token }
             { word.freq > 1 ? <span class="count badge">{word.freq}</span> : <span></span> }
         </div>
-        <div class="arrow">&gt;</div>
+        <div class="arrow right">&gt;</div>
     </div>;
 
 

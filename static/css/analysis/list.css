@@ -40,5 +40,5 @@
 
 .word-list .word-item .arrow {
     right: 1rem;
-    top: 29%;
+    opacity: 0.75;
 }

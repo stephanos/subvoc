@@ -278,7 +278,7 @@ var WordListItem = function WordListItem(_ref) {
         ),
         preact$1.h(
             'div',
-            { 'class': 'arrow' },
+            { 'class': 'arrow right' },
             '>'
         )
     );
