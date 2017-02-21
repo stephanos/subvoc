@@ -5,6 +5,20 @@ import { WordListItem } from './list-item.es6';
 import { DifficultySelector } from './selector.es6';
 
 
+const Heading = ({ analysis }) => {
+    return <div>
+        <h2 class="media">
+            <span class="title">
+                { analysis.media.title }
+            </span>
+        </h2>
+        <div>
+            <span class="badge">{ analysis.words.length }</span> unique words
+        </div>
+    </div>
+}
+
+
 const WordList = ({ analysis, selection, onSelectWord, onSelectDifficulty }) => {
     const sortedWords =
         analysis.words.sort((a, b) => a.difficulty.value - b.difficulty.value);
@@ -13,14 +27,7 @@ const WordList = ({ analysis, selection, onSelectWord, onSelectDifficulty }) => 
         $.grep(sortedWords, (w) => w.difficulty.level === selection.difficulty);
 
     return <div class="word-list">
-        <h2 class="media">
-            <span class="title">
-                { analysis.media.title }
-            </span>
-        </h2>
-        <div>
-            <span class="badge">{ analysis.words.length }</span> words
-        </div>
+        <Heading analysis={analysis} />
 
         <DifficultySelector
             selected={selection.difficulty}

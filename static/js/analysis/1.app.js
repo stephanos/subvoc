@@ -338,23 +338,12 @@ var DifficultySelector = function DifficultySelector(_ref2) {
     );
 };
 
-var WordList = function WordList(_ref) {
-    var analysis = _ref.analysis,
-        selection = _ref.selection,
-        onSelectWord = _ref.onSelectWord,
-        onSelectDifficulty = _ref.onSelectDifficulty;
-
-    var sortedWords = analysis.words.sort(function (a, b) {
-        return a.difficulty.value - b.difficulty.value;
-    });
-
-    var wordsWithDifficulty = $.grep(sortedWords, function (w) {
-        return w.difficulty.level === selection.difficulty;
-    });
+var Heading = function Heading(_ref) {
+    var analysis = _ref.analysis;
 
     return preact$1.h(
         'div',
-        { 'class': 'word-list' },
+        null,
         preact$1.h(
             'h2',
             { 'class': 'media' },
@@ -372,8 +361,29 @@ var WordList = function WordList(_ref) {
                 { 'class': 'badge' },
                 analysis.words.length
             ),
-            ' words'
-        ),
+            ' unique words'
+        )
+    );
+};
+
+var WordList = function WordList(_ref2) {
+    var analysis = _ref2.analysis,
+        selection = _ref2.selection,
+        onSelectWord = _ref2.onSelectWord,
+        onSelectDifficulty = _ref2.onSelectDifficulty;
+
+    var sortedWords = analysis.words.sort(function (a, b) {
+        return a.difficulty.value - b.difficulty.value;
+    });
+
+    var wordsWithDifficulty = $.grep(sortedWords, function (w) {
+        return w.difficulty.level === selection.difficulty;
+    });
+
+    return preact$1.h(
+        'div',
+        { 'class': 'word-list' },
+        preact$1.h(Heading, { analysis: analysis }),
         preact$1.h(DifficultySelector, {
             selected: selection.difficulty,
             onSelect: onSelectDifficulty,
