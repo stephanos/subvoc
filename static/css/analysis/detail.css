@@ -1,3 +1,11 @@
+.navigation-title .title .media {
+    text-align: left;
+}
+
+.navigation-title .title .media .name {
+    margin-left: 2.5rem;
+}
+
 .word-detail .head {
     position: relative;
     margin-top: 3rem;

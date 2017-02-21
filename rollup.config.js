@@ -1,7 +1,7 @@
 import babel from 'rollup-plugin-babel';
 
 export default {
-  entry: 'static/js/analysis/components/app.es6',
+  entry: 'static/js/analysis/components/init.es6',
   format: 'iife',
   sourceMap: false,
   globals: {
