@@ -19,3 +19,9 @@ body .wrapper {
     margin: 0 auto;
     width: 100%;
 }
+
+@media (min-width: 40rem) {
+    .container {
+        max-width: 60rem;
+    }
+}
