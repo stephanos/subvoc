@@ -2,6 +2,14 @@
     margin-top: 4rem;
 }
 
+.word-list .media .poster {
+    width: 10rem;
+    border-radius: .4rem;
+    display: block;
+    margin: 0 auto;
+    margin-bottom: 2rem;
+}
+
 .word-list .difficulty {
     margin: 3rem 0;
 }

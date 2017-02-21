@@ -347,6 +347,7 @@ var Heading = function Heading(_ref) {
         preact$1.h(
             'h2',
             { 'class': 'media' },
+            preact$1.h('img', { 'class': 'poster', src: analysis.media.poster_url }),
             preact$1.h(
                 'span',
                 { 'class': 'title' },

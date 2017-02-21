@@ -35,7 +35,7 @@ def create_routes(app):
 
     @app.route('/api/analysis/<id>')
     def analysis_api_route(id):
-        return analysis_api(subtitle_api, id)
+        return analysis_api(subtitle_api, poster_api, id)
 
     @app.route('/api/words/<token>')
     def words_api_route(token):

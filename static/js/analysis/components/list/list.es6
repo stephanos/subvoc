@@ -8,6 +8,7 @@ import { DifficultySelector } from './selector.es6';
 const Heading = ({ analysis }) => {
     return <div>
         <h2 class="media">
+            <img class="poster" src={ analysis.media.poster_url } />
             <span class="title">
                 { analysis.media.title }
             </span>

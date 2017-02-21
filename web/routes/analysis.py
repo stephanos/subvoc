@@ -19,8 +19,9 @@ def analysis_page(subtitle_api, id):
     return render_template('analysis.html')
 
 
-def analysis_api(subtitle_api, id):
+def analysis_api(subtitle_api, poster_api, id):
     subtitle, analysis = analyse(subtitle_api, id)
+    poster_url = poster_api.get_movie_posters([id])[id]
 
     def excerpt_to_dict(excerpts):
         return ({
@@ -50,9 +51,12 @@ def analysis_api(subtitle_api, id):
             'token': token,
         }
 
+    print(poster_url)
+
     data = json.dumps({
         'media': {
             'title': subtitle.media.title,
+            'poster_url': poster_url,
         },
         'words': (token_to_dict(token) for token in analysis.tokens
                   if token in analysis.token_with_difficulty)
