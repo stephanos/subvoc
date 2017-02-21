@@ -26,7 +26,7 @@ const Nav = ({ analysis, selection, onClick }) =>
                 <h1 class='title'>
                     { selection.word
                         ? <div class='media' onclick={onClick}>
-                            <div class="arrow left">&gt;</div>
+                            <span class="arrow left">&gt;</span>
                             <span class="name">{ analysis.media.title }</span>
                         </div>
                         : <a class='generic' href="/">

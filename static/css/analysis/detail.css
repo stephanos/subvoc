@@ -2,7 +2,12 @@
     text-align: left;
 }
 
+.navigation-title .title .media span {
+    cursor: pointer;
+}
+
 .navigation-title .title .media .name {
+    cursor: pointer;
     margin-left: 2.5rem;
 }
 

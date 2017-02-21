@@ -456,7 +456,7 @@ var Nav = function Nav(_ref) {
                         'div',
                         { 'class': 'media', onclick: onClick },
                         preact$1.h(
-                            'div',
+                            'span',
                             { 'class': 'arrow left' },
                             '>'
                         ),
