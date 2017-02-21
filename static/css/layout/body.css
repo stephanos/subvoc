@@ -1,8 +1,9 @@
 html,
 body {
     height: 100%;
-    background: -webkit-linear-gradient(right, #7b4397, #dc2430);
-    background: linear-gradient(to left, #7b4397, #dc2430);
+    background: -webkit-linear-gradient(125deg, #7b4397, #dc2430);
+    background: linear-gradient(125deg, #7b4397, #dc2430);
+    background-attachment: fixed;
 }
 
 body {
