@@ -48,7 +48,7 @@ var WordDefinitionList = function WordDefinitionList(_ref) {
         ) : preact$1.h(
             'div',
             null,
-            'None were found.'
+            'None was found.'
         )
     );
 };

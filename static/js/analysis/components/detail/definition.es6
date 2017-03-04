@@ -18,7 +18,7 @@ const WordDefinitionList = ({ definitions }) =>
                 </ol>
             </div>
             : <div>
-                None were found.
+                None was found.
             </div>
         }
     </div>;
