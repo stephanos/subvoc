@@ -28,7 +28,7 @@ When you select a movie, the [OpenSubtitles API](http://trac.opensubtitles.org/p
  - [x] list of words sorted by difficulty
  - [x] use the base of each word
  - [x] lazy load analysis
- - [ ] show movie context for each word
+ - [x] show movie context for each word
  - [x] include movie poster
  - [ ] support for idioms
  - [ ] support for TV show episodes
