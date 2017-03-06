@@ -9,9 +9,9 @@ const WordExcerptList = ({ excerpts }) =>
                 Excerpt
             </h4>
             { $.map(excerpts, (excerpt) =>
-                <div class="example">
+                <div class="excerpt">
                     { $.map(excerpt.sentences, (sentence) =>
-                        <div>{ sentence.text }</div>
+                        <div class="line">{ sentence.text }</div>
                     ) }
                 </div> ) }
         </div>

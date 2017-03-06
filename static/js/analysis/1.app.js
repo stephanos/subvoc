@@ -70,11 +70,11 @@ var WordExcerptList = function WordExcerptList(_ref) {
             $.map(excerpts, function (excerpt) {
                 return preact$1.h(
                     'div',
-                    { 'class': 'example' },
+                    { 'class': 'excerpt' },
                     $.map(excerpt.sentences, function (sentence) {
                         return preact$1.h(
                             'div',
-                            null,
+                            { 'class': 'line' },
                             sentence.text
                         );
                     })

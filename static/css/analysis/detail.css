@@ -48,10 +48,14 @@
     margin-top: 4rem;
 }
 
-.word-detail .body .excerpts .example {
+.word-detail .body .excerpts .excerpt {
     margin-top: 2rem;
     text-align: left;
     font-style: italic;
+}
+
+.word-detail .body .excerpts .excerpt .line {
+    padding-bottom: 0.5em;
 }
 
 
