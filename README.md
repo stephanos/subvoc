@@ -14,6 +14,11 @@ Visit https://subvoc.stephanbehnke.com (hosted on Heroku, takes a few moments to
 Also, the external API can be flaky - you can search for 'Se7en' (be exact) to use a cached movie in this case.
 
 
+## How it works
+
+When you select a movie, the [OpenSubtitles API](http://trac.opensubtitles.org/projects/opensubtitles/wiki/XMLRPC) is queried for its subtitles. Then, it is parsed, tokenized and analyzed sentence by sentence, word by word with the help of the [Python Natural Language Toolkit](http://www.nltk.org). The difficulty of a word is determined by its relative frequency in the English language, assuming that more difficult words are simply used less.
+
+
 ## Features
 
  - [x] landing page with search bar
