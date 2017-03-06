@@ -6,21 +6,17 @@ from nltk.corpus import wordnet, stopwords
 from nltk.stem.wordnet import WordNetLemmatizer
 from nltk.tokenize import WordPunctTokenizer
 
-from domain.freq import get_word_freqs
+from domain.excerpt import to_excerpt
+from domain.freq import CORPORA, word_freqs
 from domain.loader import load
 from domain.parser import parse
 
 
-CORPORA = {
-    'full': 'corpora/en.txt',
-    'min': 'corpora/en_min.txt',
-}
 LEMMATIZER = WordNetLemmatizer()
 STOP_WORDS = set(stopwords.words('english'))
 TOKENIZER = WordPunctTokenizer()
 
 
-Excerpt = namedtuple('Excerpt', ['sentences', 'token'])
 Word = namedtuple('Word', ['token', 'POS'])
 
 
@@ -76,7 +72,7 @@ class Analysis:
         self.word_with_movie_freq[word] += 1
 
 
-def get_word_pos(treebank_tag):
+def to_word_pos(treebank_tag):
     if treebank_tag.startswith('J'):
         return WordPartOfSpeach.ADJ
     elif treebank_tag.startswith('V'):
@@ -88,7 +84,7 @@ def get_word_pos(treebank_tag):
     return WordPartOfSpeach.OTHER
 
 
-def get_wordnet_pos(treebank_tag):
+def to_wordnet_pos(treebank_tag):
     if treebank_tag.startswith('J'):
         return wordnet.ADJ
     elif treebank_tag.startswith('V'):
@@ -104,7 +100,7 @@ def is_known(word):
     return len(wordnet.synsets(word)) != 0
 
 
-def get_difficulty(word, freq):
+def to_difficulty(word, freq):
     if freq <= 1000:
         return WordDifficulty.HARD
     elif freq <= 5000:
@@ -117,15 +113,16 @@ def get_difficulty(word, freq):
 def analyse_subtitles(text, freq_lookup):
     analysis = Analysis()
 
-    for sentence in parse(text):
+    sentences = parse(text)
+    for i, sentence in enumerate(sentences):
         tokens = pos_tag(TOKENIZER.tokenize(sentence.text))
 
         for token, token_tag in tokens:
             if token.lower() == 'subtitle' or not token.isalpha():
                 continue
 
-            excerpt = Excerpt([sentence], token)
-            POS = get_word_pos(token_tag)
+            excerpt = to_excerpt(sentences, i, token)
+            POS = to_word_pos(token_tag)
             word = Word(token, POS)
 
             if token in STOP_WORDS:
@@ -136,7 +133,7 @@ def analyse_subtitles(text, freq_lookup):
                 analysis.ignore(word, excerpt, WordIgnoreType.UNKNOWN)
                 continue
 
-            wordnet_POS = get_wordnet_pos(token_tag)
+            wordnet_POS = to_wordnet_pos(token_tag)
             if wordnet_POS is None:
                 analysis.ignore(word, excerpt, WordIgnoreType.UNKNOWN_TYPE)
                 continue
@@ -151,7 +148,7 @@ def analyse_subtitles(text, freq_lookup):
                 Word(lemma, POS),
                 excerpt,
                 freq,
-                get_difficulty(lemma, freq))
+                to_difficulty(lemma, freq))
 
     return analysis
 
@@ -161,5 +158,5 @@ def analyse(api, imdb_id, freq_db=CORPORA['full'], loader=load):
     if not subtitle:
         raise RuntimeError('no subtitle found for movie {}'.format(imdb_id))
 
-    analysis = analyse_subtitles(text, get_word_freqs(freq_db))
+    analysis = analyse_subtitles(text, word_freqs(freq_db))
     return subtitle, analysis

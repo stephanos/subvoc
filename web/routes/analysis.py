@@ -51,8 +51,6 @@ def analysis_api(subtitle_api, poster_api, id):
             'token': token,
         }
 
-    print(poster_url)
-
     data = json.dumps({
         'media': {
             'title': subtitle.media.title,

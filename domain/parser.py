@@ -1,17 +1,17 @@
-import collections
+from collections import namedtuple, deque
 
 import srt
+import nltk.tokenize
 from bs4 import BeautifulSoup
-from nltk.tokenize import sent_tokenize
 
 
-Sentence = collections.namedtuple('Sentence', ['text', 'time'])
-SubtitleLine = collections.namedtuple('SubtitleLine', ['text', 'time'])
+Sentence = namedtuple('Sentence', ['text', 'time'])
+SubtitleLine = namedtuple('SubtitleLine', ['text', 'time'])
 
 
 def parse_subtitle(subtitle):
-    lines = []
-    text_list = []
+    lines = deque()
+    text_buffer = []
     for entry in srt.parse(subtitle.strip()):
         for line in entry.content.split("\n"):
             line_text = line.strip()
@@ -24,26 +24,46 @@ def parse_subtitle(subtitle):
             line_text = BeautifulSoup(line_text, 'html.parser').text
 
             lines.append(SubtitleLine(line_text, entry.start))
-            text_list.append(line_text)
-    full_text = ' '.join(text_list)
+            text_buffer.append(line_text)
+    full_text = ' '.join(text_buffer)
     return lines, full_text
 
 
 def to_sentences(lines, tokens):
-    l, t, time, sentences = 0, 0, None, []
-    while len(sentences) != len(tokens):
-        if l < len(lines) and lines[l].text in tokens[t]:
-            if time is None:
-                time = lines[l].time
-            l += 1
-        else:
-            sentences.append(Sentence(tokens[t], time))
-            time = None
+    sentences = []
+    l, t = 0, 0
+    token = None
+    line_buffer = []
+    line_text = None
+
+    while t < len(tokens):
+        if token is None:
+            token = tokens[t]
+        elif len(token.strip()) == 0:
+            sentences.append(Sentence(tokens[t], line_buffer[0].time))
+            line_buffer = []
+            token = None
             t += 1
+            continue
+
+        if line_text is None:
+            line_text = lines[l].text
+        line_buffer.append(lines[l])
+
+        if token.startswith(line_text):
+            token = token[len(line_text):].strip()
+            line_text = None
+            l += 1
+        elif line_text.startswith(token):
+            line_text = line_text[len(token):].strip()
+            token = ''
+        else:
+            raise RuntimeError('token/line mismatch')
+
     return sentences
 
 
 def parse(subtitle):
     lines, text = parse_subtitle(subtitle)
-    tokens = sent_tokenize(text)
+    tokens = nltk.tokenize.sent_tokenize(text)
     return to_sentences(lines, tokens)

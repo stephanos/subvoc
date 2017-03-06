@@ -2,8 +2,9 @@ import pytest
 from datetime import timedelta
 from unittest.mock import MagicMock
 
+from domain.excerpt import Excerpt
 from domain.parser import Sentence
-from domain.analysis import analyse, CORPORA, Excerpt, Word, WordPartOfSpeach, WordIgnoreType
+from domain.analysis import analyse, CORPORA, Word, WordPartOfSpeach, WordIgnoreType
 
 
 cache = {}
@@ -78,12 +79,14 @@ I hoped.
     s2 = Sentence('I hoped.', timedelta(0, 7899, 473000))
 
     assert dict(analysis.word_with_excerpts) == {
-        Word('I', WordPartOfSpeach.OTHER): [Excerpt([s1], 'I'), Excerpt([s2], 'I')],
-        Word('friend', WordPartOfSpeach.NOUN): [Excerpt([s1], 'friend')],
-        Word('hop', WordPartOfSpeach.VERB): [Excerpt([s1], 'hoped'), Excerpt([s2], 'hoped')],
-        Word('my', WordPartOfSpeach.OTHER): [Excerpt([s1], 'my')],
-        Word('see', WordPartOfSpeach.VERB): [Excerpt([s1], 'see')],
-        Word('to', WordPartOfSpeach.OTHER): [Excerpt([s1], 'to')]
+        Word('I', WordPartOfSpeach.OTHER): [Excerpt([s1, s2], 'I'),
+                                            Excerpt([s1, s2], 'I')],
+        Word('hop', WordPartOfSpeach.VERB): [Excerpt([s1, s2], 'hoped'),
+                                             Excerpt([s1, s2], 'hoped')],
+        Word('to', WordPartOfSpeach.OTHER): [Excerpt([s1, s2], 'to')],
+        Word('see', WordPartOfSpeach.VERB): [Excerpt([s1, s2], 'see')],
+        Word('my', WordPartOfSpeach.OTHER): [Excerpt([s1, s2], 'my')],
+        Word('friend', WordPartOfSpeach.NOUN): [Excerpt([s1, s2], 'friend')]
     }
 
 

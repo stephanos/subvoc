@@ -1,9 +1,13 @@
-cache = {}
+CACHE = {}
+CORPORA = {
+    'full': 'corpora/en.txt',
+    'min': 'corpora/en_min.txt',
+}
 
 
-def get_word_freqs(filepath):
-    if filepath in cache:
-        return cache[filepath]
+def word_freqs(filepath):
+    if filepath in CACHE:
+        return CACHE[filepath]
 
     freq_lookup = {}
     with open(filepath, 'r') as file:
@@ -11,5 +15,5 @@ def get_word_freqs(filepath):
             word, freq = line.split(' ')
             freq_lookup[word] = int(freq)
 
-    cache[filepath] = freq_lookup
+    CACHE[filepath] = freq_lookup
     return freq_lookup

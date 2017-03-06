@@ -35,7 +35,22 @@ And shake his hand!
     ]
 
 
-def test_parse_sentences_connected_with_ellipsis():
+def test_parse_two_sentences_across_multiple_lines():
+    assert parse('''\
+1
+00:01:00,000 --> 00:01:03,000
+I hope to see my friend.
+
+2
+00:02:00,000 --> 00:02:03,000
+And shake his hand.
+''') == [
+        Sentence('I hope to see my friend.', timedelta(minutes=1)),
+        Sentence('And shake his hand.', timedelta(minutes=2))
+    ]
+
+
+def test_parse_sentence_connected_with_ellipsis():
     assert parse('''\
 1
 00:01:00,000 --> 00:01:03,000
@@ -49,7 +64,7 @@ and shake his hand.
     ]
 
 
-def test_parse_sentences_connected_with_ellipses():
+def test_parse_sentence_connected_with_ellipses():
     assert parse('''\
 1
 00:01:00,000 --> 00:01:03,000

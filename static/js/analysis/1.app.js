@@ -73,7 +73,7 @@ var WordExcerptList = function WordExcerptList(_ref) {
                     { 'class': 'example' },
                     $.map(excerpt.sentences, function (sentence) {
                         return preact$1.h(
-                            'span',
+                            'div',
                             null,
                             sentence.text
                         );

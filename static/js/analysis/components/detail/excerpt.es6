@@ -11,7 +11,7 @@ const WordExcerptList = ({ excerpts }) =>
             { $.map(excerpts, (excerpt) =>
                 <div class="example">
                     { $.map(excerpt.sentences, (sentence) =>
-                        <span>{ sentence.text }</span>
+                        <div>{ sentence.text }</div>
                     ) }
                 </div> ) }
         </div>
