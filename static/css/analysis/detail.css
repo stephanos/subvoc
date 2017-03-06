@@ -58,6 +58,13 @@
     padding-bottom: 0.5em;
 }
 
+.word-detail .body .excerpts .excerpt .line .token {
+    padding: 0.3rem 0.6rem;
+    background-color: #9b4dca;
+    border-radius: 10px;
+    margin: 0 0rem;
+}
+
 
 .word-detail .body .definitions {
     margin-top: 4rem;

@@ -53,8 +53,32 @@ var WordDefinitionList = function WordDefinitionList(_ref) {
     );
 };
 
-var WordExcerptList = function WordExcerptList(_ref) {
-    var excerpts = _ref.excerpts;
+var WordExcerpt = function WordExcerpt(_ref) {
+    var excerpt = _ref.excerpt;
+    return preact$1.h(
+        'div',
+        { 'class': 'excerpt' },
+        $.map(excerpt.sentences, function (sentence) {
+            var words = sentence.text.split(/\b/);
+            console.log(words);
+            return preact$1.h(
+                'div',
+                { 'class': 'line' },
+                $.map(words, function (word) {
+                    var className = word === excerpt.token ? 'token' : '';
+                    return preact$1.h(
+                        'span',
+                        { 'class': className },
+                        word
+                    );
+                })
+            );
+        })
+    );
+};
+
+var WordExcerptList = function WordExcerptList(_ref2) {
+    var excerpts = _ref2.excerpts;
     return preact$1.h(
         'div',
         null,
@@ -68,17 +92,7 @@ var WordExcerptList = function WordExcerptList(_ref) {
                 'Excerpt'
             ),
             $.map(excerpts, function (excerpt) {
-                return preact$1.h(
-                    'div',
-                    { 'class': 'excerpt' },
-                    $.map(excerpt.sentences, function (sentence) {
-                        return preact$1.h(
-                            'div',
-                            { 'class': 'line' },
-                            sentence.text
-                        );
-                    })
-                );
+                return preact$1.h(WordExcerpt, { excerpt: excerpt });
             })
         ) : preact$1.h('div', null),
         ' '
