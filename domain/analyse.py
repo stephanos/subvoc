@@ -7,6 +7,7 @@ from nltk.stem.wordnet import WordNetLemmatizer
 from nltk.tokenize import WordPunctTokenizer
 
 from domain.extract import Extractor
+from domain.difficulty import WordDifficulty
 
 
 LEMMATIZER = WordNetLemmatizer()
@@ -30,13 +31,6 @@ class WordIgnoreType(Enum):
     UNKNOWN = 2
     UNKNOWN_TYPE = 3
     UNKNOWN_FREQ = 4
-
-
-class WordDifficulty(Enum):
-    BASIC = 0
-    EASY = 1
-    MED = 2
-    HARD = 3
 
 
 class Analysis:
@@ -97,16 +91,6 @@ def is_real_word(word):
     return len(wordnet.synsets(word)) != 0
 
 
-def to_difficulty(word, freq):
-    if freq <= 1000:
-        return WordDifficulty.HARD
-    elif freq <= 5000:
-        return WordDifficulty.MED
-    elif freq <= 10000:
-        return WordDifficulty.EASY
-    return WordDifficulty.BASIC
-
-
 class Analyser:
 
     def __init__(self, loader, parser, corpus):
@@ -151,10 +135,11 @@ class Analyser:
                     analysis.ignore(word, excerpt, WordIgnoreType.UNKNOWN_FREQ)
                     continue
 
+                difficulty = WordDifficulty.to_difficulty(lemma, lemma_lang_freq)
                 analysis.add(
                     Word(lemma, POS),
                     excerpt,
                     lemma_lang_freq,
-                    to_difficulty(lemma, lemma_lang_freq))
+                    difficulty)
 
         return subtitle, analysis
