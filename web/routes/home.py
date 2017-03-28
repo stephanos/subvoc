@@ -1,14 +1,12 @@
 from flask import request, render_template
 
-from domain.search import search
 
-
-def home(subtitle_api, poster_api):
+def home(searcher):
     query = request.args.get('q')
 
     movies = None
     if query:
-        movies = search(subtitle_api, poster_api, query)
+        movies = searcher.search(query)
 
     return render_template(
         'home.html',

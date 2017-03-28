@@ -63,10 +63,10 @@ class OpenSubtitles:
             or self.find({'query': qry, 'sublanguageid': 'eng'})
         return resp_to_model(resp)
 
-    def find_subtitles_for_movie(self, imdb_id, lang):
+    def find_subtitles_for_movie(self, imdb_id):
         search_id = imdb_id.replace('tt', '').lstrip('0')
         resp = json_fixture('id', imdb_id) \
-            or self.find({'imdbid': search_id, 'sublanguageid': lang})
+            or self.find({'imdbid': search_id, 'sublanguageid': 'eng'})
         return resp_to_model(resp)
 
     @retry(stop_max_delay=5000, stop_max_attempt_number=3)

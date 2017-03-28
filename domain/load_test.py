@@ -1,24 +1,23 @@
 from unittest.mock import MagicMock
 
 from api.subtitle.model import Subtitle
-from domain.loader import load
+from domain.load import Loader
 
 
 def test_load():
     subtitles = [
-        MagicMock(spec=Subtitle, format='srt', partial=False, downloads=100),
+        MagicMock(spec=Subtitle, format='srt', partial=False, downloads=100, text='<text>'),
     ]
 
     api_mock = MagicMock()
     api_mock.find_subtitles_for_movie = MagicMock(return_value=subtitles)
     api_mock.load_text = MagicMock(return_value='<text>')
 
-    s, t = load(api_mock, '<id>', '<lang>')
+    loader = Loader(api_mock)
+    s = loader.load('<id>')
 
     assert s is subtitles[0]
-    assert t == '<text>'
-
-    api_mock.find_subtitles_for_movie.assert_called_with('<id>', '<lang>')
+    api_mock.find_subtitles_for_movie.assert_called_with('<id>')
     api_mock.load_text.assert_called_with(subtitles[0])
 
 
@@ -32,7 +31,8 @@ def test_load_only_uses_srt_format():
     api_mock = MagicMock()
     api_mock.find_subtitles_for_movie = MagicMock(return_value=subtitles)
 
-    s, _ = load(api_mock, '<id>', '<lang>')
+    loader = Loader(api_mock)
+    s = loader.load('<id>')
     assert s is subtitles[2]
 
 
@@ -46,7 +46,8 @@ def test_load_only_uses_complete_subtitles():
     api_mock = MagicMock()
     api_mock.find_subtitles_for_movie = MagicMock(return_value=subtitles)
 
-    s, _ = load(api_mock, '<id>', '<lang>')
+    loader = Loader(api_mock)
+    s = loader.load('<id>')
     assert s is subtitles[2]
 
 
@@ -60,7 +61,8 @@ def test_load_sorts_by_downloads():
     api_mock = MagicMock()
     api_mock.find_subtitles_for_movie = MagicMock(return_value=subtitles)
 
-    s, _ = load(api_mock, '<id>', '<lang>')
+    loader = Loader(api_mock)
+    s = loader.load('<id>')
     assert s is subtitles[2]
 
 
@@ -68,9 +70,9 @@ def test_load_none_found():
     api_mock = MagicMock()
     api_mock.find_subtitles_for_movie = MagicMock(return_value=[])
 
-    s, t = load(api_mock, '<id>', '<lang>')
+    loader = Loader(api_mock)
+    s = loader.load('<id>')
     assert s is None
-    assert t is None
 
 
 def test_load_none_valid():
@@ -82,6 +84,6 @@ def test_load_none_valid():
     api_mock = MagicMock()
     api_mock.find_subtitles_for_movie = MagicMock(return_value=invalid_subtitles)
 
-    s, t = load(api_mock, '<id>', '<lang>')
+    loader = Loader(api_mock)
+    s = loader.load('<id>')
     assert s is None
-    assert t is None

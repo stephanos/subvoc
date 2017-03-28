@@ -3,7 +3,7 @@ from datetime import timedelta
 from enum import Enum
 from flask import render_template, Response
 
-from domain.analysis import analyse, Word
+from domain.analyse import Word
 
 
 class AnalysisEncoder(json.JSONEncoder):
@@ -19,8 +19,8 @@ def analysis_page(subtitle_api, id):
     return render_template('analysis.html')
 
 
-def analysis_api(subtitle_api, poster_api, id):
-    subtitle, analysis = analyse(subtitle_api, id)
+def analysis_api(analyser, poster_api, id):
+    subtitle, analysis = analyser.analyse(id)
     poster_url = poster_api.get_movie_posters([id])[id]
 
     def excerpt_to_dict(excerpts):

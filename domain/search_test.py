@@ -1,9 +1,10 @@
 from unittest.mock import Mock
 
-from domain.search import search
 from api.poster.fanart import FanArt
 from api.subtitle.model import Media, Subtitle
 from api.subtitle.opensubtitles import OpenSubtitles
+
+from domain.search import Searcher
 
 
 def test_search():
@@ -26,7 +27,8 @@ def test_search():
         'M2': '<url>'
     }
 
-    result = search(subtitle_api_mock, poster_api_mock, 'a_query', count=2)
+    searcher = Searcher(subtitle_api_mock, poster_api_mock)
+    result = searcher.search('a_query', count=2)
 
     assert result == [
         Media('M3', '3', 'movie', 2000),

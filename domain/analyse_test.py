@@ -2,27 +2,41 @@ import pytest
 from datetime import timedelta
 from unittest.mock import MagicMock
 
-from domain.excerpt import Excerpt
-from domain.parser import Sentence
-from domain.analysis import analyse, CORPORA, Word, WordPartOfSpeach, WordIgnoreType
+from domain.analyse import Analyser, Word, WordPartOfSpeach, WordIgnoreType
+from domain.corpus import Corpus, DATABASES
+from domain.extract import Excerpt
+from domain.parse import Parser, Sentence
 
 
 cache = {}
-api_mock = MagicMock()
-media_mock = MagicMock()
-subtitle_mock = MagicMock(media=media_mock)
+parser = Parser()
+corpus = Corpus(DATABASES['min'])
 
 
 def cached_analyse(text):
     if text in cache:
         return cache[text]
 
-    loader_mock = MagicMock(return_value=(subtitle_mock, text))
-    result = analyse(api_mock, '<id>', CORPORA['min'], loader_mock)
-    loader_mock.assert_called_with(api_mock, '<id>', 'eng')
+    loader_mock = MagicMock()
+    subtitle_mock = MagicMock(text=text)
+    loader_mock.load = MagicMock(return_value=subtitle_mock)
+    analyser = Analyser(loader_mock, parser, corpus)
+
+    result = analyser.analyse('<id>')
 
     cache[text] = result
     return result
+
+
+def test_analysis_yields_subtitle():
+    text = '''\
+1
+00:01:00,000 --> 00:01:03,000
+I hoped to see my friend
+and shake his hand.
+'''
+    subtitle, _ = cached_analyse(text)
+    assert subtitle.text == text
 
 
 def test_analysis_yields_lang_frequencies():
@@ -88,17 +102,6 @@ I hoped.
         Word('my', WordPartOfSpeach.OTHER): [Excerpt([s1, s2], 'my')],
         Word('friend', WordPartOfSpeach.NOUN): [Excerpt([s1, s2], 'friend')]
     }
-
-
-def test_analysis_yields_subtitle():
-    text = '''\
-1
-00:01:00,000 --> 00:01:03,000
-I hoped to see my friend
-and shake his hand.
-'''
-    subtitle, _ = cached_analyse(text)
-    assert subtitle == subtitle_mock
 
 
 def test_analysis_ignores_stopwords():
@@ -174,5 +177,8 @@ and shake his moustache.
 
 def test_analysis_fails_when_no_subtitle():
     with pytest.raises(RuntimeError, message='no subtitle found for movie <id>'):
-        loader_mock = MagicMock(return_value=(None, None))
-        analyse(None, '<id>', None, loader_mock)
+        loader_mock = MagicMock()
+        loader_mock.load = MagicMock(return_value=None)
+
+        analyser = Analyser(loader_mock, parser, corpus)
+        analyser.analyse('<id>')

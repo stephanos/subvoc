@@ -6,10 +6,7 @@ from nltk.corpus import wordnet, stopwords
 from nltk.stem.wordnet import WordNetLemmatizer
 from nltk.tokenize import WordPunctTokenizer
 
-from domain.excerpt import to_excerpt
-from domain.freq import CORPORA, word_freqs
-from domain.loader import load
-from domain.parser import parse
+from domain.extract import Extractor
 
 
 LEMMATIZER = WordNetLemmatizer()
@@ -110,53 +107,59 @@ def to_difficulty(word, freq):
     return WordDifficulty.BASIC
 
 
-def analyse_subtitles(text, freq_lookup):
-    analysis = Analysis()
+class Analyser:
 
-    sentences = parse(text)
-    for i, sentence in enumerate(sentences):
-        tokens = pos_tag(TOKENIZER.tokenize(sentence.text))
+    def __init__(self, loader, parser, corpus):
+        self.loader = loader
+        self.parser = parser
+        self.corpus = corpus
 
-        for token, token_tag in tokens:
-            if token.lower() == 'subtitle' or not token.isalpha():
-                continue
+    def analyse(self, imdb_id):
+        subtitle = self.loader.load(imdb_id)
+        if not subtitle:
+            raise RuntimeError('no subtitle found for movie {}'.format(imdb_id))
 
-            excerpt = to_excerpt(sentences, i, token)
-            POS = to_word_pos(token_tag)
-            word = Word(token, POS)
+        analysis = self._analyse_subtitles(subtitle.text)
+        return subtitle, analysis
 
-            if token in STOP_WORDS:
-                analysis.ignore(word, excerpt, WordIgnoreType.STOPWORD)
-                continue
+    def _analyse_subtitles(self, text):
+        analysis = Analysis()
 
-            if not is_known(token):
-                analysis.ignore(word, excerpt, WordIgnoreType.UNKNOWN)
-                continue
+        sentences = self.parser.parse(text)
+        for i, sentence in enumerate(sentences):
+            tokens = pos_tag(TOKENIZER.tokenize(sentence.text))
 
-            wordnet_POS = to_wordnet_pos(token_tag)
-            if wordnet_POS is None:
-                analysis.ignore(word, excerpt, WordIgnoreType.UNKNOWN_TYPE)
-                continue
+            for token, token_tag in tokens:
+                if token.lower() == 'subtitle' or not token.isalpha():
+                    continue
 
-            lemma = LEMMATIZER.lemmatize(token, pos=wordnet_POS)
-            if lemma not in freq_lookup:
-                analysis.ignore(word, excerpt, WordIgnoreType.UNKNOWN_FREQ)
-                continue
+                excerpt = Extractor.extract(sentences, i, token)
+                POS = to_word_pos(token_tag)
+                word = Word(token, POS)
 
-            freq = freq_lookup[lemma]
-            analysis.add(
-                Word(lemma, POS),
-                excerpt,
-                freq,
-                to_difficulty(lemma, freq))
+                if token in STOP_WORDS:
+                    analysis.ignore(word, excerpt, WordIgnoreType.STOPWORD)
+                    continue
 
-    return analysis
+                if not is_known(token):
+                    analysis.ignore(word, excerpt, WordIgnoreType.UNKNOWN)
+                    continue
 
+                wordnet_POS = to_wordnet_pos(token_tag)
+                if wordnet_POS is None:
+                    analysis.ignore(word, excerpt, WordIgnoreType.UNKNOWN_TYPE)
+                    continue
 
-def analyse(api, imdb_id, freq_db=CORPORA['full'], loader=load):
-    subtitle, text = loader(api, imdb_id, 'eng')
-    if not subtitle:
-        raise RuntimeError('no subtitle found for movie {}'.format(imdb_id))
+                lemma = LEMMATIZER.lemmatize(token, pos=wordnet_POS)
+                lemma_lang_freq = self.corpus.freq(lemma)
+                if lemma_lang_freq == 0:
+                    analysis.ignore(word, excerpt, WordIgnoreType.UNKNOWN_FREQ)
+                    continue
 
-    analysis = analyse_subtitles(text, word_freqs(freq_db))
-    return subtitle, analysis
+                analysis.add(
+                    Word(lemma, POS),
+                    excerpt,
+                    lemma_lang_freq,
+                    to_difficulty(lemma, lemma_lang_freq))
+
+        return analysis

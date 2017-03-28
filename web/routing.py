@@ -9,6 +9,12 @@ from api.dictionary.wordnik import Wordnik
 from api.subtitle.opensubtitles import OpenSubtitles
 from api.poster.fanart import FanArt
 
+from domain.analyse import Analyser
+from domain.corpus import Corpus, DATABASES
+from domain.load import Loader
+from domain.parse import Parser
+from domain.search import Searcher
+
 
 TEMPLATE_ROOT = 'templates'
 
@@ -25,9 +31,15 @@ def create_routes(app):
     wordnik_key = app.config['WORDNIK_KEY']
     wordnik_api = Wordnik(wordnik_key)
 
+    corpus = Corpus(DATABASES['full'])
+    loader = Loader(subtitle_api)
+    parser = Parser()
+    analyser = Analyser(loader, parser, corpus)
+    searcher = Searcher(subtitle_api, poster_api)
+
     @app.route('/')
     def home_route():
-        return home(subtitle_api, poster_api)
+        return home(searcher)
 
     @app.route('/m/<id>')
     def analysis_page_route(id):
@@ -35,7 +47,7 @@ def create_routes(app):
 
     @app.route('/api/analysis/<id>')
     def analysis_api_route(id):
-        return analysis_api(subtitle_api, poster_api, id)
+        return analysis_api(analyser, id)
 
     @app.route('/api/words/<token>')
     def words_api_route(token):
