@@ -18,8 +18,5 @@ class Corpus:
                     self.freq_lookup[word] = int(freq)
             CACHE[filepath] = self.freq_lookup
 
-    def is_known(self, word):
-        return word in self.freq_lookup
-
     def freq(self, word):
         return self.freq_lookup.get(word, 0)
