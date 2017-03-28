@@ -119,13 +119,8 @@ class Analyser:
         if not subtitle:
             raise RuntimeError('no subtitle found for movie {}'.format(imdb_id))
 
-        analysis = self._analyse_subtitles(subtitle.text)
-        return subtitle, analysis
-
-    def _analyse_subtitles(self, text):
         analysis = Analysis()
-
-        sentences = self.parser.parse(text)
+        sentences = self.parser.parse(subtitle.text)
         for i, sentence in enumerate(sentences):
             tokens = pos_tag(TOKENIZER.tokenize(sentence.text))
 
@@ -162,4 +157,4 @@ class Analyser:
                     lemma_lang_freq,
                     to_difficulty(lemma, lemma_lang_freq))
 
-        return analysis
+        return subtitle, analysis
