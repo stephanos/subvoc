@@ -1,4 +1,4 @@
-from collections import namedtuple, deque
+from collections import namedtuple
 
 import srt
 import nltk.tokenize
@@ -12,12 +12,12 @@ SubtitleLine = namedtuple('SubtitleLine', ['text', 'time'])
 class Parser:
 
     def parse(self, subtitle):
-        lines, text = self._parse_subtitle(subtitle)
+        lines, text = self._parse_lines(subtitle)
         tokens = nltk.tokenize.sent_tokenize(text)
         return self._to_sentences(lines, tokens)
 
-    def _parse_subtitle(self, subtitle):
-        lines = deque()
+    def _parse_lines(self, subtitle):
+        lines = []
         text_buffer = []
         for entry in srt.parse(subtitle.strip()):
             for line in entry.content.split("\n"):
