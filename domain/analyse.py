@@ -93,7 +93,7 @@ def to_wordnet_pos(treebank_tag):
     return None
 
 
-def is_known(word):
+def is_real_word(word):
     return len(wordnet.synsets(word)) != 0
 
 
@@ -136,7 +136,7 @@ class Analyser:
                     analysis.ignore(word, excerpt, WordIgnoreType.STOPWORD)
                     continue
 
-                if not is_known(token):
+                if not is_real_word(token):
                     analysis.ignore(word, excerpt, WordIgnoreType.UNKNOWN)
                     continue
 
