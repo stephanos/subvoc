@@ -17,7 +17,8 @@ def test_exerpt_nearby_sentences():
         Sentence("Phone.", td(seconds=40))
     ]
 
-    excerpt = Extractor.extract(sentences, 3, 'knowledge')
+    extractor = Extractor()
+    excerpt = extractor.extract(sentences, 3, 'knowledge')
 
     assert excerpt == Excerpt([
         sentences[1],
@@ -36,7 +37,8 @@ def test_exerpt_nearby_sentences_at_end():
         Sentence("Where we're going we don't need roads.", td(minutes=90))
     ]
 
-    excerpt = Extractor.extract(sentences, 1, 'roads')
+    extractor = Extractor()
+    excerpt = extractor.extract(sentences, 1, 'roads')
 
     assert excerpt == Excerpt([
         sentences[0],
@@ -50,7 +52,8 @@ def test_exerpt_nearby_sentences_at_start():
         Sentence("When I was a kid there were three.", td(seconds=1))
     ]
 
-    excerpt = Extractor.extract(sentences, 0, 'billion')
+    extractor = Extractor()
+    excerpt = extractor.extract(sentences, 0, 'billion')
 
     assert excerpt == Excerpt([
         sentences[0],

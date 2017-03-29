@@ -97,6 +97,7 @@ class Analyser:
         self.loader = loader
         self.parser = parser
         self.corpus = corpus
+        self.extractor = Extractor()
 
     def analyse(self, imdb_id):
         subtitle = self.loader.load(imdb_id)
@@ -112,7 +113,7 @@ class Analyser:
                 if token.lower() == 'subtitle' or not token.isalpha():
                     continue
 
-                excerpt = Extractor.extract(sentences, i, token)
+                excerpt = self.extractor.extract(sentences, i, token)
                 POS = to_word_pos(token_tag)
                 word = Word(token, POS)
 

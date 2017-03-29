@@ -7,8 +7,8 @@ class WordDifficulty(Enum):
     MED = 2
     HARD = 3
 
-    @classmethod
-    def to_difficulty(self, word, freq):
+    @staticmethod
+    def to_difficulty(word, freq):
         if freq <= 1000:
             return WordDifficulty.HARD
         elif freq <= 5000:

@@ -9,7 +9,6 @@ Excerpt = namedtuple('Excerpt', ['sentences', 'token'])
 
 class Extractor:
 
-    @classmethod
     def extract(self, sentences, token_sentence_pos, token):
         token_sentence = sentences[token_sentence_pos]
 
@@ -22,7 +21,6 @@ class Extractor:
             sentences_before + [token_sentence] + sentences_after,
             token)
 
-    @classmethod
     def _pick_close_sentences(self, sentences, token_sentence_pos, start_time, direction):
         picked = []
         i = token_sentence_pos + direction
@@ -33,6 +31,5 @@ class Extractor:
 
         return picked
 
-    @classmethod
     def _is_close(self, td1, td2):
         return abs(td1 - td2) <= MAX_DELTA
