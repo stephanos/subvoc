@@ -3,11 +3,8 @@ from datetime import timedelta
 from domain.parse import Parser, Sentence
 
 
-parser = Parser()
-
-
 def test_parse_simple_sentence():
-    assert parser.parse('''\
+    assert Parser().parse('''\
 1
 00:01:00,000 --> 00:01:03,000
 I hope to see my friend.
@@ -17,7 +14,7 @@ I hope to see my friend.
 
 
 def test_parse_simple_multiline_sentence():
-    assert parser.parse('''\
+    assert Parser().parse('''\
 1
 00:01:00,000 --> 00:01:03,000
 I hope to see my friend
@@ -28,7 +25,7 @@ and shake his hand.
 
 
 def test_parse_two_sentences():
-    assert parser.parse('''\
+    assert Parser().parse('''\
 1
 00:01:00,000 --> 00:01:03,000
 I hope to see my friend.
@@ -40,7 +37,7 @@ And shake his hand!
 
 
 def test_parse_two_sentences_across_multiple_lines():
-    assert parser.parse('''\
+    assert Parser().parse('''\
 1
 00:01:00,000 --> 00:01:03,000
 I hope to see my friend.
@@ -55,7 +52,7 @@ And shake his hand.
 
 
 def test_parse_sentence_connected_with_ellipsis():
-    assert parser.parse('''\
+    assert Parser().parse('''\
 1
 00:01:00,000 --> 00:01:03,000
 I hope to see my friend...
@@ -69,7 +66,7 @@ and shake his hand.
 
 
 def test_parse_sentence_connected_with_ellipses():
-    assert parser.parse('''\
+    assert Parser().parse('''\
 1
 00:01:00,000 --> 00:01:03,000
 I hope to see my friend...
@@ -81,7 +78,7 @@ I hope to see my friend...
 
 
 def test_parse_sentences_with_dash():
-    assert parser.parse('''\
+    assert Parser().parse('''\
 1
 00:01:00,000 --> 00:01:03,000
 -I hope to see my friend.
@@ -91,7 +88,7 @@ def test_parse_sentences_with_dash():
 
 
 def test_parse_sentences_with_dash_and_space():
-        assert parser.parse('''\
+        assert Parser().parse('''\
 1
 00:01:00,000 --> 00:01:03,000
 - I hope to see my friend.
@@ -101,7 +98,7 @@ def test_parse_sentences_with_dash_and_space():
 
 
 def test_parse_sentences_with_html():
-        assert parser.parse('''\
+        assert Parser().parse('''\
 1
 00:01:00,000 --> 00:01:03,000
 <i>I hope to see my friend.</i>
@@ -110,5 +107,5 @@ def test_parse_sentences_with_html():
 
 def test_parse_full_subtitle_file():
     with open('fixtures/opensubtitles/subtitle/1951992295.txt') as text:
-        result = parser.parse(''.join(text.readlines()))
+        result = Parser().parse(''.join(text.readlines()))
         assert len(result) > 0

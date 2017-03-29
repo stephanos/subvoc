@@ -8,23 +8,22 @@ from domain.extract import Excerpt
 from domain.parse import Parser, Sentence
 
 
-cache = {}
-parser = Parser()
-corpus = Corpus(CorpusDatabase.MIN)
+CACHE = {}
+CORPUS = Corpus(CorpusDatabase.MIN)
 
 
 def cached_analyse(text):
-    if text in cache:
-        return cache[text]
+    if text in CACHE:
+        return CACHE[text]
 
     loader_mock = MagicMock()
     subtitle_mock = MagicMock(text=text)
     loader_mock.load = MagicMock(return_value=subtitle_mock)
-    analyser = Analyser(loader_mock, parser, corpus)
+    analyser = Analyser(loader_mock, Parser(), CORPUS)
 
     result = analyser.analyse('<id>')
 
-    cache[text] = result
+    CACHE[text] = result
     return result
 
 
@@ -180,5 +179,5 @@ def test_analysis_fails_when_no_subtitle():
         loader_mock = MagicMock()
         loader_mock.load = MagicMock(return_value=None)
 
-        analyser = Analyser(loader_mock, parser, corpus)
+        analyser = Analyser(loader_mock, Parser(), CORPUS)
         analyser.analyse('<id>')
