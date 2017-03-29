@@ -12,10 +12,7 @@ successful_login_resp = {'status': '200 OK', 'token': 'my-token'}
 @pytest.fixture(scope="function")
 def api():
     client = MagicMock()
-
-    def create_client():
-        return client
-    return client, OpenSubtitles(('name', 'pass'), create_client)
+    return client, OpenSubtitles(('name', 'pass'), client)
 
 
 def test_login(api):

@@ -17,35 +17,18 @@ OPENSUBTITLES_UA = 'subvoc v1.0'
 UNICODE_BOM = u'\N{ZERO WIDTH NO-BREAK SPACE}'
 
 
-def ensure_success(resp):
-    if resp.get('status').split()[0] != '200':
-        raise RuntimeError("received status {}".format(resp.get('status')))
-
-
-def create_client():
-    return ServerProxy(OPENSUBTITLES_URL, allow_none=True)
-
-
-def json_fixture(directory, arg):
-    return load_fixture(os.path.join('opensubtitles', directory, '{}.json'), arg, json.loads)
-
-
-def resp_to_model(resp):
-    return [to_model(item) for item in resp.get('data')]
-
-
 class OpenSubtitles:
 
-    def __init__(self, credentials, create_client=create_client):
+    def __init__(self, credentials, client=None):
         self.token = None
         self.credentials = credentials
-        self.xmlrpc = create_client()
+        self.xmlrpc = client or ServerProxy(OPENSUBTITLES_URL, allow_none=True)
 
     def login(self):
         username = self.credentials[0]
         password = self.credentials[1]
         resp = self.xmlrpc.LogIn(username, password, LANGUAGE, OPENSUBTITLES_UA)
-        ensure_success(resp)
+        self._ensure_success(resp)
         self.token = resp.get('token')
 
     @retry(stop_max_delay=5000, stop_max_attempt_number=3)
@@ -54,29 +37,29 @@ class OpenSubtitles:
             self.login()
 
         resp = self.xmlrpc.SearchSubtitles(self.token, [query], [{'limit': 500}])
-        ensure_success(resp)
+        self._ensure_success(resp)
         return resp
 
     def find_by_query(self, query):
         qry = query.lower().strip()
-        resp = json_fixture('query', qry) \
+        resp = self._json_fixture('query', qry) \
             or self.find({'query': qry, 'sublanguageid': 'eng'})
-        return resp_to_model(resp)
+        return self._resp_to_model(resp)
 
     def find_subtitles_for_movie(self, imdb_id):
         search_id = imdb_id.replace('tt', '').lstrip('0')
-        resp = json_fixture('id', imdb_id) \
+        resp = self._json_fixture('id', imdb_id) \
             or self.find({'imdbid': search_id, 'sublanguageid': 'eng'})
-        return resp_to_model(resp)
+        return self._resp_to_model(resp)
 
     @retry(stop_max_delay=5000, stop_max_attempt_number=3)
     def load_text(self, subtitle):
         if not self.token:
             self.login()
 
-        resp = json_fixture('subtitle', subtitle.id) \
+        resp = self._json_fixture('subtitle', subtitle.id) \
             or self.xmlrpc.DownloadSubtitles(self.token, [subtitle.id])
-        ensure_success(resp)
+        self._ensure_success(resp)
 
         text = resp.get('data')[0].get('data')
         text = base64.standard_b64decode(text)
@@ -86,3 +69,13 @@ class OpenSubtitles:
         text = re.sub(NEWLINE_PATTERN, '\n', text)
 
         return text
+
+    def _ensure_success(self, resp):
+        if resp.get('status').split()[0] != '200':
+            raise RuntimeError("received status {}".format(resp.get('status')))
+
+    def _json_fixture(self, directory, arg):
+        return load_fixture(os.path.join('opensubtitles', directory, '{}.json'), arg, json.loads)
+
+    def _resp_to_model(self, resp):
+        return [to_model(item) for item in resp.get('data')]
