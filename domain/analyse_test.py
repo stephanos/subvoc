@@ -3,14 +3,14 @@ from datetime import timedelta
 from unittest.mock import MagicMock
 
 from domain.analyse import Analyser, Word, WordPartOfSpeach, WordIgnoreType
-from domain.corpus import Corpus, DATABASES
+from domain.corpus import Corpus, CorpusDatabase
 from domain.extract import Excerpt
 from domain.parse import Parser, Sentence
 
 
 cache = {}
 parser = Parser()
-corpus = Corpus(DATABASES['min'])
+corpus = Corpus(CorpusDatabase.MIN)
 
 
 def cached_analyse(text):

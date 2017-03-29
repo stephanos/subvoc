@@ -1,8 +1,9 @@
 CACHE = {}
-DATABASES = {
-    'full': 'corpora/en.txt',
-    'min': 'corpora/en_min.txt',
-}
+
+
+class CorpusDatabase:
+    FULL = 'corpora/en.txt'
+    MIN = 'corpora/en_min.txt'
 
 
 class Corpus:

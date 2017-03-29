@@ -10,7 +10,7 @@ from api.subtitle.opensubtitles import OpenSubtitles
 from api.poster.fanart import FanArt
 
 from domain.analyse import Analyser
-from domain.corpus import Corpus, DATABASES
+from domain.corpus import Corpus, CorpusDatabase
 from domain.load import Loader
 from domain.parse import Parser
 from domain.search import Searcher
@@ -31,7 +31,7 @@ def create_routes(app):
     wordnik_key = app.config['WORDNIK_KEY']
     wordnik_api = Wordnik(wordnik_key)
 
-    corpus = Corpus(DATABASES['full'])
+    corpus = Corpus(CorpusDatabase.FULL)
     loader = Loader(subtitle_api)
     parser = Parser()
     analyser = Analyser(loader, parser, corpus)
