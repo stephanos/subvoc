@@ -16,4 +16,3 @@ class WordDifficulty(Enum):
         elif freq <= 10000:
             return WordDifficulty.EASY
         return WordDifficulty.BASIC
-
