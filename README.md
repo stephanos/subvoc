@@ -54,6 +54,7 @@ When you select a movie, the [OpenSubtitles API](http://trac.opensubtitles.org/p
 
 installation:
 
+ - install Python 3.x and Node 6+ 
  - `pip install -r requirements.txt`
  - `pip install -r dev-requirements.txt`
  - `python -m nltk.downloader $(tr "\n" " " < ".nltk_packages")`
