@@ -11,7 +11,13 @@ That's where `subvoc` comes in: search for a movie and discover its vocabulary.
 
 Visit https://subvoc.stephanbehnke.com (hosted on Heroku, takes a few moments to start sometimes).
 
-Also, the external API can be flaky - you can search for 'Se7en' (be exact) to use a cached movie in this case.
+NOTE: The external API can be flaky - you can search for 'Se7en' (be exact) to use a cached movie in this case.
+
+To get a very quick impression, here are some screenshots:
+
+Homepage                       | Find Movie                | List of words             | Word details
+:-----------------------------:|:-------------------------:|:-------------------------:|:-------------------------:
+![](./static/img/homepage.png) | ![](./static/img/movie-select.png) | ![](./static/img/list-words.png) | ![](./static/img/detail-word.png)
 
 
 ## How it works
