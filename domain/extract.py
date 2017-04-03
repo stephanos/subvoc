@@ -2,12 +2,15 @@ from datetime import timedelta
 from collections import namedtuple
 
 
-MAX_DELTA = timedelta(seconds=5)
+DEFAULT_DELTA = timedelta(seconds=7)
 
 Excerpt = namedtuple('Excerpt', ['sentences', 'token'])
 
 
 class Extractor:
+
+    def __init__(self, delta=DEFAULT_DELTA):
+        self.delta = delta
 
     def extract(self, sentences, token_sentence_pos, token):
         token_sentence = sentences[token_sentence_pos]
@@ -32,4 +35,4 @@ class Extractor:
         return picked
 
     def _is_close(self, td1, td2):
-        return abs(td1 - td2) <= MAX_DELTA
+        return abs(td1 - td2) <= self.delta
