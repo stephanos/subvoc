@@ -121,10 +121,6 @@ class Analyser:
                     analysis.ignore(word, excerpt, WordIgnoreType.STOPWORD)
                     continue
 
-                if not is_real_word(token):
-                    analysis.ignore(word, excerpt, WordIgnoreType.UNKNOWN)
-                    continue
-
                 wordnet_POS = to_wordnet_pos(token_tag)
                 if wordnet_POS is None:
                     analysis.ignore(word, excerpt, WordIgnoreType.UNKNOWN_TYPE)
@@ -132,6 +128,9 @@ class Analyser:
 
                 lemma = LEMMATIZER.lemmatize(token, pos=wordnet_POS)
                 lemma_lang_freq = self.corpus.freq(lemma)
+                if not is_real_word(lemma):
+                    analysis.ignore(word, excerpt, WordIgnoreType.UNKNOWN)
+                    continue
                 if lemma_lang_freq == 0:
                     analysis.ignore(word, excerpt, WordIgnoreType.UNKNOWN_FREQ)
                     continue
