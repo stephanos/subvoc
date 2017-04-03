@@ -5,6 +5,6 @@ docker run \
     --name dev-py \
     -it \
     -p 8000:8000 \
-    -v $(pwd):/opt/app \
+    -v $(pwd):/app \
     stephanos/subvoc \
-    python3 /opt/app/run.py
+    python3 /app/run.py

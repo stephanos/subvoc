@@ -4,6 +4,6 @@ docker run \
     --rm \
     --name dev-js \
     -it \
-    -v $(pwd):/opt/app \
+    -v $(pwd):/app \
     stephanos/subvoc \
-    ./node_modules/rollup/bin/rollup --config --watch
+    /opt/node_modules/rollup/bin/rollup --config --watch

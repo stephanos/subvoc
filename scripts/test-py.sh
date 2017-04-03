@@ -4,6 +4,6 @@ docker run \
     --rm \
     --name test \
     -it \
-    -v $(pwd):/opt/app \
+    -v $(pwd):/app \
     stephanos/subvoc \
     pytest-watch -- -vv --durations=5

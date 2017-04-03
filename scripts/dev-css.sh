@@ -4,6 +4,6 @@ docker run \
     --rm \
     --name dev-css \
     -it \
-    -v $(pwd):/opt/app \
+    -v $(pwd):/app \
     stephanos/subvoc \
-    ./node_modules/postcss-cli/bin/postcss --use autoprefixer /opt/app/static/css/**/*.css --replace
+    ./node_modules/postcss-cli/bin/postcss --use autoprefixer /app/static/css/**/*.css --replace
