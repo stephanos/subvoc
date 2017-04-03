@@ -29,9 +29,10 @@ def dir_to_resources(root_dir, filters, file_type):
 
 
 def create_assets(app):
+    is_dev_mode = app.config['DEBUG']
     assets = Environment(app)
     resources = \
-        dir_to_resources(CSS_ROOT, 'cssmin', 'css') + \
-        dir_to_resources(JS_ROOT, 'rjsmin', 'js')
+        dir_to_resources(CSS_ROOT, 'cssmin' if not is_dev_mode else None, 'css') + \
+        dir_to_resources(JS_ROOT, 'rjsmin' if not is_dev_mode else None, 'js')
     for resource in resources:
         assets.register(resource.name, resource.bundle)
