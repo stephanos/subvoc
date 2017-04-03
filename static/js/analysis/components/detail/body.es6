@@ -1,5 +1,5 @@
 import $ from 'jquery';
-import preact from 'preact';
+import React from 'react';
 
 import { WordDefinitionList } from './definition.es6';
 import { WordExcerptList } from './excerpt.es6';
@@ -32,9 +32,10 @@ const WordDetailBody = ({ selection, onSelectPOS }) => {
         $.grep(PARTS_OF_SPEACH, (pos) => getExcerpts(selection.word, pos).length > 0)[0];
 
     return <div>
-        <header class="tab-group">
+        <header className="tab-group">
             { $.map(PARTS_OF_SPEACH, (pos) => {
                 return <WordPartOfSpeachHeader
+                    key={pos}
                     active={selectedPOS === pos}
                     enabled={hasDetails(selection.word, pos)}
                     label={pos}

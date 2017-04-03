@@ -1,14 +1,14 @@
 import $ from 'jquery';
-import preact from 'preact';
+import React from 'react';
 
 
 const DifficultyGroup = ({ level, label, count, active, onSelect }) => {
     const classNames = `group card ${ active ? 'active' : '' }`;
-    return <div class={classNames} onclick={() => onSelect(level)}>
-        <div class="label">
+    return <div className={classNames} onClick={() => onSelect(level)}>
+        <div className="label">
             { label.toLowerCase() }
         </div>
-        <div class="count badge">
+        <div className="count badge">
             { count }
         </div>
     </div>;
@@ -24,11 +24,12 @@ const DifficultySelector = ({ selected, onSelect, words }) => {
         }
     });
 
-    return <div class="difficulty">
+    return <div className="difficulty">
         { $.map(Object.keys(groups),
             (label) => {
                 const group = groups[label];
                 return <DifficultyGroup
+                            key={group.level}
                             level={group.level}
                             count={group.count}
                             active={selected === group.level}

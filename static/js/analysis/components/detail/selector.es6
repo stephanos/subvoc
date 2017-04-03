@@ -1,15 +1,16 @@
 import $ from 'jquery';
-import preact from 'preact';
+import React from 'react';
 
 
-class WordPartOfSpeachHeader extends preact.Component {
-    render({ active, enabled, label, freq, onSelectPOS }) {
+class WordPartOfSpeachHeader extends React.Component {
+    render() {
+        const { active, enabled, label, freq, onSelectPOS } = this.props;
         const classNames = `tab card ${enabled ? '' : 'empty'} ${active ? 'active' : ''}`;
-        return <div onClick={() => enabled ? onSelectPOS(label) : null} class={classNames} >
-            <div class="label">
+        return <div onClick={() => enabled ? onSelectPOS(label) : null} className={classNames} >
+            <div className="label">
                 { label }
             </div>
-            { freq ? <div class="count badge">{ freq }</div> : <div class="count">&nbsp;</div> }
+            { freq ? <div className="count badge">{ freq }</div> : <div className="count">&nbsp;</div> }
         </div>;
     }
 }

@@ -6,9 +6,10 @@ export default {
   sourceMap: false,
   globals: {
     'jquery': '$',
-    'preact': 'preact'
+    'react': 'React',
+    'react-dom': 'ReactDOM'
   },
   plugins: [ babel() ],
-  external: ['jquery', 'preact'],
-  dest: 'static/js/analysis/1.app.js'
+  external: ['jquery', 'react', 'react-dom'],
+  dest: 'static/js/analysis/app.js'
 };

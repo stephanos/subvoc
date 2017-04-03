@@ -1,17 +1,17 @@
 import $ from 'jquery';
-import preact from 'preact';
+import React from 'react';
 
 
 const WordDefinitionList = ({ definitions }) =>
-    <div class="definitions">
+    <div className="definitions">
         <h4>
             Definition
         </h4>
         { definitions.length > 0
             ? <div>
                 <ol>
-                    { $.map(definitions, (entry) =>
-                        <li class="definition">
+                    { $.map(definitions, (entry, idx) =>
+                        <li key={idx} className="definition">
                             { entry.definition }
                         </li>
                     ) }

@@ -1,7 +1,8 @@
 import $ from 'jquery';
-import preact from 'preact';
+import React from 'react';
 
 import { Error } from './error.es6';
+import { Nav } from './nav.es6';
 import { WordDetail } from './detail/detail.es6';
 import { WordList } from './list/list.es6';
 
@@ -19,27 +20,7 @@ function lookupWord(word) {
 }
 
 
-const Nav = ({ analysis, selection, onClick }) =>
-    <nav class='navigation'>
-        <section class='container'>
-            <span class='navigation-title'>
-                <h1 class='title'>
-                    { selection.word
-                        ? <div class='media' onclick={onClick}>
-                            <span class="arrow left">&gt;</span>
-                            <span class="name">{ analysis.media.title }</span>
-                        </div>
-                        : <a class='generic' href="/">
-                            subvoc
-                        </a>
-                    }
-                </h1>
-            </span>
-        </section>
-    </nav>
-
-
-class App extends preact.Component {
+class App extends React.Component {
 
     constructor({ analysis }) {
         super();
@@ -52,7 +33,7 @@ class App extends preact.Component {
                 lookupWord.bind(this)(selectedWord);
             }
         }
-        this.state.selection = { difficulty: 3, POS: undefined, word: selectedWord };
+        this.state = { selection: { difficulty: 3, POS: undefined, word: selectedWord } };
     }
 
 
@@ -78,6 +59,7 @@ class App extends preact.Component {
     }
 
     handleUnselectWord() {
+        window.location.hash = '';
         this.setState((prevState) => {
             delete prevState.selection.POS;
             delete prevState.selection.word;
@@ -96,15 +78,16 @@ class App extends preact.Component {
         }
     }
 
-    render({ analysis }) {
-        return <div class="wrapper">
+    render() {
+        const { analysis } = this.props;
+        return <div className="wrapper">
             <Nav analysis={analysis}
                  selection={this.state.selection}
                  onClick={() => this.handleUnselectWord()} />
 
-            <section class='container'>
+            <section className='container'>
                 { analysis
-                    ? <div class='analysis'>
+                    ? <div className='analysis'>
                         { this.state.selection.word
                             ? <WordDetail
                                 selection={this.state.selection}

@@ -1,16 +1,15 @@
 import $ from 'jquery';
-import preact from 'preact';
+import React from 'react';
 
 
 const WordExcerpt = ({ excerpt }) =>
-    <div class="excerpt">
-        { $.map(excerpt.sentences, (sentence) => {
+    <div className="excerpt">
+        { $.map(excerpt.sentences, (sentence, s_idx) => {
             const words = sentence.text.split(/\b/);
-            console.log(words)
-            return <div class="line">
-                { $.map(words, (word) => {
+            return <div key={s_idx} className="line">
+                { $.map(words, (word, w_idx) => {
                     const className = word === excerpt.token ? 'token' : '';
-                    return <span class={className}>{ word }</span>;
+                    return <span key={w_idx} className={className}>{ word }</span>;
                 })}
             </div>;
         })}
@@ -19,11 +18,12 @@ const WordExcerpt = ({ excerpt }) =>
 
 const WordExcerptList = ({ excerpts }) =>
     <div> { excerpts.length > 0
-        ? <div class="excerpts">
+        ? <div className="excerpts">
             <h4>
                 Excerpt
             </h4>
-            { $.map(excerpts, (excerpt) => <WordExcerpt excerpt={excerpt} />) }
+            { $.map(excerpts, (excerpt, idx) => 
+                <WordExcerpt key={idx} excerpt={excerpt} />) }
         </div>
         : <div></div>
     } </div>;

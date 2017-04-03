@@ -1,21 +1,22 @@
 import $ from 'jquery';
-import preact from 'preact';
+import React from 'react';
 
 import { WordDetailBody } from './body.es6';
 
 import { Spinner } from '../util/spinner.es6';
 
 
-class WordDetail extends preact.Component {
+class WordDetail extends React.Component {
 
-    render({ selection, onSelectPOS }) {
+    render() {
+        const { selection, onSelectPOS } = this.props;
         if (selection.word) {
-            return <div class="word-detail">
-                <h2 class="head">
-                    <span class="label">{selection.word.token}</span>
+            return <div className="word-detail">
+                <h2 className="head">
+                    <span className="label">{selection.word.token}</span>
                 </h2>
 
-                <section class="body">
+                <section className="body">
                     { !selection.word.lookup
                         ? <Spinner />
                         : <WordDetailBody
@@ -25,13 +26,13 @@ class WordDetail extends preact.Component {
                 </section>
 
                 { selection.word.lookup
-                    ? <div class="attribution">
-                        <div class="attribution_dictionary">
+                    ? <div className="attribution">
+                        <div className="attribution_dictionary">
                             <a href={selection.word.lookup.attribution.url}>{
                                 selection.word.lookup.attribution.text
                             }</a>
                         </div>
-                        <div class="attribution_api">
+                        <div className="attribution_api">
                             <img src="/static/img/wordnik_badge.png"/>
                         </div>
                     </div>

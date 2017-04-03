@@ -1,6 +1,7 @@
 {
     "plugins": [
-        ["transform-react-jsx", { "pragma": "preact.h" }]
+        "external-helpers",
+        "transform-react-jsx"
     ],
     "presets": [
         ["es2015", { "modules": false }]

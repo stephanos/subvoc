@@ -1,5 +1,5 @@
 const Error = () =>
-    <div class="error">
+    <div className="error">
         <div>
             Unable to analyse movie :(
         </div>

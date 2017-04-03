@@ -1,5 +1,6 @@
 import $ from 'jquery';
-import preact from 'preact';
+import React from 'react';
+import ReactDOM from 'react-dom';
 
 import { App } from './app.es6';
 
@@ -12,10 +13,9 @@ function loadAnalysis() {
 }
 
 function renderApp(analysis) {
-    const container = document.getElementById('body');
-    const parent = document.getElementById('main');
-    preact.render(
-        <App analysis={ analysis }/>, container, parent
+    const container = document.getElementById('main');
+    ReactDOM.render(
+        <App analysis={ analysis }/>, container
     );
 }
 
