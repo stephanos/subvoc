@@ -56,8 +56,7 @@ def analysis_api(analyser, poster_api, id):
             'title': subtitle.media.title,
             'poster_url': poster_url,
         },
-        'words': (token_to_dict(token) for token in analysis.tokens
-                  if token in analysis.token_with_difficulty)
+        'words': [token_to_dict(token) for token in analysis.token_with_difficulty.keys()][:10] # TODO
     }, cls=AnalysisEncoder, iterable_as_array=True)
 
     return Response(status=200,
