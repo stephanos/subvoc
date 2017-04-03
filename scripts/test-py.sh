@@ -9,4 +9,4 @@ docker run \
     -it \
     -v $(pwd):/app \
     stephanos/subvoc \
-    pytest && pytest-watch -- -vv --durations=5
+    /bin/bash -c "pytest && pytest-watch -- -vv --durations=5"
