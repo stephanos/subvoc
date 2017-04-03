@@ -31,35 +31,21 @@ class OpenSubtitles:
         self._ensure_success(resp)
         self.token = resp.get('token')
 
-    @retry(stop_max_delay=5000, stop_max_attempt_number=3)
-    def find(self, query):
-        if not self.token:
-            self.login()
-
-        resp = self.xmlrpc.SearchSubtitles(self.token, [query], [{'limit': 500}])
-        self._ensure_success(resp)
-        return resp
-
     def find_by_query(self, query):
         qry = query.lower().strip()
         resp = self._json_fixture('query', qry) \
-            or self.find({'query': qry, 'sublanguageid': 'eng'})
+            or self._find({'query': qry, 'sublanguageid': 'eng'})
         return self._resp_to_model(resp)
 
     def find_subtitles_for_movie(self, imdb_id):
         search_id = imdb_id.replace('tt', '').lstrip('0')
         resp = self._json_fixture('id', imdb_id) \
-            or self.find({'imdbid': search_id, 'sublanguageid': 'eng'})
+            or self._find({'imdbid': search_id, 'sublanguageid': 'eng'})
         return self._resp_to_model(resp)
 
-    @retry(stop_max_delay=5000, stop_max_attempt_number=3)
     def load_text(self, subtitle):
-        if not self.token:
-            self.login()
-
         resp = self._json_fixture('subtitle', subtitle.id) \
-            or self.xmlrpc.DownloadSubtitles(self.token, [subtitle.id])
-        self._ensure_success(resp)
+            or self._download(subtitle.id)
 
         text = resp.get('data')[0].get('data')
         text = base64.standard_b64decode(text)
@@ -69,6 +55,24 @@ class OpenSubtitles:
         text = re.sub(NEWLINE_PATTERN, '\n', text)
 
         return text
+
+    @retry(stop_max_delay=5000, stop_max_attempt_number=3)
+    def _download(self, subtitle_id):
+        if not self.token:
+            self.login()
+
+        resp = self.xmlrpc.DownloadSubtitles(self.token, [subtitle_id])
+        self._ensure_success(resp)
+        return resp
+
+    @retry(stop_max_delay=5000, stop_max_attempt_number=3)
+    def _find(self, query):
+        if not self.token:
+            self.login()
+
+        resp = self.xmlrpc.SearchSubtitles(self.token, [query], [{'limit': 500}])
+        self._ensure_success(resp)
+        return resp
 
     def _ensure_success(self, resp):
         if resp.get('status').split()[0] != '200':
