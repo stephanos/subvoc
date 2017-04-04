@@ -850,9 +850,10 @@ var Search = function (_React$Component) {
                     prevState.items = res;
                 });
             }).catch(function (err) {
-                _this4.setState(function (prevState) {
-                    prevState.items = [];
-                });
+                if (err.statusText == 'abort') {
+                    return;
+                }
+                document.location.href = "/error";
             });
 
             return xhr;
@@ -919,9 +920,10 @@ var App = function (_React$Component) {
                     prevState.analysis = res;
                 });
             }).catch(function (err) {
-                _this4.setState(function (prevState) {
-                    prevState.analysisXHR = undefined;
-                });
+                if (err.statusText == 'abort') {
+                    return;
+                }
+                document.location.href = "/error";
             });
 
             return xhr;

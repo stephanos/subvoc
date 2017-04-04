@@ -62,9 +62,10 @@ class Search extends React.Component {
             });
         })
         .catch((err) => {
-            this.setState((prevState) => {
-                prevState.items = [];
-            });
+            if (err.statusText == 'abort') {
+                return;
+            }
+            document.location.href = "/error";
         });
 
         return xhr;

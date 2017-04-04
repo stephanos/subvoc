@@ -1,7 +1,6 @@
 import $ from 'jquery';
 import React from 'react';
 
-import { Error } from '../error.es6';
 import { Nav } from '../nav.es6';
 import { WordDetail } from './detail/detail.es6';
 import { WordList } from './list/list.es6';
@@ -30,7 +29,7 @@ class Analysis extends React.Component {
     }
 
     handleSelectPOS(POS) {
-        this.setState((prevState) => {
+        this.setState((prevState) => {  
             prevState.selection.POS = POS;
         });
     }

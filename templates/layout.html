@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>Use movies to discover new vocabulary</title>
+
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300italic,700,700italic">
+
+    {% assets "vendor-css" %}
+      <link href="{{ ASSET_URL }}" rel="stylesheet">
+    {% endassets %}
+
+    {% assets "app-css" %}
+      <link href="{{ ASSET_URL }}" rel="stylesheet">
+    {% endassets %}
+
+    {% assets "jquery-js" %}
+      <script src="{{ ASSET_URL }}"></script>
+    {% endassets %}
+
+    {% block header %}{% endblock %}
+  </head>
+
+  <body>
+
+    <main id="main" class="wrapper">
+
+      {% block body %}{% endblock %}
+      
+    </main>
+
+    <a class="github-fork-ribbon"
+       href="https://github.com/stephanos/subvoc" title="Fork me">Fork me</a>
+
+  </body>
+</html>

@@ -5,6 +5,7 @@ from web.routes.api_analysis import analysis_api
 from web.routes.api_search import search_api
 from web.routes.api_word import words_api
 from web.routes.bootstrap import bootstrap
+from web.routes.error import error
 
 from api.dictionary.wordnik import Wordnik
 from api.subtitle.opensubtitles import OpenSubtitles
@@ -42,9 +43,9 @@ def create_routes(app):
     def home_route():
         return bootstrap()
 
-    @app.route('/m/<id>')
-    def analysis_route(id):
-        return bootstrap()
+    @app.route('/error')
+    def error_route():
+        return error()
 
     @app.route('/api/search/<query>')
     def search_api_route(query):
