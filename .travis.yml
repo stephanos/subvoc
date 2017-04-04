@@ -2,6 +2,9 @@ language: python
 python:
   - "3.5"
 
+before_install:
+  - nvm install 6.10.2
+
 install:
   - pip install -r requirements.txt
   - pip install -r dev-requirements.txt
@@ -11,6 +14,8 @@ install:
 script:
   - flake8
   - pytest --cov
+  - npm install -g eslint
+  - eslint static/js/app/**/*.es6
 
 after_success:
   coveralls
