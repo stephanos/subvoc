@@ -7,7 +7,6 @@
 
     <meta name="description" content="">
     <meta name="author" content="">
-    <!--<link rel="icon" href="../../favicon.ico">-->
 
     <title>Use movies to discover new vocabulary</title>
 
@@ -17,11 +16,15 @@
       <link href="{{ ASSET_URL }}" rel="stylesheet">
     {% endassets %}
 
-    {% assets "layout-css" %}
+    {% assets "app-css" %}
       <link href="{{ ASSET_URL }}" rel="stylesheet">
     {% endassets %}
 
     {% assets "vendor-js" %}
+      <script src="{{ ASSET_URL }}"></script>
+    {% endassets %}
+
+    {% assets "app-js" %}
       <script src="{{ ASSET_URL }}"></script>
     {% endassets %}
 
@@ -31,16 +34,12 @@
   <body>
 
     <main id="main" class="wrapper">
-      <nav class="navigation">
-        <section class="container">
-          <a class="navigation-title" href="/">
-            <h1 class="title">subvoc</h1>
-          </a>
-        </section>
-      </nav>
-
+      
       <section class="container">
-        {% block content %}{% endblock %}
+        <div class="spinner big">
+          <div class="double-bounce1"></div>
+          <div class="double-bounce2"></div>
+        </div>
       </section>
     </main>
 

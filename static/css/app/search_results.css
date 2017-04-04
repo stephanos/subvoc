@@ -1,0 +1,42 @@
+.search .search-result-wrapper {
+    padding: 0 3rem 0 3rem;
+}
+
+.search-result {
+    margin-top: 2rem;
+    font-weight: normal;
+    margin-bottom: 1.5rem;
+}
+
+.search-result .empty {
+    margin-top: 1rem;
+}
+
+.search-result.slick-initialized {
+    visibility: visible;
+}
+
+.search-result .search-result-item {
+    color: #fff;
+    padding: 10px;
+    cursor: pointer;
+}
+
+.search-result .search-result-item .header .poster {
+    margin: 0 auto;
+    border-radius: .4rem;
+}
+
+.search-result .search-result-item .header .poster.empty {
+    background: rgba(255, 255, 255, 0.2);
+}
+
+.search-result .search-result-item .footer {
+    letter-spacing: 0rem;
+    padding: 1rem 0.5rem 0 0.5rem;
+}
+
+
+.slick-next, .slick-prev {
+    top: 35%;  /* align with poster */
+}

@@ -3,7 +3,7 @@ const Nav = ({ analysis, selection, onClick }) =>
         <section className='container'>
             <span className='navigation-title'>
                 <h1 className='title'>
-                    { selection.word
+                    { selection && selection.word
                         ? <div className='media' onClick={onClick}>
                             <span className="arrow left">&gt;</span>
                             <span className="name">{ analysis.media.title }</span>

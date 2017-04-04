@@ -1,26 +1,13 @@
 import $ from 'jquery';
 import React from 'react';
 
-import { Error } from './error.es6';
-import { Nav } from './nav.es6';
+import { Error } from '../error.es6';
+import { Nav } from '../nav.es6';
 import { WordDetail } from './detail/detail.es6';
 import { WordList } from './list/list.es6';
 
 
-function lookupWord(word) {
-    $.getJSON({url: `/api/words/${word.token}`})
-        .then((res) => {
-            this.setState((prevState) => {
-                prevState.selection.word.lookup = res;
-            });
-        })
-        .catch((err) => {
-            console.error(err); // eslint-disable-line
-        });
-}
-
-
-class App extends React.Component {
+class Analysis extends React.Component {
 
     constructor({ analysis }) {
         super();
@@ -30,7 +17,7 @@ class App extends React.Component {
             const wordMatch = $.grep(analysis.words, (w) => w.token === window.location.hash.replace('#', ''));
             if (wordMatch.length > 0) {
                 selectedWord = wordMatch[0];
-                lookupWord.bind(this)(selectedWord);
+                this.lookupWord(selectedWord);
             }
         }
         this.state = { selection: { difficulty: 3, POS: undefined, word: selectedWord } };
@@ -43,7 +30,7 @@ class App extends React.Component {
             prevState.listScrollPos = $(window).scrollTop();
             prevState.selection.word = word;
         });
-        lookupWord.bind(this)(word);
+        this.lookupWord(word);
     }
 
     handleSelectDifficulty(difficulty) {
@@ -80,31 +67,41 @@ class App extends React.Component {
 
     render() {
         const { analysis } = this.props;
-        return <div className="wrapper">
+        return <div>
             <Nav analysis={analysis}
                  selection={this.state.selection}
                  onClick={() => this.handleUnselectWord()} />
-
+            
             <section className='container'>
-                { analysis
-                    ? <div className='analysis'>
-                        { this.state.selection.word
-                            ? <WordDetail
-                                selection={this.state.selection}
-                                onSelectPOS={(p) => this.handleSelectPOS(p)} />
-                            : <WordList
-                                analysis={analysis}
-                                selection={this.state.selection}
-                                onSelectDifficulty={(d) => this.handleSelectDifficulty(d)}
-                                onSelectWord={(w) => this.handleSelectWord(w)} />
-                        }
-                    </div>
-                    : <Error />
-                }
+                <div className='analysis'>
+                    { this.state.selection.word
+                        ? <WordDetail
+                            selection={this.state.selection}
+                            onSelectPOS={(p) => this.handleSelectPOS(p)} />
+                        : <WordList
+                            analysis={analysis}
+                            selection={this.state.selection}
+                            onSelectDifficulty={(d) => this.handleSelectDifficulty(d)}
+                            onSelectWord={(w) => this.handleSelectWord(w)} />
+                    }
+                </div>
             </section>
         </div>;
+    }
+
+
+    lookupWord(word) {
+        $.getJSON({url: `/api/words/${word.token}`})
+            .then((res) => {
+                this.setState((prevState) => {
+                    prevState.selection.word.lookup = res;
+                });
+            })
+            .catch((err) => {
+                console.error(err); // eslint-disable-line
+            });
     }
 }
 
 
-export { App };
+export { Analysis };

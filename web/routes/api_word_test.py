@@ -2,7 +2,7 @@ from unittest.mock import MagicMock
 
 from api.dictionary.model import Attribution, WordLookup, WordDefinition
 from api.dictionary.wordnik import Wordnik
-from web.routes.word import words_api
+from web.routes.api_word import words_api
 
 
 def test_words_api():

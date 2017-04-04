@@ -1,0 +1,13 @@
+.search {
+    margin: 0 auto;
+    margin-top: 2.5rem;
+    max-width: 60rem;
+}
+
+.search .searchbar {
+    background-color: #fff;
+    font-size: 2rem;
+    height: 4rem;
+    line-height: 4rem;
+}
+

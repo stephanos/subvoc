@@ -5,8 +5,8 @@ import { WordListItem } from './list-item.es6';
 import { DifficultySelector } from './selector.es6';
 
 
-const Heading = ({ analysis }) => {
-    return <div>
+const Heading = ({ analysis }) =>
+    <div>
         <h2 className="media">
             <img className="poster" src={ analysis.media.poster_url } />
             <span className="title">
@@ -17,7 +17,6 @@ const Heading = ({ analysis }) => {
             <span className="badge">{ analysis.words.length }</span> unique words
         </div>
     </div>
-}
 
 
 const WordList = ({ analysis, selection, onSelectWord, onSelectDifficulty }) => {

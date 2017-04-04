@@ -1,26 +1,11 @@
-(function ($,React$1,ReactDOM) {
+(function (React$1,ReactDOM,$,classNames,Slider) {
 'use strict';
 
-$ = 'default' in $ ? $['default'] : $;
 React$1 = 'default' in React$1 ? React$1['default'] : React$1;
 ReactDOM = 'default' in ReactDOM ? ReactDOM['default'] : ReactDOM;
-
-var Error = function Error() {
-    return React.createElement(
-        "div",
-        { className: "error" },
-        React.createElement(
-            "div",
-            null,
-            "Unable to analyse movie :("
-        ),
-        React.createElement(
-            "div",
-            null,
-            "Sorry!"
-        )
-    );
-};
+$ = 'default' in $ ? $['default'] : $;
+classNames = 'default' in classNames ? classNames['default'] : classNames;
+Slider = 'default' in Slider ? Slider['default'] : Slider;
 
 var Nav = function Nav(_ref) {
     var analysis = _ref.analysis,
@@ -38,7 +23,7 @@ var Nav = function Nav(_ref) {
                 React.createElement(
                     'h1',
                     { className: 'title' },
-                    selection.word ? React.createElement(
+                    selection && selection.word ? React.createElement(
                         'div',
                         { className: 'media', onClick: onClick },
                         React.createElement(
@@ -139,6 +124,101 @@ var WordExcerptList = function WordExcerptList(_ref2) {
     );
 };
 
+var WordPartOfSpeachHeader = function WordPartOfSpeachHeader(_ref) {
+    var active = _ref.active,
+        enabled = _ref.enabled,
+        label = _ref.label,
+        freq = _ref.freq,
+        onSelectPOS = _ref.onSelectPOS;
+
+    var classNames$$1 = 'tab card ' + (enabled ? '' : 'empty') + ' ' + (active ? 'active' : '');
+    return React$1.createElement(
+        'div',
+        { onClick: function onClick() {
+                return enabled ? onSelectPOS(label) : null;
+            }, className: classNames$$1 },
+        React$1.createElement(
+            'div',
+            { className: 'label' },
+            label
+        ),
+        freq ? React$1.createElement(
+            'div',
+            { className: 'count badge' },
+            freq
+        ) : React$1.createElement(
+            'div',
+            { className: 'count' },
+            '\xA0'
+        )
+    );
+};
+
+var PARTS_OF_SPEACH = ['noun', 'verb', 'adj', 'adv'];
+
+function getExcerpts(word, pos) {
+    return (word.byPOS[pos] || {}).excerpts || [];
+}
+
+function getFreq(word, pos) {
+    return (word.byPOS[pos] || {}).freq || 0;
+}
+
+function getDefinitions(word, pos) {
+    return word.lookup[pos] || [];
+}
+
+function hasDetails(word, pos) {
+    return getDefinitions(word, pos).length > 0 || getExcerpts(word, pos).length > 0;
+}
+
+var WordDetailBody = function WordDetailBody(_ref) {
+    var selection = _ref.selection,
+        onSelectPOS = _ref.onSelectPOS;
+
+    var selectedPOS = selection.POS || $.grep(PARTS_OF_SPEACH, function (pos) {
+        return getExcerpts(selection.word, pos).length > 0;
+    })[0];
+
+    return React$1.createElement(
+        'div',
+        null,
+        React$1.createElement(
+            'header',
+            { className: 'tab-group' },
+            $.map(PARTS_OF_SPEACH, function (pos) {
+                return React$1.createElement(WordPartOfSpeachHeader, {
+                    key: pos,
+                    active: selectedPOS === pos,
+                    enabled: hasDetails(selection.word, pos),
+                    label: pos,
+                    freq: getFreq(selection.word, pos),
+                    onSelectPOS: onSelectPOS });
+            })
+        ),
+        React$1.createElement(
+            'section',
+            null,
+            React$1.createElement(WordExcerptList, { excerpts: getExcerpts(selection.word, selectedPOS) })
+        ),
+        React$1.createElement(
+            'section',
+            null,
+            React$1.createElement(WordDefinitionList, { definitions: getDefinitions(selection.word, selectedPOS) })
+        )
+    );
+};
+
+var Spinner = function Spinner(_ref) {
+    var big = _ref.big;
+    return React.createElement(
+        "div",
+        { className: classNames("spinner", { big: big }) },
+        React.createElement("div", { className: "double-bounce1" }),
+        React.createElement("div", { className: "double-bounce2" })
+    );
+};
+
 var classCallCheck = function (instance, Constructor) {
   if (!(instance instanceof Constructor)) {
     throw new TypeError("Cannot call a class as a function");
@@ -203,114 +283,6 @@ var possibleConstructorReturn = function (self, call) {
   }
 
   return call && (typeof call === "object" || typeof call === "function") ? call : self;
-};
-
-var WordPartOfSpeachHeader = function (_React$Component) {
-    inherits(WordPartOfSpeachHeader, _React$Component);
-
-    function WordPartOfSpeachHeader() {
-        classCallCheck(this, WordPartOfSpeachHeader);
-        return possibleConstructorReturn(this, (WordPartOfSpeachHeader.__proto__ || Object.getPrototypeOf(WordPartOfSpeachHeader)).apply(this, arguments));
-    }
-
-    createClass(WordPartOfSpeachHeader, [{
-        key: 'render',
-        value: function render() {
-            var _props = this.props,
-                active = _props.active,
-                enabled = _props.enabled,
-                label = _props.label,
-                freq = _props.freq,
-                onSelectPOS = _props.onSelectPOS;
-
-            var classNames = 'tab card ' + (enabled ? '' : 'empty') + ' ' + (active ? 'active' : '');
-            return React$1.createElement(
-                'div',
-                { onClick: function onClick() {
-                        return enabled ? onSelectPOS(label) : null;
-                    }, className: classNames },
-                React$1.createElement(
-                    'div',
-                    { className: 'label' },
-                    label
-                ),
-                freq ? React$1.createElement(
-                    'div',
-                    { className: 'count badge' },
-                    freq
-                ) : React$1.createElement(
-                    'div',
-                    { className: 'count' },
-                    '\xA0'
-                )
-            );
-        }
-    }]);
-    return WordPartOfSpeachHeader;
-}(React$1.Component);
-
-var PARTS_OF_SPEACH = ['noun', 'verb', 'adj', 'adv'];
-
-function getExcerpts(word, pos) {
-    return (word.byPOS[pos] || {}).excerpts || [];
-}
-
-function getFreq(word, pos) {
-    return (word.byPOS[pos] || {}).freq || 0;
-}
-
-function getDefinitions(word, pos) {
-    return word.lookup[pos] || [];
-}
-
-function hasDetails(word, pos) {
-    return getDefinitions(word, pos).length > 0 || getExcerpts(word, pos).length > 0;
-}
-
-var WordDetailBody = function WordDetailBody(_ref) {
-    var selection = _ref.selection,
-        onSelectPOS = _ref.onSelectPOS;
-
-    var selectedPOS = selection.POS || $.grep(PARTS_OF_SPEACH, function (pos) {
-        return getExcerpts(selection.word, pos).length > 0;
-    })[0];
-
-    return React$1.createElement(
-        'div',
-        null,
-        React$1.createElement(
-            'header',
-            { className: 'tab-group' },
-            $.map(PARTS_OF_SPEACH, function (pos) {
-                return React$1.createElement(WordPartOfSpeachHeader, {
-                    key: pos,
-                    active: selectedPOS === pos,
-                    enabled: hasDetails(selection.word, pos),
-                    label: pos,
-                    freq: getFreq(selection.word, pos),
-                    onSelectPOS: onSelectPOS });
-            })
-        ),
-        React$1.createElement(
-            'section',
-            null,
-            React$1.createElement(WordExcerptList, { excerpts: getExcerpts(selection.word, selectedPOS) })
-        ),
-        React$1.createElement(
-            'section',
-            null,
-            React$1.createElement(WordDefinitionList, { definitions: getDefinitions(selection.word, selectedPOS) })
-        )
-    );
-};
-
-var Spinner = function Spinner() {
-    return React$1.createElement(
-        "div",
-        { className: "spinner" },
-        React$1.createElement("div", { className: "double-bounce1" }),
-        React$1.createElement("div", { className: "double-bounce2" })
-    );
 };
 
 var WordDetail = function (_React$Component) {
@@ -411,10 +383,10 @@ var DifficultyGroup = function DifficultyGroup(_ref) {
         active = _ref.active,
         onSelect = _ref.onSelect;
 
-    var classNames = 'group card ' + (active ? 'active' : '');
+    var classNames$$1 = 'group card ' + (active ? 'active' : '');
     return React$1.createElement(
         'div',
-        { className: classNames, onClick: function onClick() {
+        { className: classNames$$1, onClick: function onClick() {
                 return onSelect(level);
             } },
         React$1.createElement(
@@ -461,7 +433,6 @@ var DifficultySelector = function DifficultySelector(_ref2) {
 
 var Heading = function Heading(_ref) {
     var analysis = _ref.analysis;
-
     return React$1.createElement(
         'div',
         null,
@@ -521,26 +492,14 @@ var WordList = function WordList(_ref2) {
     );
 };
 
-function lookupWord(word) {
-    var _this = this;
+var Analysis = function (_React$Component) {
+    inherits(Analysis, _React$Component);
 
-    $.getJSON({ url: '/api/words/' + word.token }).then(function (res) {
-        _this.setState(function (prevState) {
-            prevState.selection.word.lookup = res;
-        });
-    }).catch(function (err) {
-        console.error(err); // eslint-disable-line
-    });
-}
-
-var App = function (_React$Component) {
-    inherits(App, _React$Component);
-
-    function App(_ref) {
+    function Analysis(_ref) {
         var analysis = _ref.analysis;
-        classCallCheck(this, App);
+        classCallCheck(this, Analysis);
 
-        var _this2 = possibleConstructorReturn(this, (App.__proto__ || Object.getPrototypeOf(App)).call(this));
+        var _this = possibleConstructorReturn(this, (Analysis.__proto__ || Object.getPrototypeOf(Analysis)).call(this));
 
         var selectedWord = undefined;
         if (analysis) {
@@ -549,14 +508,14 @@ var App = function (_React$Component) {
             });
             if (wordMatch.length > 0) {
                 selectedWord = wordMatch[0];
-                lookupWord.bind(_this2)(selectedWord);
+                _this.lookupWord(selectedWord);
             }
         }
-        _this2.state = { selection: { difficulty: 3, POS: undefined, word: selectedWord } };
-        return _this2;
+        _this.state = { selection: { difficulty: 3, POS: undefined, word: selectedWord } };
+        return _this;
     }
 
-    createClass(App, [{
+    createClass(Analysis, [{
         key: 'handleSelectWord',
         value: function handleSelectWord(word) {
             window.history.pushState(null, '' + word.token, window.location.pathname + '#' + word.token);
@@ -564,7 +523,7 @@ var App = function (_React$Component) {
                 prevState.listScrollPos = $(window).scrollTop();
                 prevState.selection.word = word;
             });
-            lookupWord.bind(this)(word);
+            this.lookupWord(word);
         }
     }, {
         key: 'handleSelectDifficulty',
@@ -605,64 +564,387 @@ var App = function (_React$Component) {
     }, {
         key: 'render',
         value: function render() {
-            var _this3 = this;
+            var _this2 = this;
 
             var analysis = this.props.analysis;
 
             return React$1.createElement(
                 'div',
-                { className: 'wrapper' },
+                null,
                 React$1.createElement(Nav, { analysis: analysis,
                     selection: this.state.selection,
                     onClick: function onClick() {
-                        return _this3.handleUnselectWord();
+                        return _this2.handleUnselectWord();
                     } }),
                 React$1.createElement(
                     'section',
                     { className: 'container' },
-                    analysis ? React$1.createElement(
+                    React$1.createElement(
                         'div',
                         { className: 'analysis' },
                         this.state.selection.word ? React$1.createElement(WordDetail, {
                             selection: this.state.selection,
                             onSelectPOS: function onSelectPOS(p) {
-                                return _this3.handleSelectPOS(p);
+                                return _this2.handleSelectPOS(p);
                             } }) : React$1.createElement(WordList, {
                             analysis: analysis,
                             selection: this.state.selection,
                             onSelectDifficulty: function onSelectDifficulty(d) {
-                                return _this3.handleSelectDifficulty(d);
+                                return _this2.handleSelectDifficulty(d);
                             },
                             onSelectWord: function onSelectWord(w) {
-                                return _this3.handleSelectWord(w);
+                                return _this2.handleSelectWord(w);
                             } })
-                    ) : React$1.createElement(Error, null)
+                    )
                 )
             );
+        }
+    }, {
+        key: 'lookupWord',
+        value: function lookupWord(word) {
+            var _this3 = this;
+
+            $.getJSON({ url: '/api/words/' + word.token }).then(function (res) {
+                _this3.setState(function (prevState) {
+                    prevState.selection.word.lookup = res;
+                });
+            }).catch(function (err) {
+                console.error(err); // eslint-disable-line
+            });
+        }
+    }]);
+    return Analysis;
+}(React$1.Component);
+
+var Intro = function Intro() {
+  return React.createElement(
+    "div",
+    { className: "step-by-step" },
+    React.createElement(
+      "ol",
+      null,
+      React.createElement(
+        "li",
+        null,
+        React.createElement(
+          "span",
+          null,
+          React.createElement(
+            "strong",
+            null,
+            "search"
+          ),
+          " for a movie"
+        )
+      ),
+      React.createElement(
+        "li",
+        null,
+        React.createElement(
+          "span",
+          null,
+          React.createElement(
+            "strong",
+            null,
+            "browse"
+          ),
+          " its vocabulary"
+        )
+      ),
+      React.createElement(
+        "li",
+        null,
+        React.createElement(
+          "span",
+          null,
+          React.createElement(
+            "strong",
+            null,
+            "learn"
+          ),
+          " new words"
+        )
+      )
+    )
+  );
+};
+
+var SearchBar = function SearchBar(_ref) {
+    var onSearch = _ref.onSearch;
+
+    var debouncedSearch = $.debounce(500, function (e) {
+        return onSearch(e.target.value);
+    });
+
+    return React.createElement(
+        "div",
+        { className: "search" },
+        React.createElement("div", { className: "search-input" }),
+        React.createElement(
+            "div",
+            { className: "search-wrapper" },
+            React.createElement("input", { type: "text",
+                className: "searchbar",
+                name: "q",
+                autoFocus: true,
+                autoComplete: "off",
+                onChange: function onChange(e) {
+                    e.persist();
+                    debouncedSearch(e);
+                },
+                placeholder: "Search movie ..." })
+        )
+    );
+};
+
+var Attribution = function Attribution() {
+    return React.createElement(
+        "footer",
+        { className: "credit" },
+        "Posters provided by ",
+        React.createElement(
+            "a",
+            { href: "https://fanart.tv" },
+            "fanart.tv"
+        )
+    );
+};
+
+var SearchResultItem = function SearchResultItem(_ref) {
+    var item = _ref.item,
+        onSelect = _ref.onSelect;
+    return React.createElement(
+        'div',
+        { className: 'search-result-item', onClick: function onClick() {
+                return onSelect(item.id);
+            } },
+        React.createElement(
+            'a',
+            { className: 'header' },
+            item.poster_url ? React.createElement('img', { className: 'poster', src: item.poster_url }) : React.createElement('img', { className: 'poster empty', src: '/static/img/placeholder.png' })
+        ),
+        React.createElement(
+            'div',
+            { className: 'footer' },
+            item.title
+        )
+    );
+};
+
+var SearchResults = function SearchResults(_ref2) {
+    var items = _ref2.items,
+        onSelect = _ref2.onSelect;
+
+    var slickSettings = {
+        'infinite': false,
+        'slidesToShow': 4,
+        'slidesToScroll': 4,
+        'responsive': [{
+            'breakpoint': 1024,
+            'settings': {
+                'slidesToShow': 4,
+                'slidesToScroll': 4
+            }
+        }, {
+            'breakpoint': 600,
+            'settings': {
+                'slidesToShow': 3,
+                'slidesToScroll': 3
+            }
+        }, {
+            'breakpoint': 480,
+            'settings': {
+                'slidesToShow': 2,
+                'slidesToScroll': 2
+            }
+        }]
+    };
+
+    return React.createElement(
+        'div',
+        null,
+        React.createElement(
+            'div',
+            { className: 'search-result-wrapper' },
+            React.createElement(
+                'div',
+                { className: 'search-result' },
+                items.length === 0 ? React.createElement(
+                    'div',
+                    { className: 'empty' },
+                    ' No movie was found. '
+                ) : React.createElement(
+                    Slider,
+                    slickSettings,
+                    $.map(items, function (item) {
+                        return React.createElement(
+                            'div',
+                            { key: item.id },
+                            React.createElement(SearchResultItem, { item: item, onSelect: onSelect })
+                        );
+                    })
+                )
+            )
+        ),
+        items.length !== 0 ? React.createElement(Attribution, null) : React.createElement('span', null)
+    );
+};
+
+var Search = function (_React$Component) {
+    inherits(Search, _React$Component);
+
+    function Search() {
+        classCallCheck(this, Search);
+
+        var _this = possibleConstructorReturn(this, (Search.__proto__ || Object.getPrototypeOf(Search)).call(this));
+
+        _this.state = { items: undefined };
+        return _this;
+    }
+
+    createClass(Search, [{
+        key: 'handleSearch',
+        value: function handleSearch(query) {
+            var _this2 = this;
+
+            this.setState(function (prevState) {
+                if (prevState.searchXHR) {
+                    prevState.searchXHR.abort();
+                }
+
+                prevState.searchXHR = _this2.searchMovie(query);
+            });
+        }
+    }, {
+        key: 'render',
+        value: function render() {
+            var _this3 = this;
+
+            var onSelect = this.props.onSelect;
+
+            return React$1.createElement(
+                'div',
+                null,
+                React$1.createElement(Nav, null),
+                React$1.createElement(
+                    'section',
+                    { className: 'container' },
+                    React$1.createElement(
+                        'h1',
+                        { className: 'heading' },
+                        'Use movies to discover new vocabulary.'
+                    ),
+                    React$1.createElement(SearchBar, { onSearch: function onSearch(q) {
+                            return _this3.handleSearch(q);
+                        } }),
+                    this.state.searchXHR ? React$1.createElement(Spinner, { big: true }) : this.state.items === undefined ? React$1.createElement(Intro, null) : React$1.createElement(SearchResults, { items: this.state.items,
+                        onSelect: onSelect })
+                )
+            );
+        }
+    }, {
+        key: 'searchMovie',
+        value: function searchMovie(query) {
+            var _this4 = this;
+
+            if ($.trim(query) === '') {
+                return;
+            }
+
+            var xhr = $.getJSON({
+                url: '/api/search/' + query
+            });
+
+            xhr.then(function (res) {
+                _this4.setState(function (prevState) {
+                    prevState.searchXHR = undefined;
+                    prevState.items = res;
+                });
+            }).catch(function (err) {
+                _this4.setState(function (prevState) {
+                    prevState.items = [];
+                });
+            });
+
+            return xhr;
+        }
+    }]);
+    return Search;
+}(React$1.Component);
+
+var App = function (_React$Component) {
+    inherits(App, _React$Component);
+
+    function App() {
+        classCallCheck(this, App);
+
+        var _this = possibleConstructorReturn(this, (App.__proto__ || Object.getPrototypeOf(App)).call(this));
+
+        _this.state = {};
+        // const imdbId = window.location.pathname.split('/').slice(-1)[0];
+        return _this;
+    }
+
+    createClass(App, [{
+        key: 'handleSelection',
+        value: function handleSelection(movieId) {
+            var _this2 = this;
+
+            this.setState(function (prevState) {
+                if (prevState.analysisXHR) {
+                    prevState.analysisXHR.abort();
+                }
+
+                prevState.analysisXHR = _this2.loadAnalysis(movieId);
+            });
+        }
+    }, {
+        key: 'render',
+        value: function render() {
+            var _this3 = this;
+
+            return React$1.createElement(
+                'div',
+                null,
+                this.state.analysisXHR ? React$1.createElement(
+                    'div',
+                    null,
+                    React$1.createElement(Nav, null),
+                    React$1.createElement(Spinner, { big: true })
+                ) : this.state.analysis ? React$1.createElement(Analysis, { analysis: this.state.analysis }) : React$1.createElement(Search, { onSelect: function onSelect(id) {
+                        return _this3.handleSelection(id);
+                    } })
+            );
+        }
+    }, {
+        key: 'loadAnalysis',
+        value: function loadAnalysis(imdbId) {
+            var _this4 = this;
+
+            var xhr = $.getJSON({
+                url: '/api/analysis/' + imdbId
+            });
+
+            xhr.then(function (res) {
+                _this4.setState(function (prevState) {
+                    prevState.analysisXHR = undefined;
+                    prevState.analysis = res;
+                });
+            }).catch(function (err) {
+                _this4.setState(function (prevState) {
+                    prevState.analysisXHR = undefined;
+                });
+            });
+
+            return xhr;
         }
     }]);
     return App;
 }(React$1.Component);
 
-function loadAnalysis() {
-    var imdbId = window.location.pathname.split('/').slice(-1)[0];
-    return $.getJSON({
-        url: '/api/analysis/' + imdbId
-    });
-}
-
-function renderApp(analysis) {
-    var container = document.getElementById('main');
-    ReactDOM.render(React$1.createElement(App, { analysis: analysis }), container);
-}
-
 window.onload = function () {
-    loadAnalysis().then(function (analysis) {
-        return renderApp(analysis);
-    }).catch(function (err) {
-        console.error(err); // eslint-disable-line
-        renderApp(null);
-    });
+    var container = document.getElementById('main');
+    ReactDOM.render(React$1.createElement(App, null), container);
 };
 
-}($,React,ReactDOM));
+}(React,ReactDOM,$,classNames,Slider));

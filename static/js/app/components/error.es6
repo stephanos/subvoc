@@ -1,7 +1,7 @@
 const Error = () =>
     <div className="error">
         <div>
-            Unable to analyse movie :(
+            There was an unexpected error :(
         </div>
         <div>
             Sorry!

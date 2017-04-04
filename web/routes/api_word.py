@@ -4,7 +4,7 @@ from collections import OrderedDict
 from flask import Response
 
 
-def lookup_to_json(lookup):
+def to_json(lookup):
     data = OrderedDict([
         ('attribution', OrderedDict([
             ('text', lookup.attribution.text),
@@ -23,5 +23,5 @@ def lookup_to_json(lookup):
 
 def words_api(dictionary_api, token):
     lookup = dictionary_api.lookup(token)
-    data = lookup_to_json(lookup)
+    data = to_json(lookup)
     return Response(response=data, status=200, mimetype='application/json')

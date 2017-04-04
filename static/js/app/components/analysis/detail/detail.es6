@@ -3,7 +3,7 @@ import React from 'react';
 
 import { WordDetailBody } from './body.es6';
 
-import { Spinner } from '../util/spinner.es6';
+import { Spinner } from '../../util/spinner.es6';
 
 
 class WordDetail extends React.Component {

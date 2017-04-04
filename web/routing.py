@@ -1,9 +1,10 @@
 import os
 import jinja2
 
-from web.routes.analysis import analysis_api, analysis_page
-from web.routes.home import home
-from web.routes.word import words_api
+from web.routes.api_analysis import analysis_api
+from web.routes.api_search import search_api
+from web.routes.api_word import words_api
+from web.routes.bootstrap import bootstrap
 
 from api.dictionary.wordnik import Wordnik
 from api.subtitle.opensubtitles import OpenSubtitles
@@ -39,11 +40,15 @@ def create_routes(app):
 
     @app.route('/')
     def home_route():
-        return home(searcher)
+        return bootstrap()
 
     @app.route('/m/<id>')
-    def analysis_page_route(id):
-        return analysis_page(subtitle_api, id)
+    def analysis_route(id):
+        return bootstrap()
+
+    @app.route('/api/search/<query>')
+    def search_api_route(query):
+        return search_api(searcher, query)
 
     @app.route('/api/analysis/<id>')
     def analysis_api_route(id):
