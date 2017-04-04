@@ -24,7 +24,16 @@
       <script src="{{ ASSET_URL }}"></script>
     {% endassets %}
 
-    {% assets "react-js" %}
+    {% if config['DEBUG'] %}
+      {% assets "react-js" %}
+        <script src="{{ ASSET_URL }}"></script>
+      {% endassets %}
+    {% else %}  
+      <script src="https://unpkg.com/react@15/dist/react.min.js"></script>
+      <script src="https://unpkg.com/react-dom@15/dist/react-dom.min.js"></script>
+    {% endif %}
+
+    {% assets "react-util-js" %}
       <script src="{{ ASSET_URL }}"></script>
     {% endassets %}
 
