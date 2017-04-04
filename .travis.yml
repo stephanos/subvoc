@@ -14,8 +14,7 @@ install:
 script:
   - flake8
   - pytest --cov
-  - npm install -g eslint
   - eslint static/js/app/**/*.es6
 
 after_success:
-  coveralls
+  - coveralls

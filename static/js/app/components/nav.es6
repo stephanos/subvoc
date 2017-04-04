@@ -15,7 +15,7 @@ const Nav = ({ analysis, selection, onClick }) =>
                 </h1>
             </span>
         </section>
-    </nav>
+    </nav>;
 
 
-export { Nav }
+export { Nav };

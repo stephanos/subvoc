@@ -43,7 +43,7 @@ class App extends React.Component {
     loadAnalysis(imdbId) {
         const xhr = $.getJSON({
             url: `/api/analysis/${imdbId}`,
-        })
+        });
 
         xhr.then((res) => {
             this.setState((prevState) => {
