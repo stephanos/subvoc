@@ -501,24 +501,13 @@ var Analysis = function (_React$Component) {
 
         var _this = possibleConstructorReturn(this, (Analysis.__proto__ || Object.getPrototypeOf(Analysis)).call(this));
 
-        var selectedWord = undefined;
-        if (analysis) {
-            var wordMatch = $.grep(analysis.words, function (w) {
-                return w.token === window.location.hash.replace('#', '');
-            });
-            if (wordMatch.length > 0) {
-                selectedWord = wordMatch[0];
-                _this.lookupWord(selectedWord);
-            }
-        }
-        _this.state = { selection: { difficulty: 3, POS: undefined, word: selectedWord } };
+        _this.state = { selection: { difficulty: 3, POS: undefined, word: undefined } };
         return _this;
     }
 
     createClass(Analysis, [{
         key: 'handleSelectWord',
         value: function handleSelectWord(word) {
-            window.history.pushState(null, '' + word.token, window.location.pathname + '#' + word.token);
             this.setState(function (prevState) {
                 prevState.listScrollPos = $(window).scrollTop();
                 prevState.selection.word = word;
@@ -881,7 +870,6 @@ var App = function (_React$Component) {
         var _this = possibleConstructorReturn(this, (App.__proto__ || Object.getPrototypeOf(App)).call(this));
 
         _this.state = {};
-        // const imdbId = window.location.pathname.split('/').slice(-1)[0];
         return _this;
     }
 

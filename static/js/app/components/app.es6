@@ -12,7 +12,6 @@ class App extends React.Component {
     constructor() {
         super();
         this.state = {};
-        // const imdbId = window.location.pathname.split('/').slice(-1)[0];
     }
 
 

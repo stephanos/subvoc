@@ -11,21 +11,11 @@ class Analysis extends React.Component {
 
     constructor({ analysis }) {
         super();
-
-        let selectedWord = undefined;
-        if (analysis) {
-            const wordMatch = $.grep(analysis.words, (w) => w.token === window.location.hash.replace('#', ''));
-            if (wordMatch.length > 0) {
-                selectedWord = wordMatch[0];
-                this.lookupWord(selectedWord);
-            }
-        }
-        this.state = { selection: { difficulty: 3, POS: undefined, word: selectedWord } };
+        this.state = { selection: { difficulty: 3, POS: undefined, word: undefined } };
     }
 
 
     handleSelectWord(word) {
-        window.history.pushState(null, `${word.token}`, window.location.pathname + '#' + word.token);
         this.setState((prevState) => {
             prevState.listScrollPos = $(window).scrollTop();
             prevState.selection.word = word;
