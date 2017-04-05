@@ -847,7 +847,7 @@ var Search = function (_React$Component) {
             xhr.then(function (res) {
                 _this4.setState(function (prevState) {
                     prevState.searchXHR = undefined;
-                    prevState.items = res;
+                    prevState.items = res.hits;
                 });
             }).catch(function (err) {
                 if (err.statusText == 'abort') {

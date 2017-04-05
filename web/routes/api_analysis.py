@@ -1,12 +1,4 @@
-import simplejson as json
-
-from flask import render_template, Response
-
 from domain.analyse import Word
-
-
-def analysis_page(subtitle_api, id):
-    return render_template('analysis.html')
 
 
 def analysis_api(analyser, poster_api, id):
@@ -43,14 +35,10 @@ def analysis_api(analyser, poster_api, id):
             'token': token,
         }
 
-    data = json.dumps({
+    return {
         'media': {
             'title': subtitle.media.title,
             'poster_url': poster_url,
         },
         'words': (token_to_dict(token) for token in analysis.token_with_difficulty.keys())
-    }, iterable_as_array=True)
-
-    return Response(status=200,
-                    response=data,
-                    mimetype='application/json')
+    }

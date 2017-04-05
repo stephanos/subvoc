@@ -58,7 +58,7 @@ class Search extends React.Component {
         xhr.then((res) => {
             this.setState((prevState) => {
                 prevState.searchXHR = undefined;
-                prevState.items = res;
+                prevState.items = res.hits;
             });
         })
         .catch((err) => {

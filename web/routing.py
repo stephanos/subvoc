@@ -1,6 +1,8 @@
 import os
 import jinja2
 
+from flask_json import as_json
+
 from web.routes.api_analysis import analysis_api
 from web.routes.api_search import search_api
 from web.routes.api_word import words_api
@@ -48,13 +50,16 @@ def create_routes(app):
         return error()
 
     @app.route('/api/search/<query>')
+    @as_json
     def search_api_route(query):
         return search_api(searcher, query)
 
     @app.route('/api/analysis/<id>')
+    @as_json
     def analysis_api_route(id):
         return analysis_api(analyser, poster_api, id)
 
     @app.route('/api/words/<token>')
+    @as_json
     def words_api_route(token):
         return words_api(wordnik_api, token)
