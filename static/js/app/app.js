@@ -593,13 +593,20 @@ var Analysis = function (_React$Component) {
         value: function lookupWord(word) {
             var _this3 = this;
 
-            $.getJSON({ url: '/api/words/' + word.token }).then(function (res) {
+            var xhr = $.getJSON({
+                url: '/api/words/' + word.token,
+                error: function error(xhr, status, err) {
+                    console.error(err); // eslint-disable-line
+                }
+            });
+
+            xhr.then(function (res) {
                 _this3.setState(function (prevState) {
                     prevState.selection.word.lookup = res;
                 });
-            }).catch(function (err) {
-                console.error(err); // eslint-disable-line
             });
+
+            return xhr;
         }
     }]);
     return Analysis;
@@ -841,7 +848,10 @@ var Search = function (_React$Component) {
             }
 
             var xhr = $.getJSON({
-                url: '/api/search/' + query
+                url: '/api/search/' + query,
+                error: function error(xhr, status, err) {
+                    console.error(err); // eslint-disable-line
+                }
             });
 
             xhr.then(function (res) {
@@ -850,7 +860,7 @@ var Search = function (_React$Component) {
                     prevState.items = res.hits;
                 });
             }).catch(function (err) {
-                if (err.statusText == 'abort') {
+                if (err.statusText === 'abort') {
                     return;
                 }
                 document.location.href = "/error";
@@ -911,7 +921,10 @@ var App = function (_React$Component) {
             var _this4 = this;
 
             var xhr = $.getJSON({
-                url: '/api/analysis/' + imdbId
+                url: '/api/analysis/' + imdbId,
+                error: function error(xhr, status, err) {
+                    console.error(err); // eslint-disable-line
+                }
             });
 
             xhr.then(function (res) {
@@ -920,7 +933,7 @@ var App = function (_React$Component) {
                     prevState.analysis = res;
                 });
             }).catch(function (err) {
-                if (err.statusText == 'abort') {
+                if (err.statusText === 'abort') {
                     return;
                 }
                 document.location.href = "/error";

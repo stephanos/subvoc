@@ -42,6 +42,9 @@ class App extends React.Component {
     loadAnalysis(imdbId) {
         const xhr = $.getJSON({
             url: `/api/analysis/${imdbId}`,
+            error: function (xhr, status, err) {
+                console.error(err); // eslint-disable-line
+            },
         });
 
         xhr.then((res) => {
@@ -51,7 +54,7 @@ class App extends React.Component {
             });
         })
         .catch((err) => {
-            if (err.statusText == 'abort') {
+            if (err.statusText === 'abort') {
                 return;
             }
             document.location.href = "/error";

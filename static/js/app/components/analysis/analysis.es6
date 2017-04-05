@@ -80,15 +80,20 @@ class Analysis extends React.Component {
 
 
     lookupWord(word) {
-        $.getJSON({url: `/api/words/${word.token}`})
-            .then((res) => {
-                this.setState((prevState) => {
-                    prevState.selection.word.lookup = res;
-                });
-            })
-            .catch((err) => {
+        const xhr = $.getJSON({
+            url: `/api/words/${word.token}`,
+            error: function (xhr, status, err) {
                 console.error(err); // eslint-disable-line
+            },
+        })
+            
+        xhr.then((res) => {
+            this.setState((prevState) => {
+                prevState.selection.word.lookup = res;
             });
+        })
+
+        return xhr;
     }
 }
 

@@ -53,6 +53,9 @@ class Search extends React.Component {
 
         const xhr = $.getJSON({
             url: `/api/search/${query}`,
+            error: function (xhr, status, err) {
+                console.error(err); // eslint-disable-line
+            },
         });
 
         xhr.then((res) => {
@@ -62,7 +65,7 @@ class Search extends React.Component {
             });
         })
         .catch((err) => {
-            if (err.statusText == 'abort') {
+            if (err.statusText === 'abort') {
                 return;
             }
             document.location.href = "/error";
