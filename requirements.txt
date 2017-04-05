@@ -4,8 +4,8 @@ flask==0.12.1
 Flask-Assets==0.12
 Flask-JSON==0.3.0
 gunicorn==19.7.1
-grequests == 0.3.0
 nltk==3.2.2
 retrying==1.3.3
+requests==2.13.0
 simplejson==3.10.0
 srt==1.3.0

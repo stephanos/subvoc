@@ -71,9 +71,8 @@ class Analyser:
 
         analysis = Analysis()
         sentences = self.parser.parse(subtitle.text)
-        for i, sentence in enumerate(sentences):
-            tokens = self.tokenizer.words(sentence.text)
-
+        tokens_by_sentence = self.tokenizer.words((s.text for s in sentences))
+        for i, tokens in enumerate(tokens_by_sentence):
             for token, token_POS in tokens:
                 if token.lower() == 'subtitle' or not token.isalpha():
                     continue

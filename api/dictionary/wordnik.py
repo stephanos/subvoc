@@ -1,5 +1,5 @@
-from urllib.parse import urlencode
 from collections import OrderedDict
+from urllib.parse import urlencode
 
 from api.dictionary.model import Attribution, WordDefinition, WordLookup
 from api.helper import Fetcher
