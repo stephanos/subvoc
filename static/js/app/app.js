@@ -1,9 +1,9 @@
-(function (React$1,ReactDOM,$$1,classNames,Slider) {
+(function (React$1,ReactDOM,$,classNames,Slider) {
 'use strict';
 
 React$1 = 'default' in React$1 ? React$1['default'] : React$1;
 ReactDOM = 'default' in ReactDOM ? ReactDOM['default'] : ReactDOM;
-$$1 = 'default' in $$1 ? $$1['default'] : $$1;
+$ = 'default' in $ ? $['default'] : $;
 classNames = 'default' in classNames ? classNames['default'] : classNames;
 Slider = 'default' in Slider ? Slider['default'] : Slider;
 
@@ -79,30 +79,30 @@ var API = function () {
     }
 
     createClass(API, null, [{
-        key: "lookupWord",
+        key: 'lookupWord',
         value: function lookupWord(word) {
             return $.getJSON({
-                url: "/api/words/" + word.token,
+                url: '/api/words/' + word.token,
                 error: function error(xhr, status, err) {
                     console.error(err); // eslint-disable-line
                 }
             });
         }
     }, {
-        key: "loadAnalysis",
+        key: 'loadAnalysis',
         value: function loadAnalysis(imdbId) {
             return $.getJSON({
-                url: "/api/analysis/" + imdbId,
+                url: '/api/analysis/' + imdbId,
                 error: function error(xhr, status, err) {
                     console.error(err); // eslint-disable-line
                 }
             });
         }
     }, {
-        key: "searchMovie",
+        key: 'searchMovie',
         value: function searchMovie(query) {
             return $.getJSON({
-                url: "/api/search/" + query,
+                url: '/api/search/' + query,
                 error: function error(xhr, status, err) {
                     console.error(err); // eslint-disable-line
                 }
@@ -168,7 +168,7 @@ var WordDefinitionList = function WordDefinitionList(_ref) {
             React$1.createElement(
                 'ol',
                 null,
-                $$1.map(definitions, function (entry, idx) {
+                $.map(definitions, function (entry, idx) {
                     return React$1.createElement(
                         'li',
                         { key: idx, className: 'definition' },
@@ -189,12 +189,12 @@ var WordExcerpt = function WordExcerpt(_ref) {
     return React$1.createElement(
         'div',
         { className: 'excerpt' },
-        $$1.map(excerpt.sentences, function (sentence, s_idx) {
+        $.map(excerpt.sentences, function (sentence, s_idx) {
             var words = sentence.text.split(/\b/);
             return React$1.createElement(
                 'div',
                 { key: s_idx, className: 'line' },
-                $$1.map(words, function (word, w_idx) {
+                $.map(words, function (word, w_idx) {
                     var className = word === excerpt.token ? 'token' : '';
                     return React$1.createElement(
                         'span',
@@ -221,7 +221,7 @@ var WordExcerptList = function WordExcerptList(_ref2) {
                 null,
                 'Excerpt'
             ),
-            $$1.map(excerpts, function (excerpt, idx) {
+            $.map(excerpts, function (excerpt, idx) {
                 return React$1.createElement(WordExcerpt, { key: idx, excerpt: excerpt });
             })
         ) : React$1.createElement('div', null),
@@ -281,7 +281,7 @@ var WordDetailBody = function WordDetailBody(_ref) {
     var selection = _ref.selection,
         onSelectPOS = _ref.onSelectPOS;
 
-    var selectedPOS = selection.POS || $$1.grep(PARTS_OF_SPEACH, function (pos) {
+    var selectedPOS = selection.POS || $.grep(PARTS_OF_SPEACH, function (pos) {
         return getExcerpts(selection.word, pos).length > 0;
     })[0];
 
@@ -291,7 +291,7 @@ var WordDetailBody = function WordDetailBody(_ref) {
         React$1.createElement(
             'header',
             { className: 'tab-group' },
-            $$1.map(PARTS_OF_SPEACH, function (pos) {
+            $.map(PARTS_OF_SPEACH, function (pos) {
                 return React$1.createElement(WordPartOfSpeachHeader, {
                     key: pos,
                     active: selectedPOS === pos,
@@ -383,7 +383,7 @@ var WordDetail = function (_React$Component) {
     }, {
         key: 'componentDidUpdate',
         value: function componentDidUpdate(prevProps, prevState) {
-            $$1(window).scrollTop(0);
+            $(window).scrollTop(0);
         }
     }]);
     return WordDetail;
@@ -447,7 +447,7 @@ var DifficultySelector = function DifficultySelector(_ref2) {
         words = _ref2.words;
 
     var groups = {};
-    $$1(words).each(function (idx, word) {
+    $(words).each(function (idx, word) {
         groups[word.difficulty.label] = {
             level: word.difficulty.level,
             count: (groups[word.difficulty.label] || { count: 0 }).count + 1
@@ -457,7 +457,7 @@ var DifficultySelector = function DifficultySelector(_ref2) {
     return React$1.createElement(
         'div',
         { className: 'difficulty' },
-        $$1.map(Object.keys(groups), function (label) {
+        $.map(Object.keys(groups), function (label) {
             var group = groups[label];
             return React$1.createElement(DifficultyGroup, {
                 key: group.level,
@@ -508,7 +508,7 @@ var WordList = function WordList(_ref2) {
         return a.difficulty.value - b.difficulty.value;
     });
 
-    var wordsWithDifficulty = $$1.grep(sortedWords, function (w) {
+    var wordsWithDifficulty = $.grep(sortedWords, function (w) {
         return w.difficulty.level === selection.difficulty;
     });
 
@@ -523,7 +523,7 @@ var WordList = function WordList(_ref2) {
         React$1.createElement(
             'div',
             { className: 'list' },
-            $$1.map(wordsWithDifficulty, function (item) {
+            $.map(wordsWithDifficulty, function (item) {
                 return React$1.createElement(WordListItem, { key: item.token, word: item,
                     onSelectWord: onSelectWord });
             })
@@ -548,7 +548,7 @@ var Analysis = function (_React$Component) {
         key: 'handleSelectWord',
         value: function handleSelectWord(word) {
             this.setState(function (prevState) {
-                prevState.listScrollPos = $$1(window).scrollTop();
+                prevState.listScrollPos = $(window).scrollTop();
                 prevState.selection.word = word;
             });
             this.lookupWord(word);
@@ -585,7 +585,7 @@ var Analysis = function (_React$Component) {
         key: 'componentDidUpdate',
         value: function componentDidUpdate(prevProps, prevState) {
             if (!this.state.selection.word && this.state.listScrollPos) {
-                $$1(window).scrollTop(this.state.listScrollPos);
+                $(window).scrollTop(this.state.listScrollPos);
                 delete this.state.listScrollPos;
             }
         }
@@ -702,7 +702,7 @@ var Intro = function Intro() {
 var SearchBar = function SearchBar(_ref) {
     var onSearch = _ref.onSearch;
 
-    var debouncedSearch = $$1.debounce(500, function (e) {
+    var debouncedSearch = $.debounce(500, function (e) {
         return onSearch(e.target.value);
     });
 
@@ -806,7 +806,7 @@ var SearchResults = function SearchResults(_ref2) {
                 ) : React.createElement(
                     Slider,
                     slickSettings,
-                    $$1.map(items, function (item) {
+                    $.map(items, function (item) {
                         return React.createElement(
                             'div',
                             { key: item.id },
@@ -877,7 +877,7 @@ var Search = function (_React$Component) {
         value: function searchMovie(query) {
             var _this4 = this;
 
-            if ($$1.trim(query) === '') {
+            if ($.trim(query) === '') {
                 return;
             }
 

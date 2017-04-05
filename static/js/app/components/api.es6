@@ -1,3 +1,6 @@
+import $ from 'jquery';
+
+
 class API {
 
     static lookupWord(word) {
@@ -25,8 +28,8 @@ class API {
                 console.error(err); // eslint-disable-line
             },
         });
-    }    
+    }
 }
 
 
-export { API }
+export { API };
