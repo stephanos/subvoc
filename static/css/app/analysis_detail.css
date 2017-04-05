@@ -71,8 +71,10 @@
 }
 
 .word-detail .body .definitions .definition {
-    margin-top: 2rem;
+    list-style-position: outside;
     text-align: left;
+    margin-left: 2rem;
+    margin-top: 2rem;    
 }
 
 
