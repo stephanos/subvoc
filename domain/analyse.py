@@ -3,14 +3,12 @@ from collections import defaultdict, namedtuple, Counter
 
 from nltk import pos_tag
 from nltk.corpus import wordnet, stopwords
-from nltk.stem.wordnet import WordNetLemmatizer
 from nltk.tokenize import WordPunctTokenizer
 
 from domain.extract import Extractor
 from domain.difficulty import WordDifficulty
 
 
-LEMMATIZER = WordNetLemmatizer()
 STOP_WORDS = set(stopwords.words('english'))
 TOKENIZER = WordPunctTokenizer()
 
@@ -75,28 +73,17 @@ def to_word_pos(treebank_tag):
     return WordPartOfSpeach.OTHER
 
 
-def to_wordnet_pos(treebank_tag):
-    if treebank_tag.startswith('J'):
-        return wordnet.ADJ
-    elif treebank_tag.startswith('V'):
-        return wordnet.VERB
-    elif treebank_tag.startswith('N'):
-        return wordnet.NOUN
-    elif treebank_tag.startswith('R'):
-        return wordnet.ADV
-    return None
-
-
 def is_real_word(word):
     return len(wordnet.synsets(word)) != 0
 
 
 class Analyser:
 
-    def __init__(self, loader, parser, corpus):
+    def __init__(self, loader, parser, lemmatizer, corpus):
         self.loader = loader
         self.parser = parser
         self.corpus = corpus
+        self.lemmatizer = lemmatizer
         self.extractor = Extractor()
 
     def analyse(self, imdb_id):
@@ -121,16 +108,16 @@ class Analyser:
                     analysis.ignore(word, excerpt, WordIgnoreType.STOPWORD)
                     continue
 
-                wordnet_POS = to_wordnet_pos(token_tag)
-                if wordnet_POS is None:
+                if POS is WordPartOfSpeach.OTHER:
                     analysis.ignore(word, excerpt, WordIgnoreType.UNKNOWN_TYPE)
                     continue
 
-                lemma = LEMMATIZER.lemmatize(token, pos=wordnet_POS)
-                lemma_lang_freq = self.corpus.freq(lemma)
+                lemma = self.lemmatizer.lemmatize(token, token_tag)
                 if not is_real_word(lemma):
                     analysis.ignore(word, excerpt, WordIgnoreType.UNKNOWN)
                     continue
+
+                lemma_lang_freq = self.corpus.freq(lemma)
                 if lemma_lang_freq == 0:
                     analysis.ignore(word, excerpt, WordIgnoreType.UNKNOWN_FREQ)
                     continue

@@ -15,6 +15,7 @@ from api.poster.fanart import FanArt
 
 from domain.analyse import Analyser
 from domain.corpus import Corpus, CorpusDatabase
+from domain.lemmatize import Lemmatizer
 from domain.load import Loader
 from domain.parse import Parser
 from domain.search import Searcher
@@ -35,11 +36,13 @@ def create_routes(app):
     wordnik_key = app.config['WORDNIK_KEY']
     wordnik_api = Wordnik(wordnik_key)
 
+    searcher = Searcher(subtitle_api, poster_api)
+
     corpus = Corpus(CorpusDatabase.FULL)
+    lemmatizer = Lemmatizer()
     loader = Loader(subtitle_api)
     parser = Parser()
-    analyser = Analyser(loader, parser, corpus)
-    searcher = Searcher(subtitle_api, poster_api)
+    analyser = Analyser(loader, parser, lemmatizer, corpus)
 
     @app.route('/')
     def home_route():
