@@ -1,18 +1,8 @@
 import simplejson as json
-from datetime import timedelta
-from enum import Enum
+
 from flask import render_template, Response
 
 from domain.analyse import Word
-
-
-class AnalysisEncoder(json.JSONEncoder):
-    def default(self, obj):
-        if isinstance(obj, Enum):
-            return obj.name
-        elif isinstance(obj, timedelta):
-            return str(obj)
-        return json.JSONEncoder.default(self, obj)
 
 
 def analysis_page(subtitle_api, id):
@@ -26,7 +16,9 @@ def analysis_api(analyser, poster_api, id):
     def excerpt_to_dict(excerpts):
         return ({
             'token': e.token,
-            'sentences': e.sentences,
+            'sentences': ({
+                'text': s.text
+            } for s in e.sentences),
         } for e in excerpts)
 
     def word_to_dict(token):
@@ -57,7 +49,7 @@ def analysis_api(analyser, poster_api, id):
             'poster_url': poster_url,
         },
         'words': (token_to_dict(token) for token in analysis.token_with_difficulty.keys())
-    }, cls=AnalysisEncoder, iterable_as_array=True)
+    }, iterable_as_array=True)
 
     return Response(status=200,
                     response=data,
