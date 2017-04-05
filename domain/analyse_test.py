@@ -5,7 +5,6 @@ from unittest.mock import MagicMock
 from domain.analyse import Analyser, Word, WordPartOfSpeach, WordIgnoreType
 from domain.corpus import Corpus, CorpusDatabase
 from domain.excerpt import Excerpt
-from domain.lemmatize import Lemmatizer
 from domain.parse import Parser, Sentence
 
 
@@ -20,7 +19,7 @@ def cached_analyse(text):
     loader_mock = MagicMock()
     subtitle_mock = MagicMock(text=text)
     loader_mock.load = MagicMock(return_value=subtitle_mock)
-    analyser = Analyser(loader_mock, Parser(), Lemmatizer(), CORPUS)
+    analyser = Analyser(loader_mock, Parser(), CORPUS)
 
     result = analyser.analyse('<id>')
 
@@ -180,5 +179,5 @@ def test_analysis_fails_when_no_subtitle():
         loader_mock = MagicMock()
         loader_mock.load = MagicMock(return_value=None)
 
-        analyser = Analyser(loader_mock, Parser(), Lemmatizer(), CORPUS)
+        analyser = Analyser(loader_mock, Parser(), CORPUS)
         analyser.analyse('<id>')

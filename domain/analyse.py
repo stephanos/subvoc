@@ -1,27 +1,15 @@
 from enum import Enum
 from collections import defaultdict, namedtuple, Counter
 
-from nltk import pos_tag
 from nltk.corpus import wordnet, stopwords
-from nltk.tokenize import WordPunctTokenizer
 
 from domain.excerpt import Excerptor
 from domain.difficulty import WordDifficulty
-
-
-STOP_WORDS = set(stopwords.words('english'))
-TOKENIZER = WordPunctTokenizer()
+from domain.lemmatize import Lemmatizer
+from domain.tokenizer import Tokenizer, WordPartOfSpeach
 
 
 Word = namedtuple('Word', ['token', 'POS'])
-
-
-class WordPartOfSpeach(Enum):
-    ADJ = 1
-    ADV = 2
-    NOUN = 3
-    VERB = 4
-    OTHER = 5
 
 
 class WordIgnoreType(Enum):
@@ -61,30 +49,20 @@ class Analysis:
         self.word_with_movie_freq[word] += 1
 
 
-def to_word_pos(treebank_tag):
-    if treebank_tag.startswith('J'):
-        return WordPartOfSpeach.ADJ
-    elif treebank_tag.startswith('V'):
-        return WordPartOfSpeach.VERB
-    elif treebank_tag.startswith('N'):
-        return WordPartOfSpeach.NOUN
-    elif treebank_tag.startswith('R'):
-        return WordPartOfSpeach.ADV
-    return WordPartOfSpeach.OTHER
-
-
 def is_real_word(word):
     return len(wordnet.synsets(word)) != 0
 
 
 class Analyser:
 
-    def __init__(self, loader, parser, lemmatizer, corpus):
+    def __init__(self, loader, parser, corpus):
         self.loader = loader
         self.parser = parser
         self.corpus = corpus
-        self.lemmatizer = lemmatizer
         self.excerptor = Excerptor()
+        self.lemmatizer = Lemmatizer()
+        self.tokenizer = Tokenizer()
+        self.stop_words = set(stopwords.words('english'))
 
     def analyse(self, imdb_id):
         subtitle = self.loader.load(imdb_id)
@@ -94,25 +72,24 @@ class Analyser:
         analysis = Analysis()
         sentences = self.parser.parse(subtitle.text)
         for i, sentence in enumerate(sentences):
-            tokens = pos_tag(TOKENIZER.tokenize(sentence.text))
+            tokens = self.tokenizer.words(sentence.text)
 
-            for token, token_tag in tokens:
+            for token, token_POS in tokens:
                 if token.lower() == 'subtitle' or not token.isalpha():
                     continue
 
                 excerpt = self.excerptor.excerpt(sentences, i, token)
-                POS = to_word_pos(token_tag)
-                word = Word(token, POS)
+                word = Word(token, token_POS)
 
-                if token in STOP_WORDS:
+                if token in self.stop_words:
                     analysis.ignore(word, excerpt, WordIgnoreType.STOPWORD)
                     continue
 
-                if POS is WordPartOfSpeach.OTHER:
+                if token_POS is WordPartOfSpeach.OTHER:
                     analysis.ignore(word, excerpt, WordIgnoreType.UNKNOWN_TYPE)
                     continue
 
-                lemma = self.lemmatizer.lemmatize(token, token_tag)
+                lemma = self.lemmatizer.lemmatize(token, token_POS)
                 if not is_real_word(lemma):
                     analysis.ignore(word, excerpt, WordIgnoreType.UNKNOWN)
                     continue
@@ -124,7 +101,7 @@ class Analyser:
 
                 difficulty = WordDifficulty.to_difficulty(lemma, lemma_lang_freq)
                 analysis.add(
-                    Word(lemma, POS),
+                    Word(lemma, token_POS),
                     excerpt,
                     lemma_lang_freq,
                     difficulty)

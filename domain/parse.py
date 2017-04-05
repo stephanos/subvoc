@@ -1,8 +1,9 @@
 from collections import namedtuple
 
 import srt
-import nltk.tokenize
 from bs4 import BeautifulSoup
+
+from domain.tokenizer import Tokenizer
 
 
 Sentence = namedtuple('Sentence', ['text', 'time'])
@@ -11,9 +12,12 @@ SubtitleLine = namedtuple('SubtitleLine', ['text', 'time'])
 
 class Parser:
 
+    def __init__(self):
+        self.tokenizer = Tokenizer()
+
     def parse(self, subtitle):
         lines, text = self._parse_lines(subtitle)
-        tokens = nltk.tokenize.sent_tokenize(text)
+        tokens = self.tokenizer.sentences(text)
         return self._to_sentences(lines, tokens)
 
     def _parse_lines(self, subtitle):
