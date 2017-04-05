@@ -1,6 +1,7 @@
 import $ from 'jquery';
 import React from 'react';
 
+import { API } from './api.es6';
 import { Analysis } from './analysis/analysis.es6';
 import { Nav } from './nav.es6';
 import { Search } from './search/search.es6';
@@ -38,15 +39,8 @@ class App extends React.Component {
         </div>;
     }
 
-
-    loadAnalysis(imdbId) {
-        const xhr = $.getJSON({
-            url: `/api/analysis/${imdbId}`,
-            error: function (xhr, status, err) {
-                console.error(err); // eslint-disable-line
-            },
-        });
-
+    loadAnalysis(movieId) {
+        const xhr = API.loadAnalysis(movieId);
         xhr.then((res) => {
             this.setState((prevState) => {
                 prevState.analysisXHR = undefined;
@@ -59,7 +53,6 @@ class App extends React.Component {
             }
             document.location.href = "/error";
         });
-        
         return xhr;
     }
 }

@@ -1,223 +1,11 @@
-(function (React$1,ReactDOM,$,classNames,Slider) {
+(function (React$1,ReactDOM,$$1,classNames,Slider) {
 'use strict';
 
 React$1 = 'default' in React$1 ? React$1['default'] : React$1;
 ReactDOM = 'default' in ReactDOM ? ReactDOM['default'] : ReactDOM;
-$ = 'default' in $ ? $['default'] : $;
+$$1 = 'default' in $$1 ? $$1['default'] : $$1;
 classNames = 'default' in classNames ? classNames['default'] : classNames;
 Slider = 'default' in Slider ? Slider['default'] : Slider;
-
-var Nav = function Nav(_ref) {
-    var analysis = _ref.analysis,
-        selection = _ref.selection,
-        onClick = _ref.onClick;
-    return React.createElement(
-        'nav',
-        { className: 'navigation' },
-        React.createElement(
-            'section',
-            { className: 'container' },
-            React.createElement(
-                'span',
-                { className: 'navigation-title' },
-                React.createElement(
-                    'h1',
-                    { className: 'title' },
-                    selection && selection.word ? React.createElement(
-                        'div',
-                        { className: 'media', onClick: onClick },
-                        React.createElement(
-                            'span',
-                            { className: 'arrow left' },
-                            '>'
-                        ),
-                        React.createElement(
-                            'span',
-                            { className: 'name' },
-                            analysis.media.title
-                        )
-                    ) : React.createElement(
-                        'a',
-                        { className: 'generic', href: '/' },
-                        'subvoc'
-                    )
-                )
-            )
-        )
-    );
-};
-
-var WordDefinitionList = function WordDefinitionList(_ref) {
-    var definitions = _ref.definitions;
-    return React$1.createElement(
-        'div',
-        { className: 'definitions' },
-        React$1.createElement(
-            'h4',
-            null,
-            'Definition'
-        ),
-        definitions.length > 0 ? React$1.createElement(
-            'div',
-            null,
-            React$1.createElement(
-                'ol',
-                null,
-                $.map(definitions, function (entry, idx) {
-                    return React$1.createElement(
-                        'li',
-                        { key: idx, className: 'definition' },
-                        entry.definition
-                    );
-                })
-            )
-        ) : React$1.createElement(
-            'div',
-            null,
-            'None was found.'
-        )
-    );
-};
-
-var WordExcerpt = function WordExcerpt(_ref) {
-    var excerpt = _ref.excerpt;
-    return React$1.createElement(
-        'div',
-        { className: 'excerpt' },
-        $.map(excerpt.sentences, function (sentence, s_idx) {
-            var words = sentence.text.split(/\b/);
-            return React$1.createElement(
-                'div',
-                { key: s_idx, className: 'line' },
-                $.map(words, function (word, w_idx) {
-                    var className = word === excerpt.token ? 'token' : '';
-                    return React$1.createElement(
-                        'span',
-                        { key: w_idx, className: className },
-                        word
-                    );
-                })
-            );
-        })
-    );
-};
-
-var WordExcerptList = function WordExcerptList(_ref2) {
-    var excerpts = _ref2.excerpts;
-    return React$1.createElement(
-        'div',
-        null,
-        ' ',
-        excerpts.length > 0 ? React$1.createElement(
-            'div',
-            { className: 'excerpts' },
-            React$1.createElement(
-                'h4',
-                null,
-                'Excerpt'
-            ),
-            $.map(excerpts, function (excerpt, idx) {
-                return React$1.createElement(WordExcerpt, { key: idx, excerpt: excerpt });
-            })
-        ) : React$1.createElement('div', null),
-        ' '
-    );
-};
-
-var WordPartOfSpeachHeader = function WordPartOfSpeachHeader(_ref) {
-    var active = _ref.active,
-        enabled = _ref.enabled,
-        label = _ref.label,
-        freq = _ref.freq,
-        onSelectPOS = _ref.onSelectPOS;
-
-    var classNames$$1 = 'tab card ' + (enabled ? '' : 'empty') + ' ' + (active ? 'active' : '');
-    return React$1.createElement(
-        'div',
-        { onClick: function onClick() {
-                return enabled ? onSelectPOS(label) : null;
-            }, className: classNames$$1 },
-        React$1.createElement(
-            'div',
-            { className: 'label' },
-            label
-        ),
-        freq ? React$1.createElement(
-            'div',
-            { className: 'count badge' },
-            freq
-        ) : React$1.createElement(
-            'div',
-            { className: 'count' },
-            '\xA0'
-        )
-    );
-};
-
-var PARTS_OF_SPEACH = ['noun', 'verb', 'adj', 'adv'];
-
-function getExcerpts(word, pos) {
-    return (word.byPOS[pos] || {}).excerpts || [];
-}
-
-function getFreq(word, pos) {
-    return (word.byPOS[pos] || {}).freq || 0;
-}
-
-function getDefinitions(word, pos) {
-    return word.lookup[pos] || [];
-}
-
-function hasDetails(word, pos) {
-    return getDefinitions(word, pos).length > 0 || getExcerpts(word, pos).length > 0;
-}
-
-var WordDetailBody = function WordDetailBody(_ref) {
-    var selection = _ref.selection,
-        onSelectPOS = _ref.onSelectPOS;
-
-    var selectedPOS = selection.POS || $.grep(PARTS_OF_SPEACH, function (pos) {
-        return getExcerpts(selection.word, pos).length > 0;
-    })[0];
-
-    return React$1.createElement(
-        'div',
-        null,
-        React$1.createElement(
-            'header',
-            { className: 'tab-group' },
-            $.map(PARTS_OF_SPEACH, function (pos) {
-                return React$1.createElement(WordPartOfSpeachHeader, {
-                    key: pos,
-                    active: selectedPOS === pos,
-                    enabled: hasDetails(selection.word, pos),
-                    label: pos,
-                    freq: getFreq(selection.word, pos),
-                    onSelectPOS: onSelectPOS });
-            })
-        ),
-        React$1.createElement(
-            'section',
-            null,
-            React$1.createElement(WordExcerptList, { excerpts: getExcerpts(selection.word, selectedPOS) })
-        ),
-        React$1.createElement(
-            'section',
-            null,
-            React$1.createElement(WordDefinitionList, { definitions: getDefinitions(selection.word, selectedPOS) })
-        )
-    );
-};
-
-var Spinner = function Spinner(_ref) {
-    var big = _ref.big;
-    return React.createElement(
-        "div",
-        { className: classNames("spinner", { big: big }) },
-        React.createElement("div", { className: "double-bounce1" }),
-        React.createElement("div", { className: "double-bounce2" })
-    );
-};
 
 var classCallCheck = function (instance, Constructor) {
   if (!(instance instanceof Constructor)) {
@@ -285,6 +73,257 @@ var possibleConstructorReturn = function (self, call) {
   return call && (typeof call === "object" || typeof call === "function") ? call : self;
 };
 
+var API = function () {
+    function API() {
+        classCallCheck(this, API);
+    }
+
+    createClass(API, null, [{
+        key: "lookupWord",
+        value: function lookupWord(word) {
+            return $.getJSON({
+                url: "/api/words/" + word.token,
+                error: function error(xhr, status, err) {
+                    console.error(err); // eslint-disable-line
+                }
+            });
+        }
+    }, {
+        key: "loadAnalysis",
+        value: function loadAnalysis(imdbId) {
+            return $.getJSON({
+                url: "/api/analysis/" + imdbId,
+                error: function error(xhr, status, err) {
+                    console.error(err); // eslint-disable-line
+                }
+            });
+        }
+    }, {
+        key: "searchMovie",
+        value: function searchMovie(query) {
+            return $.getJSON({
+                url: "/api/search/" + query,
+                error: function error(xhr, status, err) {
+                    console.error(err); // eslint-disable-line
+                }
+            });
+        }
+    }]);
+    return API;
+}();
+
+var Nav = function Nav(_ref) {
+    var analysis = _ref.analysis,
+        selection = _ref.selection,
+        onClick = _ref.onClick;
+    return React.createElement(
+        'nav',
+        { className: 'navigation' },
+        React.createElement(
+            'section',
+            { className: 'container' },
+            React.createElement(
+                'span',
+                { className: 'navigation-title' },
+                React.createElement(
+                    'h1',
+                    { className: 'title' },
+                    selection && selection.word ? React.createElement(
+                        'div',
+                        { className: 'media', onClick: onClick },
+                        React.createElement(
+                            'span',
+                            { className: 'arrow left' },
+                            '>'
+                        ),
+                        React.createElement(
+                            'span',
+                            { className: 'name' },
+                            analysis.media.title
+                        )
+                    ) : React.createElement(
+                        'a',
+                        { className: 'generic', href: '/' },
+                        'subvoc'
+                    )
+                )
+            )
+        )
+    );
+};
+
+var WordDefinitionList = function WordDefinitionList(_ref) {
+    var definitions = _ref.definitions;
+    return React$1.createElement(
+        'div',
+        { className: 'definitions' },
+        React$1.createElement(
+            'h4',
+            null,
+            'Definition'
+        ),
+        definitions.length > 0 ? React$1.createElement(
+            'div',
+            null,
+            React$1.createElement(
+                'ol',
+                null,
+                $$1.map(definitions, function (entry, idx) {
+                    return React$1.createElement(
+                        'li',
+                        { key: idx, className: 'definition' },
+                        entry.definition
+                    );
+                })
+            )
+        ) : React$1.createElement(
+            'div',
+            null,
+            'None was found.'
+        )
+    );
+};
+
+var WordExcerpt = function WordExcerpt(_ref) {
+    var excerpt = _ref.excerpt;
+    return React$1.createElement(
+        'div',
+        { className: 'excerpt' },
+        $$1.map(excerpt.sentences, function (sentence, s_idx) {
+            var words = sentence.text.split(/\b/);
+            return React$1.createElement(
+                'div',
+                { key: s_idx, className: 'line' },
+                $$1.map(words, function (word, w_idx) {
+                    var className = word === excerpt.token ? 'token' : '';
+                    return React$1.createElement(
+                        'span',
+                        { key: w_idx, className: className },
+                        word
+                    );
+                })
+            );
+        })
+    );
+};
+
+var WordExcerptList = function WordExcerptList(_ref2) {
+    var excerpts = _ref2.excerpts;
+    return React$1.createElement(
+        'div',
+        null,
+        ' ',
+        excerpts.length > 0 ? React$1.createElement(
+            'div',
+            { className: 'excerpts' },
+            React$1.createElement(
+                'h4',
+                null,
+                'Excerpt'
+            ),
+            $$1.map(excerpts, function (excerpt, idx) {
+                return React$1.createElement(WordExcerpt, { key: idx, excerpt: excerpt });
+            })
+        ) : React$1.createElement('div', null),
+        ' '
+    );
+};
+
+var WordPartOfSpeachHeader = function WordPartOfSpeachHeader(_ref) {
+    var active = _ref.active,
+        enabled = _ref.enabled,
+        label = _ref.label,
+        freq = _ref.freq,
+        onSelectPOS = _ref.onSelectPOS;
+
+    var classNames$$1 = 'tab card ' + (enabled ? '' : 'empty') + ' ' + (active ? 'active' : '');
+    return React$1.createElement(
+        'div',
+        { onClick: function onClick() {
+                return enabled ? onSelectPOS(label) : null;
+            }, className: classNames$$1 },
+        React$1.createElement(
+            'div',
+            { className: 'label' },
+            label
+        ),
+        freq ? React$1.createElement(
+            'div',
+            { className: 'count badge' },
+            freq
+        ) : React$1.createElement(
+            'div',
+            { className: 'count' },
+            '\xA0'
+        )
+    );
+};
+
+var PARTS_OF_SPEACH = ['noun', 'verb', 'adj', 'adv'];
+
+function getExcerpts(word, pos) {
+    return (word.byPOS[pos] || {}).excerpts || [];
+}
+
+function getFreq(word, pos) {
+    return (word.byPOS[pos] || {}).freq || 0;
+}
+
+function getDefinitions(word, pos) {
+    return word.lookup[pos] || [];
+}
+
+function hasDetails(word, pos) {
+    return getDefinitions(word, pos).length > 0 || getExcerpts(word, pos).length > 0;
+}
+
+var WordDetailBody = function WordDetailBody(_ref) {
+    var selection = _ref.selection,
+        onSelectPOS = _ref.onSelectPOS;
+
+    var selectedPOS = selection.POS || $$1.grep(PARTS_OF_SPEACH, function (pos) {
+        return getExcerpts(selection.word, pos).length > 0;
+    })[0];
+
+    return React$1.createElement(
+        'div',
+        null,
+        React$1.createElement(
+            'header',
+            { className: 'tab-group' },
+            $$1.map(PARTS_OF_SPEACH, function (pos) {
+                return React$1.createElement(WordPartOfSpeachHeader, {
+                    key: pos,
+                    active: selectedPOS === pos,
+                    enabled: hasDetails(selection.word, pos),
+                    label: pos,
+                    freq: getFreq(selection.word, pos),
+                    onSelectPOS: onSelectPOS });
+            })
+        ),
+        React$1.createElement(
+            'section',
+            null,
+            React$1.createElement(WordExcerptList, { excerpts: getExcerpts(selection.word, selectedPOS) })
+        ),
+        React$1.createElement(
+            'section',
+            null,
+            React$1.createElement(WordDefinitionList, { definitions: getDefinitions(selection.word, selectedPOS) })
+        )
+    );
+};
+
+var Spinner = function Spinner(_ref) {
+    var big = _ref.big;
+    return React.createElement(
+        "div",
+        { className: classNames("spinner", { big: big }) },
+        React.createElement("div", { className: "double-bounce1" }),
+        React.createElement("div", { className: "double-bounce2" })
+    );
+};
+
 var WordDetail = function (_React$Component) {
     inherits(WordDetail, _React$Component);
 
@@ -344,7 +383,7 @@ var WordDetail = function (_React$Component) {
     }, {
         key: 'componentDidUpdate',
         value: function componentDidUpdate(prevProps, prevState) {
-            $(window).scrollTop(0);
+            $$1(window).scrollTop(0);
         }
     }]);
     return WordDetail;
@@ -408,7 +447,7 @@ var DifficultySelector = function DifficultySelector(_ref2) {
         words = _ref2.words;
 
     var groups = {};
-    $(words).each(function (idx, word) {
+    $$1(words).each(function (idx, word) {
         groups[word.difficulty.label] = {
             level: word.difficulty.level,
             count: (groups[word.difficulty.label] || { count: 0 }).count + 1
@@ -418,7 +457,7 @@ var DifficultySelector = function DifficultySelector(_ref2) {
     return React$1.createElement(
         'div',
         { className: 'difficulty' },
-        $.map(Object.keys(groups), function (label) {
+        $$1.map(Object.keys(groups), function (label) {
             var group = groups[label];
             return React$1.createElement(DifficultyGroup, {
                 key: group.level,
@@ -469,7 +508,7 @@ var WordList = function WordList(_ref2) {
         return a.difficulty.value - b.difficulty.value;
     });
 
-    var wordsWithDifficulty = $.grep(sortedWords, function (w) {
+    var wordsWithDifficulty = $$1.grep(sortedWords, function (w) {
         return w.difficulty.level === selection.difficulty;
     });
 
@@ -484,7 +523,7 @@ var WordList = function WordList(_ref2) {
         React$1.createElement(
             'div',
             { className: 'list' },
-            $.map(wordsWithDifficulty, function (item) {
+            $$1.map(wordsWithDifficulty, function (item) {
                 return React$1.createElement(WordListItem, { key: item.token, word: item,
                     onSelectWord: onSelectWord });
             })
@@ -509,7 +548,7 @@ var Analysis = function (_React$Component) {
         key: 'handleSelectWord',
         value: function handleSelectWord(word) {
             this.setState(function (prevState) {
-                prevState.listScrollPos = $(window).scrollTop();
+                prevState.listScrollPos = $$1(window).scrollTop();
                 prevState.selection.word = word;
             });
             this.lookupWord(word);
@@ -546,7 +585,7 @@ var Analysis = function (_React$Component) {
         key: 'componentDidUpdate',
         value: function componentDidUpdate(prevProps, prevState) {
             if (!this.state.selection.word && this.state.listScrollPos) {
-                $(window).scrollTop(this.state.listScrollPos);
+                $$1(window).scrollTop(this.state.listScrollPos);
                 delete this.state.listScrollPos;
             }
         }
@@ -593,13 +632,7 @@ var Analysis = function (_React$Component) {
         value: function lookupWord(word) {
             var _this3 = this;
 
-            var xhr = $.getJSON({
-                url: '/api/words/' + word.token,
-                error: function error(xhr, status, err) {
-                    console.error(err); // eslint-disable-line
-                }
-            });
-
+            var xhr = API.lookupWord(word);
             xhr.then(function (res) {
                 _this3.setState(function (prevState) {
                     if (prevState.selection.word) {
@@ -607,7 +640,6 @@ var Analysis = function (_React$Component) {
                     }
                 });
             });
-
             return xhr;
         }
     }]);
@@ -670,7 +702,7 @@ var Intro = function Intro() {
 var SearchBar = function SearchBar(_ref) {
     var onSearch = _ref.onSearch;
 
-    var debouncedSearch = $.debounce(500, function (e) {
+    var debouncedSearch = $$1.debounce(500, function (e) {
         return onSearch(e.target.value);
     });
 
@@ -774,7 +806,7 @@ var SearchResults = function SearchResults(_ref2) {
                 ) : React.createElement(
                     Slider,
                     slickSettings,
-                    $.map(items, function (item) {
+                    $$1.map(items, function (item) {
                         return React.createElement(
                             'div',
                             { key: item.id },
@@ -845,17 +877,11 @@ var Search = function (_React$Component) {
         value: function searchMovie(query) {
             var _this4 = this;
 
-            if ($.trim(query) === '') {
+            if ($$1.trim(query) === '') {
                 return;
             }
 
-            var xhr = $.getJSON({
-                url: '/api/search/' + query,
-                error: function error(xhr, status, err) {
-                    console.error(err); // eslint-disable-line
-                }
-            });
-
+            var xhr = API.searchMovie(query);
             xhr.then(function (res) {
                 _this4.setState(function (prevState) {
                     prevState.searchXHR = undefined;
@@ -867,7 +893,6 @@ var Search = function (_React$Component) {
                 }
                 document.location.href = "/error";
             });
-
             return xhr;
         }
     }]);
@@ -919,16 +944,10 @@ var App = function (_React$Component) {
         }
     }, {
         key: 'loadAnalysis',
-        value: function loadAnalysis(imdbId) {
+        value: function loadAnalysis(movieId) {
             var _this4 = this;
 
-            var xhr = $.getJSON({
-                url: '/api/analysis/' + imdbId,
-                error: function error(xhr, status, err) {
-                    console.error(err); // eslint-disable-line
-                }
-            });
-
+            var xhr = API.loadAnalysis(movieId);
             xhr.then(function (res) {
                 _this4.setState(function (prevState) {
                     prevState.analysisXHR = undefined;
@@ -940,7 +959,6 @@ var App = function (_React$Component) {
                 }
                 document.location.href = "/error";
             });
-
             return xhr;
         }
     }]);

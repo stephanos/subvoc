@@ -1,6 +1,7 @@
 import $ from 'jquery';
 import React from 'react';
 
+import { API } from '../api.es6';
 import { Nav } from '../nav.es6';
 import { WordDetail } from './detail/detail.es6';
 import { WordList } from './list/list.es6';
@@ -80,21 +81,14 @@ class Analysis extends React.Component {
 
 
     lookupWord(word) {
-        const xhr = $.getJSON({
-            url: `/api/words/${word.token}`,
-            error: function (xhr, status, err) {
-                console.error(err); // eslint-disable-line
-            },
-        })
-            
+        const xhr = API.lookupWord(word);
         xhr.then((res) => {
             this.setState((prevState) => {
                 if (prevState.selection.word) {
                     prevState.selection.word.lookup = res;
                 }
             });
-        })
-
+        });
         return xhr;
     }
 }

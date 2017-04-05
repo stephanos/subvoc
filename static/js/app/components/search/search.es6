@@ -6,6 +6,7 @@ import { Nav } from '../nav.es6';
 import { SearchBar } from './bar.es6';
 import { SearchResults } from './results.es6';
 
+import { API } from '../api.es6';
 import { Spinner } from '../util/spinner.es6';
 
 
@@ -51,13 +52,7 @@ class Search extends React.Component {
             return;
         }
 
-        const xhr = $.getJSON({
-            url: `/api/search/${query}`,
-            error: function (xhr, status, err) {
-                console.error(err); // eslint-disable-line
-            },
-        });
-
+        const xhr = API.searchMovie(query);
         xhr.then((res) => {
             this.setState((prevState) => {
                 prevState.searchXHR = undefined;
@@ -70,7 +65,6 @@ class Search extends React.Component {
             }
             document.location.href = "/error";
         });
-
         return xhr;
     }     
 }
