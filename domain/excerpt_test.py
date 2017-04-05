@@ -1,6 +1,6 @@
 from datetime import timedelta as td
 
-from domain.extract import Excerpt, Extractor
+from domain.excerpt import Excerpt, Excerptor
 from domain.parse import Sentence
 
 
@@ -17,8 +17,8 @@ def test_exerpt_nearby_sentences():
         Sentence("Phone.", td(seconds=40))
     ]
 
-    extractor = Extractor(td(seconds=5))
-    excerpt = extractor.extract(sentences, 3, 'knowledge')
+    excerptor = Excerptor(td(seconds=5))
+    excerpt = excerptor.excerpt(sentences, 3, 'knowledge')
 
     assert excerpt == Excerpt([
         sentences[1],
@@ -37,8 +37,8 @@ def test_exerpt_nearby_sentences_at_end():
         Sentence("Where we're going we don't need roads.", td(minutes=90))
     ]
 
-    extractor = Extractor(td(seconds=5))
-    excerpt = extractor.extract(sentences, 1, 'roads')
+    excerptor = Excerptor(td(seconds=5))
+    excerpt = excerptor.excerpt(sentences, 1, 'roads')
 
     assert excerpt == Excerpt([
         sentences[0],
@@ -52,8 +52,8 @@ def test_exerpt_nearby_sentences_at_start():
         Sentence("When I was a kid there were three.", td(seconds=1))
     ]
 
-    extractor = Extractor(td(seconds=5))
-    excerpt = extractor.extract(sentences, 0, 'billion')
+    excerptor = Excerptor(td(seconds=5))
+    excerpt = excerptor.excerpt(sentences, 0, 'billion')
 
     assert excerpt == Excerpt([
         sentences[0],

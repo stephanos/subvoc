@@ -4,7 +4,7 @@ from unittest.mock import MagicMock
 
 from domain.analyse import Analyser, Word, WordPartOfSpeach, WordIgnoreType
 from domain.corpus import Corpus, CorpusDatabase
-from domain.extract import Excerpt
+from domain.excerpt import Excerpt
 from domain.lemmatize import Lemmatizer
 from domain.parse import Parser, Sentence
 

@@ -5,7 +5,7 @@ from nltk import pos_tag
 from nltk.corpus import wordnet, stopwords
 from nltk.tokenize import WordPunctTokenizer
 
-from domain.extract import Extractor
+from domain.excerpt import Excerptor
 from domain.difficulty import WordDifficulty
 
 
@@ -84,7 +84,7 @@ class Analyser:
         self.parser = parser
         self.corpus = corpus
         self.lemmatizer = lemmatizer
-        self.extractor = Extractor()
+        self.excerptor = Excerptor()
 
     def analyse(self, imdb_id):
         subtitle = self.loader.load(imdb_id)
@@ -100,7 +100,7 @@ class Analyser:
                 if token.lower() == 'subtitle' or not token.isalpha():
                     continue
 
-                excerpt = self.extractor.extract(sentences, i, token)
+                excerpt = self.excerptor.excerpt(sentences, i, token)
                 POS = to_word_pos(token_tag)
                 word = Word(token, POS)
 

@@ -7,12 +7,12 @@ DEFAULT_DELTA = timedelta(seconds=7)
 Excerpt = namedtuple('Excerpt', ['sentences', 'token'])
 
 
-class Extractor:
+class Excerptor:
 
     def __init__(self, delta=DEFAULT_DELTA):
         self.delta = delta
 
-    def extract(self, sentences, token_sentence_pos, token):
+    def excerpt(self, sentences, token_sentence_pos, token):
         token_sentence = sentences[token_sentence_pos]
 
         sentences_after = self._pick_close_sentences(
