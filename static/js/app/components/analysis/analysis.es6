@@ -89,7 +89,9 @@ class Analysis extends React.Component {
             
         xhr.then((res) => {
             this.setState((prevState) => {
-                prevState.selection.word.lookup = res;
+                if (prevState.selection.word) {
+                    prevState.selection.word.lookup = res;
+                }
             });
         })
 

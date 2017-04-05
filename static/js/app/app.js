@@ -602,7 +602,9 @@ var Analysis = function (_React$Component) {
 
             xhr.then(function (res) {
                 _this3.setState(function (prevState) {
-                    prevState.selection.word.lookup = res;
+                    if (prevState.selection.word) {
+                        prevState.selection.word.lookup = res;
+                    }
                 });
             });
 
