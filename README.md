@@ -44,27 +44,12 @@ When you select a movie, the [OpenSubtitles API](http://trac.opensubtitles.org/p
 
 ## Development
 
-### With Docker:
+(requires Docker) 
 
  - run web app with `scripts/dev-py.sh`
  - test web app with `scripts/test-py.sh`
  - compile Javascript with `scripts/dev-js.sh`
  
-### Without Docker:
-
-installation:
-
- - install Python 3.x and Node 6+ 
- - `pip install -r requirements.txt`
- - `pip install -r dev-requirements.txt`
- - `python -m nltk.downloader $(tr "\n" " " < ".nltk_packages")`
- - `npm i` or `yarn`
-
-then:
-
- - run web app with `python run.py`
- - test web app with `pytest`
- - compile Javascript with `./node_modules/rollup/bin/rollup --config --watch`
 
 ## License
 MIT (see LICENSE).
