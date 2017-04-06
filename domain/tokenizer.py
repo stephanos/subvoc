@@ -16,7 +16,7 @@ class Tokenizer:
 
     def __init__(self):
         self.tokenizer = WordPunctTokenizer()
-        self.tagger = SennaTagger('/usr/share/senna')
+        self.tagger = SennaTagger('/app/util/senna')
 
     def sentences(self, text):
         return sent_tokenize(text)

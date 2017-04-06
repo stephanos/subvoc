@@ -1,6 +1,7 @@
 *.pyc
 .cache
 .DS_Store
+senna/
 __pycache__
 credentials.py
 .coverage
