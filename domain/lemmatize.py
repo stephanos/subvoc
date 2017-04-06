@@ -16,10 +16,10 @@ class Lemmatizer:
     def _to_wordnet_pos(self, word_POS):
         if word_POS is WordPartOfSpeach.ADJ:
             return wordnet.ADJ
-        elif word_POS is WordPartOfSpeach.VERB:
-            return wordnet.VERB
-        elif word_POS is WordPartOfSpeach.NOUN:
-            return wordnet.NOUN
         elif word_POS is WordPartOfSpeach.ADV:
             return wordnet.ADV
+        elif word_POS is WordPartOfSpeach.NOUN:
+            return wordnet.NOUN
+        elif word_POS is WordPartOfSpeach.VERB:
+            return wordnet.VERB
         return None
