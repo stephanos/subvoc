@@ -12,4 +12,4 @@ docker run \
     -v $(pwd):/app/src \
     -p 8000:8000 \
     stephanos/subvoc \
-    python3 /app/run.py
+    python3 /app/src/run.py
