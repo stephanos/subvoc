@@ -17,3 +17,4 @@ def test_do_not_lemmatize_uninflected():
     assert lemmatizer.lemmatize('lightly', WordPartOfSpeach.ADV) == 'lightly'
     assert lemmatizer.lemmatize('friend', WordPartOfSpeach.NOUN) == 'friend'
     assert lemmatizer.lemmatize('hope', WordPartOfSpeach.VERB) == 'hope'
+    assert lemmatizer.lemmatize('and', WordPartOfSpeach.OTHER) == 'and'

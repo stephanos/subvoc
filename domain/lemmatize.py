@@ -11,6 +11,8 @@ class Lemmatizer:
 
     def lemmatize(self, word, word_POS):
         wordnet_pos = self._to_wordnet_pos(word_POS)
+        if not wordnet_pos:
+            return word
         return self.wordNetLemmatizer.lemmatize(word, pos=wordnet_pos)
 
     def _to_wordnet_pos(self, word_POS):
