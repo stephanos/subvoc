@@ -98,7 +98,7 @@ class Analyser:
                     analysis.ignore(word, excerpt, WordIgnoreType.UNKNOWN_FREQ)
                     continue
 
-                difficulty = WordDifficulty.to_difficulty(lemma, lemma_lang_freq)
+                difficulty = WordDifficulty.to_difficulty(lemma_lang_freq)
                 analysis.add(
                     Word(lemma, token_POS),
                     excerpt,
