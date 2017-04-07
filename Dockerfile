@@ -36,6 +36,7 @@ RUN apk update \
   && apk --no-cache add curl nodejs=6.9.2-r1 openssl \
   && npm install --global yarn \
   && cd /opt \
+  && yarn global add npm-check-updates npm-run-all onchange \
   && yarn
 ENV NODE_PATH /opt/node_modules
 

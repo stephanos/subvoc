@@ -8,4 +8,4 @@ docker run \
     -it \
     -v $(pwd):/app/src \
     stephanos/subvoc \
-    /opt/node_modules/npm-check-updates/bin/ncu -a
+    ncu -a

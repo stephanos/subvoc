@@ -11,4 +11,4 @@ docker run \
     -it \
     -v $(pwd):/app/src \
     stephanos/subvoc \
-    /bin/bash -c "flake8 && pytest --cov && /opt/node_modules/eslint/bin/eslint.js static/js/app/**/*.es6 && sed -i \"s|/app/src/|`pwd`/|g\" .coverage"
+    /bin/bash -c "yarn run check && flake8 && pytest --cov && sed -i \"s|/app/src/|`pwd`/|g\" .coverage"
