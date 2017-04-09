@@ -1,6 +1,6 @@
 set -e
 
-$(pwd)/scripts/dev-container.sh
+$(pwd)/scripts/build-container.sh
 
 docker run \
     --rm \
@@ -8,4 +8,4 @@ docker run \
     -it \
     -v $(pwd):/app/src \
     stephanos/subvoc \
-    yarn dev
+    /bin/bash -c "scripts/update-js-vendor.sh && /opt/node_modules/rollup/bin/rollup --config --watch"

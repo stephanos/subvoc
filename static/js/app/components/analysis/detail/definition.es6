@@ -1,4 +1,3 @@
-import $ from 'jquery';
 import React from 'react';
 
 
@@ -10,7 +9,7 @@ const WordDefinitionList = ({ definitions }) =>
         { definitions.length > 0
             ? <div>
                 <ol>
-                    { $.map(definitions, (entry, idx) =>
+                    { definitions.map((entry, idx) =>
                         <li key={idx} className="definition">
                             { entry.definition }
                         </li>

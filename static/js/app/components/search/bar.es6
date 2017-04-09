@@ -19,7 +19,7 @@ const SearchBar = ({ onSearch }) => {
                     placeholder="Search movie ..." />
         </div>
     </div>;
-}
+};
 
 
-export { SearchBar }
+export { SearchBar };

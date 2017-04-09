@@ -4,8 +4,8 @@ $(pwd)/scripts/build-container.sh
 
 docker run \
     --rm \
-    --name dev-css \
+    --name test-js \
     -it \
     -v $(pwd):/app/src \
     stephanos/subvoc \
-    /opt/node_modules/postcss-cli/bin/postcss --use autoprefixer /app/static/css/**/*.css --replace
+    /bin/bash -c "/opt/node_modules/jest/bin/jest.js --runInBand --watch"

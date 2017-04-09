@@ -1,6 +1,6 @@
 set -e
 
-$(pwd)/scripts/dev-container.sh
+$(pwd)/scripts/build-container.sh
 
 docker run \
     --rm \

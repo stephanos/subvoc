@@ -1,4 +1,4 @@
-import $ from 'jquery';
+import find from 'array.prototype.find';
 import React from 'react';
 
 import { WordListItem } from './list-item.es6';
@@ -16,7 +16,7 @@ const Heading = ({ analysis }) =>
         <div>
             <span className="badge">{ analysis.words.length }</span> unique words
         </div>
-    </div>
+    </div>;
 
 
 const WordList = ({ analysis, selection, onSelectWord, onSelectDifficulty }) => {
@@ -24,7 +24,7 @@ const WordList = ({ analysis, selection, onSelectWord, onSelectDifficulty }) => 
         analysis.words.sort((a, b) => a.difficulty.value - b.difficulty.value);
 
     const wordsWithDifficulty =
-        $.grep(sortedWords, (w) => w.difficulty.level === selection.difficulty);
+        sortedWords.filter(w => w.difficulty.level === selection.difficulty);
 
     return <div className="word-list">
         <Heading analysis={analysis} />
@@ -35,12 +35,12 @@ const WordList = ({ analysis, selection, onSelectWord, onSelectDifficulty }) => 
             words={sortedWords} />
 
         <div className="list">
-            { $.map(wordsWithDifficulty, item =>
+            { wordsWithDifficulty.map(item =>
                 <WordListItem key={item.token} word={item} 
-                              onSelectWord={onSelectWord} /> )}
+                              onSelect={onSelectWord} /> )}
         </div>
     </div>;
-}
+};
 
 
 export { WordList };

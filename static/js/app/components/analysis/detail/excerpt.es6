@@ -1,13 +1,12 @@
-import $ from 'jquery';
 import React from 'react';
 
 
 const WordExcerpt = ({ excerpt }) =>
     <div className="excerpt">
-        { $.map(excerpt.sentences, (sentence, s_idx) => {
+        { excerpt.sentences.map((sentence, s_idx) => {
             const words = sentence.text.split(/\b/);
             return <div key={s_idx} className="line">
-                { $.map(words, (word, w_idx) => {
+                { words.map((word, w_idx) => {
                     const className = word === excerpt.token ? 'token' : '';
                     return <span key={w_idx} className={className}>{ word }</span>;
                 })}
@@ -22,7 +21,7 @@ const WordExcerptList = ({ excerpts }) =>
             <h4>
                 Excerpt
             </h4>
-            { $.map(excerpts, (excerpt, idx) => 
+            { excerpts.map((excerpt, idx) => 
                 <WordExcerpt key={idx} excerpt={excerpt} />) }
         </div>
         : <div></div>

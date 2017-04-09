@@ -1,4 +1,3 @@
-import $ from 'jquery';
 import React from 'react';
 
 
@@ -12,33 +11,31 @@ const DifficultyGroup = ({ level, label, count, active, onSelect }) => {
             { count }
         </div>
     </div>;
-}
+};
 
 
 const DifficultySelector = ({ selected, onSelect, words }) => {
     const groups = {};
-    $(words).each(function(idx, word) {
+    words.forEach((word) => {
         groups[word.difficulty.label] = {
             level: word.difficulty.level,
             count: (groups[word.difficulty.label] || { count: 0 }).count + 1,
-        }
+        };
     });
 
     return <div className="difficulty">
-        { $.map(Object.keys(groups),
-            (label) => {
-                const group = groups[label];
-                return <DifficultyGroup
-                            key={group.level}
-                            level={group.level}
-                            count={group.count}
-                            active={selected === group.level}
-                            label={label.toLowerCase()}
-                            onSelect={onSelect} />
-            })
-        }
-    </div>
-}
+        { Object.keys(groups).map((label) => {
+            const group = groups[label];
+            return <DifficultyGroup
+                        key={group.level}
+                        level={group.level}
+                        count={group.count}
+                        active={selected === group.level}
+                        label={label.toLowerCase()}
+                        onSelect={onSelect} />;
+        }) }
+    </div>;
+};
 
 
 export { DifficultySelector };

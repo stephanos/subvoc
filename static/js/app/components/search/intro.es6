@@ -20,4 +20,4 @@ const Intro = () =>
     </div>;
 
 
-export { Intro }
+export { Intro };

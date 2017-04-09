@@ -1,4 +1,3 @@
-import $ from 'jquery';
 import Slider from 'react-slick';
 
 import { Attribution } from './attribution.es6';
@@ -50,7 +49,7 @@ const SearchResults = ({ items, onSelect }) => {
                 { items.length === 0 
                     ? <div className="empty"> No movie was found. </div>
                     : <Slider {...slickSettings}>
-                        { $.map(items, item => <div key={item.id}> 
+                        { items.map(item => <div key={item.id}> 
                             <SearchResultItem item={item} onSelect={onSelect} /> 
                         </div> )}
                     </Slider>
@@ -59,7 +58,7 @@ const SearchResults = ({ items, onSelect }) => {
         </div>
         { items.length !== 0 ? <Attribution /> : <span/> }
     </div>;
-}
+};
 
 
-export { SearchResults }
+export { SearchResults };

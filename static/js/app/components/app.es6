@@ -1,4 +1,3 @@
-import $ from 'jquery';
 import React from 'react';
 
 import { API } from './api.es6';
@@ -31,7 +30,7 @@ class App extends React.Component {
             { this.state.analysisXHR 
                 ? <div>
                     <Nav />
-                    <Spinner big={true} />
+                    <Spinner big={true} centered={true} />
                   </div>
                 : this.state.analysis 
                     ? <Analysis analysis={this.state.analysis} />

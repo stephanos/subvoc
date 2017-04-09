@@ -1,6 +1,6 @@
 set -e
 
-$(pwd)/scripts/dev-container.sh
+$(pwd)/scripts/build-container.sh
 
 # remove Python cache first
 find . | grep -E "(__pycache__|\.pyc|\.pyo$)" | xargs rm -rf

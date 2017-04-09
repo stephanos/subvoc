@@ -1,6 +1,6 @@
 set -e
 
-$(pwd)/scripts/dev-container.sh
+$(pwd)/scripts/build-container.sh
 
 # remove Python cache first
 find . | grep -E "(__pycache__|\.pyc|\.pyo$)" | xargs rm -rf
@@ -12,4 +12,4 @@ docker run \
     -v $(pwd):/app/src \
     -p 8000:8000 \
     stephanos/subvoc \
-    python3 /app/src/run.py
+    python3 run.py

@@ -1,6 +1,6 @@
 set -e
 
-$(pwd)/scripts/dev-container.sh
+$(pwd)/scripts/build-container.sh
 
 # remove Python cache first
 find . | grep -E "(__pycache__|\.pyc|\.pyo$)" | xargs rm -rf
@@ -11,4 +11,7 @@ docker run \
     -it \
     -v $(pwd):/app/src \
     stephanos/subvoc \
-    /bin/bash -c "yarn run check && flake8 && pytest --cov && sed -i \"s|/app/src/|`pwd`/|g\" .coverage"
+    /bin/bash -c "flake8 && \
+                  pytest --cov && sed -i \"s|/app/src/|`pwd`/|g\" .coverage && \
+                  /opt/node_modules/eslint/bin/eslint.js static/js/app/**/*.es6 && \
+                  /opt/node_modules/jest/bin/jest.js --runInBand"

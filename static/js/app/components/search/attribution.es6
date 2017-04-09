@@ -4,4 +4,4 @@ const Attribution = () =>
     </footer>;
 
 
-export { Attribution }
+export { Attribution };

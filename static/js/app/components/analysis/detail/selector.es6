@@ -1,4 +1,3 @@
-import $ from 'jquery';
 import React from 'react';
 
 
@@ -10,7 +9,7 @@ const WordPartOfSpeachHeader = ({ active, enabled, label, freq, onSelectPOS }) =
         </div>
         { freq ? <div className="count badge">{ freq }</div> : <div className="count">&nbsp;</div> }
     </div>;
-}
+};
 
 
 export { WordPartOfSpeachHeader };

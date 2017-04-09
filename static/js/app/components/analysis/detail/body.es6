@@ -1,4 +1,4 @@
-import $ from 'jquery';
+import find from 'array.prototype.find';
 import React from 'react';
 
 import { WordDefinitionList } from './definition.es6';
@@ -29,18 +29,18 @@ function hasDetails(word, pos) {
 
 const WordDetailBody = ({ selection, onSelectPOS }) => {
     const selectedPOS = selection.POS ||
-        $.grep(PARTS_OF_SPEACH, (pos) => getExcerpts(selection.word, pos).length > 0)[0];
+        find(PARTS_OF_SPEACH, (pos) => getExcerpts(selection.word, pos).length > 0)[0];
 
     return <div>
         <header className="tab-group">
-            { $.map(PARTS_OF_SPEACH, (pos) => {
+            { PARTS_OF_SPEACH.map((pos) => {
                 return <WordPartOfSpeachHeader
                     key={pos}
                     active={selectedPOS === pos}
                     enabled={hasDetails(selection.word, pos)}
                     label={pos}
                     freq={getFreq(selection.word, pos)}
-                    onSelectPOS={onSelectPOS} />
+                    onSelectPOS={onSelectPOS} />;
             } ) }
         </header>
 
@@ -52,7 +52,7 @@ const WordDetailBody = ({ selection, onSelectPOS }) => {
             <WordDefinitionList definitions={getDefinitions(selection.word, selectedPOS)} />
         </section>
     </div>;
-}
+};
 
 
 export { WordDetailBody };

@@ -1,4 +1,3 @@
-import $ from 'jquery';
 import React from 'react';
 
 import { Intro } from './intro.es6';
@@ -48,7 +47,7 @@ class Search extends React.Component {
     }
 
     searchMovie(query) {
-        if ($.trim(query) === '') {
+        if (query && query.trim() === '') {
             return;
         }
 
@@ -70,4 +69,4 @@ class Search extends React.Component {
 }
 
 
-export { Search }
+export { Search };

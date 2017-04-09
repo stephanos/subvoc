@@ -1,0 +1,43 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<WordListItem /> should render word with badge for frequence > 1 1`] = `
+<div
+  className="card word-item"
+  onClick={[Function]}
+>
+  <div
+    className="label"
+  >
+    some-word
+    <span
+      className="count badge"
+    >
+      2
+    </span>
+  </div>
+  <div
+    className="arrow right"
+  >
+    &gt;
+  </div>
+</div>
+`;
+
+exports[`<WordListItem /> should render word without badge 1`] = `
+<div
+  className="card word-item"
+  onClick={[Function]}
+>
+  <div
+    className="label"
+  >
+    some-word
+    <span />
+  </div>
+  <div
+    className="arrow right"
+  >
+    &gt;
+  </div>
+</div>
+`;

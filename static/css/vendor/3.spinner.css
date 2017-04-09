@@ -8,9 +8,10 @@
 
 .spinner.big {
   width: 60px;
-  height: 60px;
+  height: 60px;  
+}
 
-  position: relative;
+.spinner.centered {
   margin: 100px auto;
 }
 
