@@ -1249,19 +1249,33 @@ var WordExcerptList = function WordExcerptList(_ref2) {
     );
 };
 
-var WordPartOfSpeachHeader = function WordPartOfSpeachHeader(_ref) {
+var PARTS_OF_SPEACH = ['noun', 'verb', 'adj', 'adv'];
+
+function getFreq(word, pos) {
+    return (word.byPOS[pos] || {}).freq || 0;
+}
+
+function getExcerpts(word, pos) {
+    return (word.byPOS[pos] || {}).excerpts || [];
+}
+
+function getDefinitions(word, pos) {
+    return word.lookup[pos] || [];
+}
+
+var WordPartOfSpeachItem = function WordPartOfSpeachItem(_ref) {
     var active = _ref.active,
         enabled = _ref.enabled,
         label = _ref.label,
         freq = _ref.freq,
-        onSelectPOS = _ref.onSelectPOS;
+        onSelect = _ref.onSelect;
 
-    var classNames$$1 = 'tab card ' + (enabled ? '' : 'empty') + ' ' + (active ? 'active' : '');
+    var classes = classNames(label, 'tab', 'card', { 'empty': !enabled }, { active: active });
     return React$1.createElement(
         'div',
         { onClick: function onClick() {
-                return enabled ? onSelectPOS(label) : null;
-            }, className: classNames$$1 },
+                return enabled ? onSelect(label) : null;
+            }, className: classes },
         React$1.createElement(
             'div',
             { className: 'label' },
@@ -1279,31 +1293,38 @@ var WordPartOfSpeachHeader = function WordPartOfSpeachHeader(_ref) {
     );
 };
 
-var PARTS_OF_SPEACH = ['noun', 'verb', 'adj', 'adv'];
+var WordPartOfSpeachSelector = function WordPartOfSpeachSelector(_ref2) {
+    var selected = _ref2.selected,
+        word = _ref2.word,
+        onSelect = _ref2.onSelect;
 
-function getExcerpts(word, pos) {
-    return (word.byPOS[pos] || {}).excerpts || [];
-}
+    return React$1.createElement(
+        'div',
+        null,
+        PARTS_OF_SPEACH.map(function (pos) {
+            return React$1.createElement(WordPartOfSpeachItem, {
+                key: pos,
+                active: selected === pos,
+                enabled: (getExcerpts(word, pos).length || getDefinitions(word, pos).lenght) > 0,
+                label: pos,
+                freq: getFreq(word, pos),
+                onSelect: onSelect });
+        })
+    );
+};
 
-function getFreq(word, pos) {
-    return (word.byPOS[pos] || {}).freq || 0;
-}
-
-function getDefinitions(word, pos) {
-    return word.lookup[pos] || [];
-}
-
-function hasDetails(word, pos) {
-    return getDefinitions(word, pos).length > 0 || getExcerpts(word, pos).length > 0;
+function getSelectedPOS(selection) {
+    return selection.POS || index(PARTS_OF_SPEACH, function (pos) {
+        return getExcerpts(selection.word, pos).length > 0;
+    })[0];
 }
 
 var WordDetailBody = function WordDetailBody(_ref) {
     var selection = _ref.selection,
         onSelectPOS = _ref.onSelectPOS;
 
-    var selectedPOS = selection.POS || index(PARTS_OF_SPEACH, function (pos) {
-        return getExcerpts(selection.word, pos).length > 0;
-    })[0];
+    var selectedPOS = getSelectedPOS(selection);
+    var selectedWord = selection.word;
 
     return React$1.createElement(
         'div',
@@ -1311,25 +1332,17 @@ var WordDetailBody = function WordDetailBody(_ref) {
         React$1.createElement(
             'header',
             { className: 'tab-group' },
-            PARTS_OF_SPEACH.map(function (pos) {
-                return React$1.createElement(WordPartOfSpeachHeader, {
-                    key: pos,
-                    active: selectedPOS === pos,
-                    enabled: hasDetails(selection.word, pos),
-                    label: pos,
-                    freq: getFreq(selection.word, pos),
-                    onSelectPOS: onSelectPOS });
-            })
+            React$1.createElement(WordPartOfSpeachSelector, { selected: selectedPOS, word: selectedWord, onSelect: onSelectPOS })
         ),
         React$1.createElement(
             'section',
             null,
-            React$1.createElement(WordExcerptList, { excerpts: getExcerpts(selection.word, selectedPOS) })
+            React$1.createElement(WordExcerptList, { excerpts: getExcerpts(selectedWord, selectedPOS) })
         ),
         React$1.createElement(
             'section',
             null,
-            React$1.createElement(WordDefinitionList, { definitions: getDefinitions(selection.word, selectedPOS) })
+            React$1.createElement(WordDefinitionList, { definitions: getDefinitions(selectedWord, selectedPOS) })
         )
     );
 };

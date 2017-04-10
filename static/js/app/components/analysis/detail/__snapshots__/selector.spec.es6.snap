@@ -1,0 +1,185 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<WordPartOfSpeachItem /> should mark POS item as active 1`] = `
+<div
+  class="noun tab card active"
+>
+  <div
+    class="label"
+  >
+    noun
+  </div>
+  <div
+    class="count"
+  >
+     
+  </div>
+</div>
+`;
+
+exports[`<WordPartOfSpeachItem /> should mark POS item as enabled 1`] = `
+<div
+  class="noun tab card"
+>
+  <div
+    class="label"
+  >
+    noun
+  </div>
+  <div
+    class="count"
+  >
+     
+  </div>
+</div>
+`;
+
+exports[`<WordPartOfSpeachItem /> should mark POS item with frequency 1`] = `
+<div
+  class="noun tab card"
+>
+  <div
+    class="label"
+  >
+    noun
+  </div>
+  <div
+    class="count badge"
+  >
+    1
+  </div>
+</div>
+`;
+
+exports[`<WordPartOfSpeachItem /> should render disabled, inactive POS item 1`] = `
+<div
+  class="noun tab card empty"
+>
+  <div
+    class="label"
+  >
+    noun
+  </div>
+  <div
+    class="count"
+  >
+     
+  </div>
+</div>
+`;
+
+exports[`<WordPartOfSpeachSelector /> should mark POS with definition as available 1`] = `
+<div>
+  <WordPartOfSpeachItem
+    active={false}
+    enabled={true}
+    freq={1}
+    label="noun"
+  />
+  <WordPartOfSpeachItem
+    active={false}
+    enabled={false}
+    freq={0}
+    label="verb"
+  />
+  <WordPartOfSpeachItem
+    active={false}
+    enabled={false}
+    freq={0}
+    label="adj"
+  />
+  <WordPartOfSpeachItem
+    active={false}
+    enabled={false}
+    freq={0}
+    label="adv"
+  />
+</div>
+`;
+
+exports[`<WordPartOfSpeachSelector /> should mark POS with excerpt as available 1`] = `
+<div>
+  <WordPartOfSpeachItem
+    active={true}
+    enabled={true}
+    freq={1}
+    label="noun"
+  />
+  <WordPartOfSpeachItem
+    active={false}
+    enabled={true}
+    freq={1}
+    label="verb"
+  />
+  <WordPartOfSpeachItem
+    active={false}
+    enabled={false}
+    freq={0}
+    label="adj"
+  />
+  <WordPartOfSpeachItem
+    active={false}
+    enabled={false}
+    freq={0}
+    label="adv"
+  />
+</div>
+`;
+
+exports[`<WordPartOfSpeachSelector /> should mark selected POS as 'active' 1`] = `
+<div>
+  <WordPartOfSpeachItem
+    active={true}
+    enabled={false}
+    freq={0}
+    label="noun"
+  />
+  <WordPartOfSpeachItem
+    active={false}
+    enabled={false}
+    freq={0}
+    label="verb"
+  />
+  <WordPartOfSpeachItem
+    active={false}
+    enabled={false}
+    freq={0}
+    label="adj"
+  />
+  <WordPartOfSpeachItem
+    active={false}
+    enabled={false}
+    freq={0}
+    label="adv"
+  />
+</div>
+`;
+
+exports[`<WordPartOfSpeachSelector /> should render 1`] = `
+<div>
+  <WordPartOfSpeachItem
+    active={false}
+    enabled={false}
+    freq={0}
+    label="noun"
+  />
+  <WordPartOfSpeachItem
+    active={false}
+    enabled={false}
+    freq={0}
+    label="verb"
+  />
+  <WordPartOfSpeachItem
+    active={false}
+    enabled={false}
+    freq={0}
+    label="adj"
+  />
+  <WordPartOfSpeachItem
+    active={false}
+    enabled={false}
+    freq={0}
+    label="adv"
+  />
+</div>
+`;

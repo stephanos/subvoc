@@ -26,7 +26,8 @@
         "rollup-plugin-commonjs": "^8.0.2",
         "rollup-plugin-node-resolve": "^3.0.0",
         "rollup-plugin-replace": "^1.1.1",
-        "rollup-watch": "3.2.2"
+        "rollup-watch": "3.2.2",
+        "testdouble": "^2.1.2"
     },
     "jest": {
         "moduleFileExtensions": [
@@ -36,7 +37,9 @@
         "roots": [
             "static/js/app"
         ],
-        "snapshotSerializers": ["enzyme-to-json/serializer"],
+        "snapshotSerializers": [
+            "enzyme-to-json/serializer"
+        ],
         "testMatch": [
             "**/*.spec.es6"
         ],
