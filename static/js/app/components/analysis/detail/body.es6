@@ -8,7 +8,7 @@ import { getDefinitions, getExcerpts, PARTS_OF_SPEACH, WordPartOfSpeachSelector 
 
 function getSelectedPOS(selection) {
     return selection.POS ||
-        find(PARTS_OF_SPEACH, (pos) => getExcerpts(selection.word, pos).length > 0)[0];
+        find(PARTS_OF_SPEACH, (pos) => getExcerpts(selection.word, pos).length > 0);
 }
 
 

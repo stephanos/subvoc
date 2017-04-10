@@ -1,0 +1,83 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<WordDetailBody /> should render by picking POS with excerpt 1`] = `
+<div>
+  <header
+    className="tab-group"
+  >
+    <WordPartOfSpeachSelector
+      selected="verb"
+      word={
+        Object {
+          "byPOS": Object {
+            "verb": Object {
+              "excerpts": Array [
+                "...",
+              ],
+              "freq": 1,
+            },
+          },
+          "lookup": Object {
+            "noun": Array [
+              "...",
+            ],
+          },
+        }
+      }
+    />
+  </header>
+  <section>
+    <WordExcerptList
+      excerpts={
+        Array [
+          "...",
+        ]
+      }
+    />
+  </section>
+  <section>
+    <WordDefinitionList
+      definitions={Array []}
+    />
+  </section>
+</div>
+`;
+
+exports[`<WordDetailBody /> should render with pre-selected POS 1`] = `
+<div>
+  <header
+    className="tab-group"
+  >
+    <WordPartOfSpeachSelector
+      selected="noun"
+      word={
+        Object {
+          "byPOS": Object {
+            "noun": Object {
+              "excerpts": Array [
+                "...",
+              ],
+              "freq": 1,
+            },
+          },
+          "lookup": Object {},
+        }
+      }
+    />
+  </header>
+  <section>
+    <WordExcerptList
+      excerpts={
+        Array [
+          "...",
+        ]
+      }
+    />
+  </section>
+  <section>
+    <WordDefinitionList
+      definitions={Array []}
+    />
+  </section>
+</div>
+`;

@@ -1316,7 +1316,7 @@ var WordPartOfSpeachSelector = function WordPartOfSpeachSelector(_ref2) {
 function getSelectedPOS(selection) {
     return selection.POS || index(PARTS_OF_SPEACH, function (pos) {
         return getExcerpts(selection.word, pos).length > 0;
-    })[0];
+    });
 }
 
 var WordDetailBody = function WordDetailBody(_ref) {
