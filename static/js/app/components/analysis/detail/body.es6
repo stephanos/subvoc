@@ -3,7 +3,7 @@ import React from 'react';
 
 import { WordDefinitionList } from './definition.es6';
 import { WordExcerptList } from './excerpt.es6';
-import { WordPartOfSpeachHeader } from './selector.es6';
+import { WordPartOfSpeachHeader } from './pos.es6';
 
 
 
