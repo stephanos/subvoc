@@ -1,4 +1,3 @@
-import $ from 'jquery';
 import { debounce } from '../util/debounce.es6';
 
 

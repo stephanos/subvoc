@@ -1,4 +1,3 @@
-import $ from 'jquery';
 import React from 'react';
 
 import { API } from '../api.es6';
@@ -19,7 +18,8 @@ class Analysis extends React.Component {
 
     handleSelectWord(word) {
         this.setState((prevState) => {
-            prevState.listScrollPos = $(window).scrollTop();
+            prevState.listScrollPos = (window.pageYOffset || document.documentElement.scrollTop)
+                 - (document.documentElement.clientTop || 0);
             prevState.selection.word = word;
         });
         this.lookupWord(word);
@@ -47,7 +47,7 @@ class Analysis extends React.Component {
 
     componentDidUpdate(prevProps, prevState) {
         if (!this.state.selection.word && this.state.listScrollPos) {
-            scrollToPos(this.state.listScrollPos);
+            window.scrollTo(this.state.listScrollPos);
             delete this.state.listScrollPos;
         }
     }

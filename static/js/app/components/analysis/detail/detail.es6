@@ -43,7 +43,7 @@ class WordDetail extends React.Component {
     }
 
     componentDidUpdate(prevProps, prevState) {
-        scrollToPos(0);
+        window.scrollTo(0, 0);
     }
 }
 
