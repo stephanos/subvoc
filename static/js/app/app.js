@@ -7,151 +7,6 @@ $ = 'default' in $ ? $['default'] : $;
 classNames = 'default' in classNames ? classNames['default'] : classNames;
 Slider = 'default' in Slider ? Slider['default'] : Slider;
 
-var classCallCheck = function (instance, Constructor) {
-  if (!(instance instanceof Constructor)) {
-    throw new TypeError("Cannot call a class as a function");
-  }
-};
-
-var createClass = function () {
-  function defineProperties(target, props) {
-    for (var i = 0; i < props.length; i++) {
-      var descriptor = props[i];
-      descriptor.enumerable = descriptor.enumerable || false;
-      descriptor.configurable = true;
-      if ("value" in descriptor) descriptor.writable = true;
-      Object.defineProperty(target, descriptor.key, descriptor);
-    }
-  }
-
-  return function (Constructor, protoProps, staticProps) {
-    if (protoProps) defineProperties(Constructor.prototype, protoProps);
-    if (staticProps) defineProperties(Constructor, staticProps);
-    return Constructor;
-  };
-}();
-
-
-
-
-
-
-
-
-
-var inherits = function (subClass, superClass) {
-  if (typeof superClass !== "function" && superClass !== null) {
-    throw new TypeError("Super expression must either be null or a function, not " + typeof superClass);
-  }
-
-  subClass.prototype = Object.create(superClass && superClass.prototype, {
-    constructor: {
-      value: subClass,
-      enumerable: false,
-      writable: true,
-      configurable: true
-    }
-  });
-  if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass;
-};
-
-
-
-
-
-
-
-
-
-
-
-var possibleConstructorReturn = function (self, call) {
-  if (!self) {
-    throw new ReferenceError("this hasn't been initialised - super() hasn't been called");
-  }
-
-  return call && (typeof call === "object" || typeof call === "function") ? call : self;
-};
-
-var API = function () {
-    function API() {
-        classCallCheck(this, API);
-    }
-
-    createClass(API, null, [{
-        key: 'lookupWord',
-        value: function lookupWord(word) {
-            return $.getJSON({
-                url: '/api/words/' + word.token,
-                error: function error(xhr, status, err) {
-                    console.error(err); // eslint-disable-line
-                }
-            });
-        }
-    }, {
-        key: 'loadAnalysis',
-        value: function loadAnalysis(imdbId) {
-            return $.getJSON({
-                url: '/api/analysis/' + imdbId,
-                error: function error(xhr, status, err) {
-                    console.error(err); // eslint-disable-line
-                }
-            });
-        }
-    }, {
-        key: 'searchMovie',
-        value: function searchMovie(query) {
-            return $.getJSON({
-                url: '/api/search/' + query,
-                error: function error(xhr, status, err) {
-                    console.error(err); // eslint-disable-line
-                }
-            });
-        }
-    }]);
-    return API;
-}();
-
-var Nav = function Nav(_ref) {
-    var analysis = _ref.analysis,
-        selection = _ref.selection,
-        onClick = _ref.onClick;
-    return React.createElement(
-        'nav',
-        { className: 'navigation' },
-        React.createElement(
-            'section',
-            { className: 'container' },
-            React.createElement(
-                'span',
-                { className: 'navigation-title' },
-                React.createElement(
-                    'h1',
-                    { className: 'title' },
-                    selection && selection.word ? React.createElement(
-                        'div',
-                        { className: 'media', onClick: onClick },
-                        React.createElement(
-                            'span',
-                            { className: 'arrow left' },
-                            '>'
-                        ),
-                        React.createElement(
-                            'span',
-                            { className: 'name' },
-                            analysis.media.title
-                        )
-                    ) : React.createElement(
-                        'a',
-                        { className: 'generic', href: '/' },
-                        'subvoc'
-                    )
-                )
-            )
-        )
-    );
-};
-
 var toStr$2 = Object.prototype.toString;
 
 var isArguments = function isArguments(value) {
@@ -349,7 +204,7 @@ var arePropertyDescriptorsSupported = function () {
 };
 var supportsDescriptors = Object.defineProperty && arePropertyDescriptorsSupported();
 
-var defineProperty$1 = function (object, name, value, predicate) {
+var defineProperty = function (object, name, value, predicate) {
 	if (name in object && (!isFunction(predicate) || !predicate())) {
 		return;
 	}
@@ -372,7 +227,7 @@ var defineProperties = function (object, map) {
 		props = props.concat(Object.getOwnPropertySymbols(map));
 	}
 	index$5(props, function (name) {
-		defineProperty$1(object, name, map[name], predicates[name]);
+		defineProperty(object, name, map[name], predicates[name]);
 	});
 };
 
@@ -1172,6 +1027,151 @@ index$1(boundFindShim, {
 
 var index = boundFindShim;
 
+var classCallCheck = function (instance, Constructor) {
+  if (!(instance instanceof Constructor)) {
+    throw new TypeError("Cannot call a class as a function");
+  }
+};
+
+var createClass = function () {
+  function defineProperties(target, props) {
+    for (var i = 0; i < props.length; i++) {
+      var descriptor = props[i];
+      descriptor.enumerable = descriptor.enumerable || false;
+      descriptor.configurable = true;
+      if ("value" in descriptor) descriptor.writable = true;
+      Object.defineProperty(target, descriptor.key, descriptor);
+    }
+  }
+
+  return function (Constructor, protoProps, staticProps) {
+    if (protoProps) defineProperties(Constructor.prototype, protoProps);
+    if (staticProps) defineProperties(Constructor, staticProps);
+    return Constructor;
+  };
+}();
+
+
+
+
+
+
+
+
+
+var inherits = function (subClass, superClass) {
+  if (typeof superClass !== "function" && superClass !== null) {
+    throw new TypeError("Super expression must either be null or a function, not " + typeof superClass);
+  }
+
+  subClass.prototype = Object.create(superClass && superClass.prototype, {
+    constructor: {
+      value: subClass,
+      enumerable: false,
+      writable: true,
+      configurable: true
+    }
+  });
+  if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass;
+};
+
+
+
+
+
+
+
+
+
+
+
+var possibleConstructorReturn = function (self, call) {
+  if (!self) {
+    throw new ReferenceError("this hasn't been initialised - super() hasn't been called");
+  }
+
+  return call && (typeof call === "object" || typeof call === "function") ? call : self;
+};
+
+var API = function () {
+    function API() {
+        classCallCheck(this, API);
+    }
+
+    createClass(API, null, [{
+        key: 'lookupWord',
+        value: function lookupWord(word) {
+            return $.getJSON({
+                url: '/api/words/' + word.token,
+                error: function error(xhr, status, err) {
+                    console.error(err); // eslint-disable-line
+                }
+            });
+        }
+    }, {
+        key: 'loadAnalysis',
+        value: function loadAnalysis(imdbId) {
+            return $.getJSON({
+                url: '/api/analysis/' + imdbId,
+                error: function error(xhr, status, err) {
+                    console.error(err); // eslint-disable-line
+                }
+            });
+        }
+    }, {
+        key: 'searchMovie',
+        value: function searchMovie(query) {
+            return $.getJSON({
+                url: '/api/search/' + query,
+                error: function error(xhr, status, err) {
+                    console.error(err); // eslint-disable-line
+                }
+            });
+        }
+    }]);
+    return API;
+}();
+
+var Nav = function Nav(_ref) {
+    var analysis = _ref.analysis,
+        selection = _ref.selection,
+        onClick = _ref.onClick;
+    return React.createElement(
+        'nav',
+        { className: 'navigation' },
+        React.createElement(
+            'section',
+            { className: 'container' },
+            React.createElement(
+                'span',
+                { className: 'navigation-title' },
+                React.createElement(
+                    'h1',
+                    { className: 'title' },
+                    selection && selection.word ? React.createElement(
+                        'div',
+                        { className: 'media', onClick: onClick },
+                        React.createElement(
+                            'span',
+                            { className: 'arrow left' },
+                            '>'
+                        ),
+                        React.createElement(
+                            'span',
+                            { className: 'name' },
+                            analysis.media.title
+                        )
+                    ) : React.createElement(
+                        'a',
+                        { className: 'generic', href: '/' },
+                        'subvoc'
+                    )
+                )
+            )
+        )
+    );
+};
+
 var WordDefinitionList = function WordDefinitionList(_ref) {
     var definitions = _ref.definitions;
     return React$1.createElement(
@@ -1619,16 +1619,10 @@ var Analysis = function (_React$Component) {
     }, {
         key: 'handleUnselectWord',
         value: function handleUnselectWord() {
-            window.location.hash = '';
             this.setState(function (prevState) {
                 delete prevState.selection.POS;
                 delete prevState.selection.word;
             });
-        }
-    }, {
-        key: 'componentDidMount',
-        value: function componentDidMount() {
-            window.onpopstate = this.handleUnselectWord.bind(this);
         }
     }, {
         key: 'componentDidUpdate',
@@ -1694,6 +1688,41 @@ var Analysis = function (_React$Component) {
     }]);
     return Analysis;
 }(React$1.Component);
+
+var Page = {
+    ANALYTICS: new RegExp('/analysis/(\\w+)'),
+    SEARCH: '/'
+};
+
+var Router = function () {
+    function Router() {
+        classCallCheck(this, Router);
+    }
+
+    createClass(Router, null, [{
+        key: 'getPage',
+        value: function getPage(path) {
+            var analysisMatch = path.match(Page.ANALYTICS);
+            if (analysisMatch) {
+                return { movieId: analysisMatch[1] };
+            }
+
+            return {};
+        }
+    }, {
+        key: 'onAnalysisPage',
+        value: function onAnalysisPage(movieTitle, movieId) {
+            var title = movieTitle ? 'Analysis: ' + movieTitle : 'Analysis';
+            var path = '/analysis/' + movieId;
+            if (path === location.pathname) {
+                document.title = title;
+            } else {
+                history.pushState(null, title, path);
+            }
+        }
+    }]);
+    return Router;
+}();
 
 var Intro = function Intro() {
   return React.createElement(
@@ -1795,7 +1824,7 @@ var SearchResultItem = function SearchResultItem(_ref) {
     return React.createElement(
         'div',
         { className: 'search-result-item', onClick: function onClick() {
-                return onSelect(item.id);
+                return onSelect(item);
             } },
         React.createElement(
             'a',
@@ -1916,8 +1945,7 @@ var Search = function (_React$Component) {
                     React$1.createElement(SearchBar, { onSearch: function onSearch(q) {
                             return _this3.handleSearch(q);
                         } }),
-                    this.state.searchXHR ? React$1.createElement(Spinner, { big: true }) : this.state.items === undefined ? React$1.createElement(Intro, null) : React$1.createElement(SearchResults, { items: this.state.items,
-                        onSelect: onSelect })
+                    this.state.searchXHR ? React$1.createElement(Spinner, { big: true }) : this.state.items === undefined ? React$1.createElement(Intro, null) : React$1.createElement(SearchResults, { items: this.state.items, onSelect: onSelect })
                 )
             );
         }
@@ -1951,26 +1979,33 @@ var Search = function (_React$Component) {
 var App = function (_React$Component) {
     inherits(App, _React$Component);
 
-    function App() {
+    function App(_ref) {
+        var page = _ref.page;
         classCallCheck(this, App);
 
         var _this = possibleConstructorReturn(this, (App.__proto__ || Object.getPrototypeOf(App)).call(this));
 
-        _this.state = {};
+        var xhr = void 0;
+        if (page.movieId) {
+            xhr = _this.loadAnalysis(page.movieId);
+        }
+        _this.state = { analysisXHR: xhr };
         return _this;
     }
 
     createClass(App, [{
         key: 'handleSelection',
-        value: function handleSelection(movieId) {
+        value: function handleSelection(movie) {
             var _this2 = this;
+
+            Router.onAnalysisPage(movie.title, movie.id);
 
             this.setState(function (prevState) {
                 if (prevState.analysisXHR) {
                     prevState.analysisXHR.abort();
                 }
 
-                prevState.analysisXHR = _this2.loadAnalysis(movieId);
+                prevState.analysisXHR = _this2.loadAnalysis(movie.id);
             });
         }
     }, {
@@ -1986,8 +2021,8 @@ var App = function (_React$Component) {
                     null,
                     React$1.createElement(Nav, null),
                     React$1.createElement(Spinner, { big: true, centered: true })
-                ) : this.state.analysis ? React$1.createElement(Analysis, { analysis: this.state.analysis }) : React$1.createElement(Search, { onSelect: function onSelect(id) {
-                        return _this3.handleSelection(id);
+                ) : this.state.analysis ? React$1.createElement(Analysis, { analysis: this.state.analysis }) : React$1.createElement(Search, { onSelect: function onSelect(m) {
+                        return _this3.handleSelection(m);
                     } })
             );
         }
@@ -2015,8 +2050,9 @@ var App = function (_React$Component) {
 }(React$1.Component);
 
 window.onload = function () {
+    var page = Router.getPage(location.pathname);
     var container = document.getElementById('main');
-    ReactDOM.render(React$1.createElement(App, null), container);
+    ReactDOM.render(React$1.createElement(App, { page: page }), container);
 };
 
 }(React,ReactDOM,$,classNames,Slider));

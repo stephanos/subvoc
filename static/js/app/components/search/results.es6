@@ -4,7 +4,7 @@ import { Attribution } from './attribution.es6';
 
 
 const SearchResultItem = ({ item, onSelect }) =>
-    <div className="search-result-item" onClick={() => onSelect(item.id)}>
+    <div className="search-result-item" onClick={() => onSelect(item)}>
         <a className="header">
             { item.poster_url
                 ? <img className="poster" src={item.poster_url} />

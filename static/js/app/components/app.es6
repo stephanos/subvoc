@@ -1,27 +1,37 @@
 import React from 'react';
+import find from 'array.prototype.find';
 
 import { API } from './api.es6';
 import { Analysis } from './analysis/analysis.es6';
 import { Nav } from './nav.es6';
+import { Router } from './router.es6';
 import { Search } from './search/search.es6';
 import { Spinner } from './util/spinner.es6';
 
 
+
 class App extends React.Component {
 
-    constructor() {
+    constructor({ page }) {
         super();
-        this.state = {};
+
+        let xhr;
+        if (page.movieId) {
+            xhr = this.loadAnalysis(page.movieId);
+        }
+        this.state = { analysisXHR: xhr };
     }
 
 
-    handleSelection(movieId) {
+    handleSelection(movie) {
+        Router.onAnalysisPage(movie.title, movie.id);
+        
         this.setState((prevState) => {
             if (prevState.analysisXHR) {
                 prevState.analysisXHR.abort();
             }
 
-            prevState.analysisXHR = this.loadAnalysis(movieId);
+            prevState.analysisXHR = this.loadAnalysis(movie.id);
         });
     }
 
@@ -34,7 +44,7 @@ class App extends React.Component {
                   </div>
                 : this.state.analysis 
                     ? <Analysis analysis={this.state.analysis} />
-                    : <Search onSelect={(id) => this.handleSelection(id)} /> }
+                    : <Search onSelect={(m) => this.handleSelection(m)} /> }
         </div>;
     }
 

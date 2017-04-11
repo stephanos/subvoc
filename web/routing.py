@@ -46,6 +46,10 @@ def create_routes(app):
     def home_route():
         return bootstrap()
 
+    @app.route('/analysis/<id>')
+    def analysis_route(id):
+        return bootstrap()
+
     @app.route('/error')
     def error_route():
         return error()

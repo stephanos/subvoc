@@ -36,17 +36,12 @@ class Analysis extends React.Component {
     }
 
     handleUnselectWord() {
-        window.location.hash = '';
         this.setState((prevState) => {
             delete prevState.selection.POS;
             delete prevState.selection.word;
         });
     }
 
-
-    componentDidMount() {
-        window.onpopstate = this.handleUnselectWord.bind(this);
-    }
 
     componentDidUpdate(prevProps, prevState) {
         if (!this.state.selection.word && this.state.listScrollPos) {

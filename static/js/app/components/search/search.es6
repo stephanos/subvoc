@@ -39,8 +39,7 @@ class Search extends React.Component {
                     ? <Spinner big={true} />
                     : this.state.items === undefined 
                         ? <Intro />
-                        : <SearchResults items={this.state.items} 
-                                         onSelect={onSelect} /> 
+                        : <SearchResults items={this.state.items} onSelect={onSelect} /> 
                 }                
             </section>
         </div>;
