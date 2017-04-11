@@ -1777,30 +1777,46 @@ var Intro = function Intro() {
   );
 };
 
+function debounce(func, wait, immediate) {
+    var timeout;
+    return function () {
+        var context = this,
+            args = arguments;
+        var later = function later() {
+            timeout = null;
+            if (!immediate) func.apply(context, args);
+        };
+        var callNow = immediate && !timeout;
+        clearTimeout(timeout);
+        timeout = setTimeout(later, wait);
+        if (callNow) func.apply(context, args);
+    };
+}
+
 var SearchBar = function SearchBar(_ref) {
     var onSearch = _ref.onSearch;
 
-    var debouncedSearch = $.debounce(500, function (e) {
+    var debouncedSearch = debounce(function (e) {
         return onSearch(e.target.value);
-    });
+    }, 500);
 
     return React.createElement(
-        "div",
-        { className: "search" },
-        React.createElement("div", { className: "search-input" }),
+        'div',
+        { className: 'search' },
+        React.createElement('div', { className: 'search-input' }),
         React.createElement(
-            "div",
-            { className: "search-wrapper" },
-            React.createElement("input", { type: "text",
-                className: "searchbar",
-                name: "q",
+            'div',
+            { className: 'search-wrapper' },
+            React.createElement('input', { type: 'text',
+                className: 'searchbar',
+                name: 'q',
                 autoFocus: true,
-                autoComplete: "off",
+                autoComplete: 'off',
                 onChange: function onChange(e) {
                     e.persist();
                     debouncedSearch(e);
                 },
-                placeholder: "Search movie ..." })
+                placeholder: 'Search movie ...' })
         )
     );
 };

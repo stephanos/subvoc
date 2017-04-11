@@ -1,8 +1,9 @@
 import $ from 'jquery';
+import { debounce } from '../util/debounce.es6';
 
 
 const SearchBar = ({ onSearch }) => {
-    const debouncedSearch = $.debounce(500, (e) => onSearch(e.target.value));
+    const debouncedSearch = debounce((e) => onSearch(e.target.value), 500);
 
     return <div className="search">
         <div className="search-input" />
