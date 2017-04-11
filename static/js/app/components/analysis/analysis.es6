@@ -5,7 +5,7 @@ import { Nav } from '../nav.es6';
 import { WordDetail } from './detail/detail.es6';
 import { WordList } from './list/list.es6';
 
-import { scrollToPos } from '../../util/scroll,es6';
+import { scrollTo, scrollPos } from '../util/scroll.es6';
 
 
 class Analysis extends React.Component {
@@ -18,8 +18,7 @@ class Analysis extends React.Component {
 
     handleSelectWord(word) {
         this.setState((prevState) => {
-            prevState.listScrollPos = (window.pageYOffset || document.documentElement.scrollTop)
-                 - (document.documentElement.clientTop || 0);
+            prevState.listScrollPos = scrollPos();
             prevState.selection.word = word;
         });
         this.lookupWord(word);
@@ -47,7 +46,7 @@ class Analysis extends React.Component {
 
     componentDidUpdate(prevProps, prevState) {
         if (!this.state.selection.word && this.state.listScrollPos) {
-            window.scrollTo(this.state.listScrollPos);
+            scrollTo(this.state.listScrollPos);
             delete this.state.listScrollPos;
         }
     }

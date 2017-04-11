@@ -1,10 +1,9 @@
-(function (React$1,ReactDOM,axios,$,classNames,Slider) {
+(function (React$1,ReactDOM,axios,classNames,Slider) {
 'use strict';
 
 React$1 = 'default' in React$1 ? React$1['default'] : React$1;
 ReactDOM = 'default' in ReactDOM ? ReactDOM['default'] : ReactDOM;
 axios = 'default' in axios ? axios['default'] : axios;
-$ = 'default' in $ ? $['default'] : $;
 classNames = 'default' in classNames ? classNames['default'] : classNames;
 Slider = 'default' in Slider ? Slider['default'] : Slider;
 
@@ -1333,6 +1332,14 @@ var WordDetailBody = function WordDetailBody(_ref) {
     );
 };
 
+function scrollTo(pos) {
+    document.documentElement.scrollTop = document.body.scrollTop = pos;
+}
+
+function scrollPos() {
+    return (window.pageYOffset || document.documentElement.scrollTop) - (document.documentElement.clientTop || 0);
+}
+
 var Spinner = function Spinner(_ref) {
     var big = _ref.big,
         centered = _ref.centered;
@@ -1403,7 +1410,7 @@ var WordDetail = function (_React$Component) {
     }, {
         key: 'componentDidUpdate',
         value: function componentDidUpdate(prevProps, prevState) {
-            $(window).scrollTop(0);
+            scrollTo(0);
         }
     }]);
     return WordDetail;
@@ -1583,7 +1590,7 @@ var Analysis = function (_React$Component) {
         key: 'handleSelectWord',
         value: function handleSelectWord(word) {
             this.setState(function (prevState) {
-                prevState.listScrollPos = $(window).scrollTop();
+                prevState.listScrollPos = scrollPos();
                 prevState.selection.word = word;
             });
             this.lookupWord(word);
@@ -1614,7 +1621,7 @@ var Analysis = function (_React$Component) {
         key: 'componentDidUpdate',
         value: function componentDidUpdate(prevProps, prevState) {
             if (!this.state.selection.word && this.state.listScrollPos) {
-                $(window).scrollTop(this.state.listScrollPos);
+                scrollTo(this.state.listScrollPos);
                 delete this.state.listScrollPos;
             }
         }
@@ -1793,22 +1800,22 @@ var SearchBar = function SearchBar(_ref) {
     }, 500);
 
     return React.createElement(
-        'div',
-        { className: 'search' },
-        React.createElement('div', { className: 'search-input' }),
+        "div",
+        { className: "search" },
+        React.createElement("div", { className: "search-input" }),
         React.createElement(
-            'div',
-            { className: 'search-wrapper' },
-            React.createElement('input', { type: 'text',
-                className: 'searchbar',
-                name: 'q',
+            "div",
+            { className: "search-wrapper" },
+            React.createElement("input", { type: "text",
+                className: "searchbar",
+                name: "q",
                 autoFocus: true,
-                autoComplete: 'off',
+                autoComplete: "off",
                 onChange: function onChange(e) {
                     e.persist();
                     debouncedSearch(e);
                 },
-                placeholder: 'Search movie ...' })
+                placeholder: "Search movie ..." })
         )
     );
 };
@@ -2065,4 +2072,4 @@ window.onload = function () {
     ReactDOM.render(React$1.createElement(App, { page: page }), container);
 };
 
-}(React,ReactDOM,axios,$,classNames,Slider));
+}(React,ReactDOM,axios,classNames,Slider));

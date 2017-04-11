@@ -11,12 +11,11 @@ export default {
   globals: {
     'axios': 'axios',
     'classnames': 'classNames',
-    'jquery': '$',
     'react': 'React',
     'react-dom': 'ReactDOM',
     'react-slick': 'Slider'
   },
-  external: ['axios', 'classnames', 'jquery', 'react', 'react-dom', 'react-slick'],
+  external: ['axios', 'classnames', 'react', 'react-dom', 'react-slick'],
   plugins: [
     babel({
       babelrc: false,

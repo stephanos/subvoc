@@ -2,7 +2,7 @@ import React from 'react';
 
 import { WordDetailBody } from './body.es6';
 
-import { scrollToPos } from '../../util/scroll,es6';
+import { scrollTo } from '../../util/scroll.es6';
 import { Spinner } from '../../util/spinner.es6';
 
 
@@ -43,7 +43,7 @@ class WordDetail extends React.Component {
     }
 
     componentDidUpdate(prevProps, prevState) {
-        window.scrollTo(0, 0);
+        scrollTo(0);
     }
 }
 
