@@ -53,13 +53,14 @@ class App extends React.Component {
         xhr.then((res) => {
             this.setState((prevState) => {
                 prevState.analysisXHR = undefined;
-                prevState.analysis = res;
+                prevState.analysis = res.data;
             });
         })
         .catch((err) => {
             if (err.statusText === 'abort') {
                 return;
             }
+            console.error(err); // eslint-disable-line
             document.location.href = "/error";
         });
         return xhr;

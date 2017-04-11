@@ -1,8 +1,9 @@
-(function (React$1,ReactDOM,$,classNames,Slider) {
+(function (React$1,ReactDOM,axios,$,classNames,Slider) {
 'use strict';
 
 React$1 = 'default' in React$1 ? React$1['default'] : React$1;
 ReactDOM = 'default' in ReactDOM ? ReactDOM['default'] : ReactDOM;
+axios = 'default' in axios ? axios['default'] : axios;
 $ = 'default' in $ ? $['default'] : $;
 classNames = 'default' in classNames ? classNames['default'] : classNames;
 Slider = 'default' in Slider ? Slider['default'] : Slider;
@@ -1101,32 +1102,17 @@ var API = function () {
     createClass(API, null, [{
         key: 'lookupWord',
         value: function lookupWord(word) {
-            return $.getJSON({
-                url: '/api/words/' + word.token,
-                error: function error(xhr, status, err) {
-                    console.error(err); // eslint-disable-line
-                }
-            });
+            return axios.get('/api/words/' + word.token);
         }
     }, {
         key: 'loadAnalysis',
         value: function loadAnalysis(imdbId) {
-            return $.getJSON({
-                url: '/api/analysis/' + imdbId,
-                error: function error(xhr, status, err) {
-                    console.error(err); // eslint-disable-line
-                }
-            });
+            return axios.get('/api/analysis/' + imdbId);
         }
     }, {
         key: 'searchMovie',
         value: function searchMovie(query) {
-            return $.getJSON({
-                url: '/api/search/' + query,
-                error: function error(xhr, status, err) {
-                    console.error(err); // eslint-disable-line
-                }
-            });
+            return axios.get('/api/search/' + query);
         }
     }]);
     return API;
@@ -1679,9 +1665,15 @@ var Analysis = function (_React$Component) {
             xhr.then(function (res) {
                 _this3.setState(function (prevState) {
                     if (prevState.selection.word) {
-                        prevState.selection.word.lookup = res;
+                        prevState.selection.word.lookup = res.data;
                     }
                 });
+            }).catch(function (err) {
+                if (err.statusText === 'abort') {
+                    return;
+                }
+                console.error(err); // eslint-disable-line
+                document.location.href = "/error";
             });
             return xhr;
         }
@@ -1978,12 +1970,13 @@ var Search = function (_React$Component) {
             xhr.then(function (res) {
                 _this4.setState(function (prevState) {
                     prevState.searchXHR = undefined;
-                    prevState.items = res.hits;
+                    prevState.items = res.data.hits;
                 });
             }).catch(function (err) {
                 if (err.statusText === 'abort') {
                     return;
                 }
+                console.error(err); // eslint-disable-line
                 document.location.href = "/error";
             });
             return xhr;
@@ -2051,12 +2044,13 @@ var App = function (_React$Component) {
             xhr.then(function (res) {
                 _this4.setState(function (prevState) {
                     prevState.analysisXHR = undefined;
-                    prevState.analysis = res;
+                    prevState.analysis = res.data;
                 });
             }).catch(function (err) {
                 if (err.statusText === 'abort') {
                     return;
                 }
+                console.error(err); // eslint-disable-line
                 document.location.href = "/error";
             });
             return xhr;
@@ -2071,4 +2065,4 @@ window.onload = function () {
     ReactDOM.render(React$1.createElement(App, { page: page }), container);
 };
 
-}(React,ReactDOM,$,classNames,Slider));
+}(React,ReactDOM,axios,$,classNames,Slider));

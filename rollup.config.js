@@ -9,13 +9,14 @@ export default {
   dest: 'static/js/app/app.js',
   sourceMap: false,
   globals: {
+    'axios': 'axios',
     'classnames': 'classNames',
     'jquery': '$',
     'react': 'React',
     'react-dom': 'ReactDOM',
     'react-slick': 'Slider'
   },
-  external: ['classnames', 'jquery', 'react', 'react-dom', 'react-slick'],
+  external: ['axios', 'classnames', 'jquery', 'react', 'react-dom', 'react-slick'],
   plugins: [
     babel({
       babelrc: false,

@@ -6,6 +6,8 @@ import { Nav } from '../nav.es6';
 import { WordDetail } from './detail/detail.es6';
 import { WordList } from './list/list.es6';
 
+import { scrollToPos } from '../../util/scroll,es6';
+
 
 class Analysis extends React.Component {
 
@@ -45,7 +47,7 @@ class Analysis extends React.Component {
 
     componentDidUpdate(prevProps, prevState) {
         if (!this.state.selection.word && this.state.listScrollPos) {
-            $(window).scrollTop(this.state.listScrollPos);
+            scrollToPos(this.state.listScrollPos);
             delete this.state.listScrollPos;
         }
     }
@@ -80,9 +82,16 @@ class Analysis extends React.Component {
         xhr.then((res) => {
             this.setState((prevState) => {
                 if (prevState.selection.word) {
-                    prevState.selection.word.lookup = res;
+                    prevState.selection.word.lookup = res.data;
                 }
             });
+        })
+        .catch((err) => {
+            if (err.statusText === 'abort') {
+                return;
+            }
+            console.error(err); // eslint-disable-line
+            document.location.href = "/error";
         });
         return xhr;
     }

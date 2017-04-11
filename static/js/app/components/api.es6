@@ -1,33 +1,18 @@
-import $ from 'jquery';
+import axios from 'axios';
 
 
 class API {
 
     static lookupWord(word) {
-        return $.getJSON({
-            url: `/api/words/${word.token}`,
-            error: function (xhr, status, err) {
-                console.error(err); // eslint-disable-line
-            },
-        });
+        return axios.get(`/api/words/${word.token}`);
     }
 
     static loadAnalysis(imdbId) {
-        return $.getJSON({
-            url: `/api/analysis/${imdbId}`,
-            error: function (xhr, status, err) {
-                console.error(err); // eslint-disable-line
-            },
-        });
+        return axios.get(`/api/analysis/${imdbId}`);
     }
 
     static searchMovie(query) {
-        return $.getJSON({
-            url: `/api/search/${query}`,
-            error: function (xhr, status, err) {
-                console.error(err); // eslint-disable-line
-            },
-        });
+        return axios.get(`/api/search/${query}`);
     }
 }
 
