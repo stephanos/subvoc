@@ -9,11 +9,7 @@ def test_tokenize_sentences():
 
 
 def test_tokenize_words():
-    sentences = ['I hoped to see my wonderful friend.', 'And shake his hand firmly.']
-    words_by_sentence = list(Tokenizer().words(sentences))
+    sentence = 'I hoped to see my wonderful friend.'
+    words = Tokenizer().words(sentence)
 
-    assert len(words_by_sentence) == 2
-    assert list(words_by_sentence[0]) == [
-        'I', 'hoped', 'to', 'see', 'my', 'wonderful', 'friend', '.', ]
-    assert list(words_by_sentence[1]) == [
-        'And', 'shake', 'his', 'hand', 'firmly', '.']
+    assert words == ['I', 'hoped', 'to', 'see', 'my', 'wonderful', 'friend', '.']

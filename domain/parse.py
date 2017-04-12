@@ -11,11 +11,17 @@ SubtitleLine = namedtuple('SubtitleLine', ['text', 'time'])
 
 
 class Parser:
+    """Parse movie subtitle into sentences."""
 
     def __init__(self):
         self.tokenizer = Tokenizer()
 
     def parse(self, subtitle):
+        """Parse movie subtitle.
+
+        :param subtitle: movie subtitle text
+        :return: list of sentences
+        """
         lines, text = self._parse_lines(subtitle)
         tokens = self.tokenizer.sentences(text)
         return self._to_sentences(lines, tokens)

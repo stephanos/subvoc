@@ -2,11 +2,20 @@ SUPPORTED_SUBTITLE_FORMAT = 'srt'
 
 
 class Loader:
+    """Load movie subtitle."""
 
     def __init__(self, subtitle_api):
+        """
+        :param subtitle_api: API to load movie subtitles
+        """
         self.api = subtitle_api
 
     def load(self, imdb_id):
+        """Load movie subtitle.
+
+        :param movie_id: IMDB ID of movie
+        :return: movie subtitle
+        """
         all_subtitles = self.api.find_subtitles_for_movie(imdb_id)
         if not all_subtitles:
             return None

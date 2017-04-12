@@ -2,7 +2,7 @@ import json
 
 from flask import Response
 
-from domain.analyse import Word
+from domain.tagger import Word
 
 
 def excerpt_to_dict(excerpts):

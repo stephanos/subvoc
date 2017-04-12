@@ -28,7 +28,7 @@ def test_search():
     }
 
     searcher = Searcher(subtitle_api_mock, poster_api_mock)
-    result = searcher.search('a_query', count=2)
+    result = searcher.search('a_query', limit=2)
 
     assert result == [
         Media('M3', '3', 'movie', 2000),

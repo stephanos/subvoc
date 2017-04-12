@@ -5,23 +5,33 @@ from domain.tagger import PartOfSpeach
 
 
 class Lemmatizer:
+    """Determine a word's uninflected form, its lemma.
+
+    For example, lemma of 'dogs' is 'dog, of 'faster' is 'fast'.
+    The algorithm is based on the word's part of speech in a sentence.
+    """
 
     def __init__(self):
         self.wordNetLemmatizer = WordNetLemmatizer()
 
-    def lemmatize(self, word, word_POS):
-        wordnet_pos = self._to_wordnet_pos(word_POS)
-        if not wordnet_pos:
-            return word
-        return self.wordNetLemmatizer.lemmatize(word, pos=wordnet_pos)
+    def lemmatize(self, token, token_POS):
+        """Return token's uninflected form.
 
-    def _to_wordnet_pos(self, word_POS):
-        if word_POS is PartOfSpeach.ADJ:
+        :param token: inflected word
+        :param POS: word's part of speech
+        """
+        wordnet_pos = self._to_wordnet_pos(token_POS)
+        if not wordnet_pos:
+            return token
+        return self.wordNetLemmatizer.lemmatize(token, pos=wordnet_pos)
+
+    def _to_wordnet_pos(self, token_POS):
+        if token_POS is PartOfSpeach.ADJ:
             return wordnet.ADJ
-        elif word_POS is PartOfSpeach.ADV:
+        elif token_POS is PartOfSpeach.ADV:
             return wordnet.ADV
-        elif word_POS is PartOfSpeach.NOUN:
+        elif token_POS is PartOfSpeach.NOUN:
             return wordnet.NOUN
-        elif word_POS is PartOfSpeach.VERB:
+        elif token_POS is PartOfSpeach.VERB:
             return wordnet.VERB
         return None

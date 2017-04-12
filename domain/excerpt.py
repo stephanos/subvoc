@@ -8,11 +8,18 @@ Excerpt = namedtuple('Excerpt', ['sentences', 'token'])
 
 
 class Excerptor:
+    """Generate excerpt from around a sentence."""
 
     def __init__(self, delta=DEFAULT_DELTA):
         self.delta = delta
 
     def excerpt(self, sentences, token_sentence_pos, token):
+        """Return a list of sentences around a pivotal sentence.
+
+        :param sentences: list of sentences
+        :param token_sentence_pos: pivotal sentence position
+        :param token: token the excerpt is for
+        """
         token_sentence = sentences[token_sentence_pos]
 
         sentences_after = self._pick_close_sentences(
