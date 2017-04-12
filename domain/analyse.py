@@ -1,15 +1,13 @@
 from enum import Enum
-from collections import defaultdict, namedtuple, Counter
+from collections import defaultdict, Counter
 
 from nltk.corpus import wordnet, stopwords
 
 from domain.excerpt import Excerptor
 from domain.difficulty import WordDifficulty
 from domain.lemmatize import Lemmatizer
-from domain.tokenizer import Tokenizer, WordPartOfSpeach
-
-
-Word = namedtuple('Word', ['token', 'POS'])
+from domain.tagger import Tagger, Word, PartOfSpeach
+from domain.tokenizer import Tokenizer
 
 
 class WordIgnoreType(Enum):
@@ -59,6 +57,7 @@ class Analyser:
         self.loader = loader
         self.parser = parser
         self.corpus = corpus
+        self.tagger = Tagger()
         self.excerptor = Excerptor()
         self.lemmatizer = Lemmatizer()
         self.tokenizer = Tokenizer()
@@ -71,20 +70,23 @@ class Analyser:
 
         analysis = Analysis()
         sentences = self.parser.parse(subtitle.text)
-        tokens_by_sentence = self.tokenizer.words((s.text for s in sentences))
-        for i, tokens in enumerate(tokens_by_sentence):
-            for token, token_POS in tokens:
+        words_in_sentence = self.tagger.tag(
+            list(self.tokenizer.words((s.text for s in sentences))))
+
+        for i, words in enumerate(words_in_sentence):
+            for word in words:
+                token, token_POS = word
+
                 if token.lower() == 'subtitle' or not token.isalpha():
                     continue
 
                 excerpt = self.excerptor.excerpt(sentences, i, token)
-                word = Word(token, token_POS)
 
                 if token in self.stop_words:
                     analysis.ignore(word, excerpt, WordIgnoreType.STOPWORD)
                     continue
 
-                if token_POS is WordPartOfSpeach.OTHER:
+                if token_POS is PartOfSpeach.OTHER:
                     analysis.ignore(word, excerpt, WordIgnoreType.UNKNOWN_TYPE)
                     continue
 

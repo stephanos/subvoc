@@ -1,4 +1,4 @@
-from domain.tokenizer import Tokenizer, WordPartOfSpeach
+from domain.tokenizer import Tokenizer
 
 
 def test_tokenize_sentences():
@@ -14,18 +14,6 @@ def test_tokenize_words():
 
     assert len(words_by_sentence) == 2
     assert list(words_by_sentence[0]) == [
-        ('I', WordPartOfSpeach.OTHER),
-        ('hoped', WordPartOfSpeach.VERB),
-        ('to', WordPartOfSpeach.OTHER),
-        ('see', WordPartOfSpeach.VERB),
-        ('my',  WordPartOfSpeach.OTHER),
-        ('wonderful',  WordPartOfSpeach.ADJ),
-        ('friend', WordPartOfSpeach.NOUN),
-        ('.', WordPartOfSpeach.OTHER)]
+        'I', 'hoped', 'to', 'see', 'my', 'wonderful', 'friend', '.', ]
     assert list(words_by_sentence[1]) == [
-        ('And', WordPartOfSpeach.OTHER),
-        ('shake', WordPartOfSpeach.VERB),
-        ('his', WordPartOfSpeach.OTHER),
-        ('hand', WordPartOfSpeach.NOUN),
-        ('firmly', WordPartOfSpeach.ADV),
-        ('.', WordPartOfSpeach.OTHER)]
+        'And', 'shake', 'his', 'hand', 'firmly', '.']

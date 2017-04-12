@@ -2,7 +2,7 @@ import pytest
 from datetime import timedelta
 from unittest.mock import MagicMock
 
-from domain.analyse import Analyser, Word, WordPartOfSpeach, WordIgnoreType
+from domain.analyse import Analyser, Word, PartOfSpeach, WordIgnoreType
 from domain.corpus import Corpus, CorpusDatabase
 from domain.excerpt import Excerpt
 from domain.parse import Parser, Sentence
@@ -66,16 +66,16 @@ and shake his hand.
     _, analysis = cached_analyse(text)
 
     assert dict(analysis.word_with_movie_freq) == {
-        Word('I', WordPartOfSpeach.OTHER): 1,
-        Word('and', WordPartOfSpeach.OTHER): 1,
-        Word('friend', WordPartOfSpeach.NOUN): 1,
-        Word('hand', WordPartOfSpeach.NOUN): 1,
-        Word('his', WordPartOfSpeach.OTHER): 1,
-        Word('hop', WordPartOfSpeach.VERB): 1,
-        Word('my', WordPartOfSpeach.OTHER): 1,
-        Word('see', WordPartOfSpeach.VERB): 1,
-        Word('shake', WordPartOfSpeach.VERB): 1,
-        Word('to', WordPartOfSpeach.OTHER): 1
+        Word('I', PartOfSpeach.OTHER): 1,
+        Word('and', PartOfSpeach.OTHER): 1,
+        Word('friend', PartOfSpeach.NOUN): 1,
+        Word('hand', PartOfSpeach.NOUN): 1,
+        Word('his', PartOfSpeach.OTHER): 1,
+        Word('hop', PartOfSpeach.VERB): 1,
+        Word('my', PartOfSpeach.OTHER): 1,
+        Word('see', PartOfSpeach.VERB): 1,
+        Word('shake', PartOfSpeach.VERB): 1,
+        Word('to', PartOfSpeach.OTHER): 1
     }
 
 
@@ -92,14 +92,14 @@ I hoped.
     s2 = Sentence('I hoped.', timedelta(0, 7899, 473000))
 
     assert dict(analysis.word_with_excerpts) == {
-        Word('I', WordPartOfSpeach.OTHER): [Excerpt([s1, s2], 'I'),
+        Word('I', PartOfSpeach.OTHER): [Excerpt([s1, s2], 'I'),
                                             Excerpt([s1, s2], 'I')],
-        Word('hop', WordPartOfSpeach.VERB): [Excerpt([s1, s2], 'hoped'),
+        Word('hop', PartOfSpeach.VERB): [Excerpt([s1, s2], 'hoped'),
                                              Excerpt([s1, s2], 'hoped')],
-        Word('to', WordPartOfSpeach.OTHER): [Excerpt([s1, s2], 'to')],
-        Word('see', WordPartOfSpeach.VERB): [Excerpt([s1, s2], 'see')],
-        Word('my', WordPartOfSpeach.OTHER): [Excerpt([s1, s2], 'my')],
-        Word('friend', WordPartOfSpeach.NOUN): [Excerpt([s1, s2], 'friend')]
+        Word('to', PartOfSpeach.OTHER): [Excerpt([s1, s2], 'to')],
+        Word('see', PartOfSpeach.VERB): [Excerpt([s1, s2], 'see')],
+        Word('my', PartOfSpeach.OTHER): [Excerpt([s1, s2], 'my')],
+        Word('friend', PartOfSpeach.NOUN): [Excerpt([s1, s2], 'friend')]
     }
 
 
@@ -131,7 +131,7 @@ and shake his weirdnonsenseword.
 '''
     _, analysis = cached_analyse(text)
 
-    unknown_word = Word('weirdnonsenseword', WordPartOfSpeach.NOUN)
+    unknown_word = Word('weirdnonsenseword', PartOfSpeach.NOUN)
     assert unknown_word in analysis.word_with_ignore_reason
     assert analysis.word_with_ignore_reason[unknown_word] == WordIgnoreType.UNKNOWN
 
@@ -169,7 +169,7 @@ and shake his moustache.
 '''
     _, analysis = cached_analyse(text)
 
-    unknown_freq_word = Word('moustache', WordPartOfSpeach.NOUN)
+    unknown_freq_word = Word('moustache', PartOfSpeach.NOUN)
     assert unknown_freq_word in analysis.word_with_ignore_reason
     assert analysis.word_with_ignore_reason[unknown_freq_word] == WordIgnoreType.UNKNOWN_FREQ
 
