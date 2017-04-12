@@ -1248,7 +1248,7 @@ function getDefinitions(word, pos) {
     return word.lookup[pos] || [];
 }
 
-var WordPartOfSpeachItem = function WordPartOfSpeachItem(_ref) {
+var PartOfSpeachItem = function PartOfSpeachItem(_ref) {
     var active = _ref.active,
         enabled = _ref.enabled,
         label = _ref.label,
@@ -1278,7 +1278,7 @@ var WordPartOfSpeachItem = function WordPartOfSpeachItem(_ref) {
     );
 };
 
-var WordPartOfSpeachSelector = function WordPartOfSpeachSelector(_ref2) {
+var PartOfSpeachSelector = function PartOfSpeachSelector(_ref2) {
     var selected = _ref2.selected,
         word = _ref2.word,
         onSelect = _ref2.onSelect;
@@ -1287,7 +1287,7 @@ var WordPartOfSpeachSelector = function WordPartOfSpeachSelector(_ref2) {
         'div',
         null,
         PARTS_OF_SPEACH.map(function (pos) {
-            return React$1.createElement(WordPartOfSpeachItem, {
+            return React$1.createElement(PartOfSpeachItem, {
                 key: pos,
                 active: selected === pos,
                 enabled: (getExcerpts(word, pos).length || getDefinitions(word, pos).lenght) > 0,
@@ -1339,7 +1339,7 @@ var WordDetailBody = function (_React$Component) {
                 React$1.createElement(
                     'header',
                     { className: 'tab-group' },
-                    React$1.createElement(WordPartOfSpeachSelector, {
+                    React$1.createElement(PartOfSpeachSelector, {
                         word: word,
                         selected: selectedPOS,
                         onSelect: function onSelect(p) {

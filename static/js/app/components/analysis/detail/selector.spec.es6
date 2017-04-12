@@ -3,15 +3,15 @@ import React from 'react';
 import { shallow, render } from 'enzyme';
 import td from 'testdouble';
 
-import { WordPartOfSpeachItem, WordPartOfSpeachSelector } from './selector.es6';
+import { PartOfSpeachItem, PartOfSpeachSelector } from './selector.es6';
 
 
-describe("<WordPartOfSpeachSelector />", () => {
+describe("<PartOfSpeachSelector />", () => {
 
     test("should render", () => {
         const word = { byPOS: {}, lookup: {} };
         const result = shallow(
-            <WordPartOfSpeachSelector word={word} />
+            <PartOfSpeachSelector word={word} />
         );
         
         expect(result).toMatchSnapshot();
@@ -20,7 +20,7 @@ describe("<WordPartOfSpeachSelector />", () => {
     test("should mark selected POS as 'active'", () => {
         const word = { byPOS: {}, lookup: {} };
         const result = shallow(
-            <WordPartOfSpeachSelector selected='noun' word={word} />
+            <PartOfSpeachSelector selected='noun' word={word} />
         );
         
         expect(result).toMatchSnapshot();
@@ -36,7 +36,7 @@ describe("<WordPartOfSpeachSelector />", () => {
         };
 
         const result = shallow(
-            <WordPartOfSpeachSelector selected='noun' word={word} />
+            <PartOfSpeachSelector selected='noun' word={word} />
         );
         
         expect(result).toMatchSnapshot();
@@ -53,14 +53,14 @@ describe("<WordPartOfSpeachSelector />", () => {
         };
 
         const result = shallow(
-            <WordPartOfSpeachSelector word={word} />
+            <PartOfSpeachSelector word={word} />
         );
 
         expect(result).toMatchSnapshot();
     });
 });
 
-describe("<WordPartOfSpeachItem />", () => {
+describe("<PartOfSpeachItem />", () => {
     let onSelect;
 
     beforeEach(() => {
@@ -69,7 +69,7 @@ describe("<WordPartOfSpeachItem />", () => {
 
     test("should render disabled, inactive POS item", () => {
         const result = render(
-            <WordPartOfSpeachItem enabled={false} label='noun' />
+            <PartOfSpeachItem enabled={false} label='noun' />
         );
 
         expect(result).toMatchSnapshot();
@@ -77,7 +77,7 @@ describe("<WordPartOfSpeachItem />", () => {
 
     test("should mark POS item as enabled", () => {
         const result = render(
-            <WordPartOfSpeachItem enabled={true} label='noun' />
+            <PartOfSpeachItem enabled={true} label='noun' />
         );
 
         expect(result).toMatchSnapshot();
@@ -85,7 +85,7 @@ describe("<WordPartOfSpeachItem />", () => {
 
     test("should mark POS item as active", () => {
         const result = render(
-            <WordPartOfSpeachItem enabled={true} active={true} label='noun' />
+            <PartOfSpeachItem enabled={true} active={true} label='noun' />
         );
 
         expect(result).toMatchSnapshot();
@@ -93,7 +93,7 @@ describe("<WordPartOfSpeachItem />", () => {
 
     test("should mark POS item with frequency", () => {
         const result = render(
-            <WordPartOfSpeachItem enabled={true} freq={1} label='noun' />
+            <PartOfSpeachItem enabled={true} freq={1} label='noun' />
         );
 
         expect(result).toMatchSnapshot();
@@ -101,7 +101,7 @@ describe("<WordPartOfSpeachItem />", () => {
 
     test("should propagate click on enabled POS item", () => {
         const result = shallow(
-            <WordPartOfSpeachItem enabled={true} label='noun' onSelect={onSelect} />
+            <PartOfSpeachItem enabled={true} label='noun' onSelect={onSelect} />
         );
 
         result.find('.tab.noun').simulate('click');
@@ -110,7 +110,7 @@ describe("<WordPartOfSpeachItem />", () => {
 
     test("should not propagate click on disabled POS item", () => {
         const result = shallow(
-            <WordPartOfSpeachItem enabled={true} label='noun' onSelect={onSelect} />
+            <PartOfSpeachItem enabled={true} label='noun' onSelect={onSelect} />
         );
 
         result.find('.tab.noun').simulate('click');

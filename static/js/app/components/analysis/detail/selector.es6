@@ -17,7 +17,7 @@ function getDefinitions(word, pos) {
 }
 
 
-const WordPartOfSpeachItem = ({ active, enabled, label, freq, onSelect }) => {
+const PartOfSpeachItem = ({ active, enabled, label, freq, onSelect }) => {
     const classes = classNames(label, 'tab', 'card', {'empty': !enabled}, {active});
     return <div onClick={() => enabled ? onSelect(label) : null} className={classes} >
         <div className="label">
@@ -28,10 +28,10 @@ const WordPartOfSpeachItem = ({ active, enabled, label, freq, onSelect }) => {
 };
 
 
-const WordPartOfSpeachSelector = ({selected, word, onSelect}) => {
+const PartOfSpeachSelector = ({selected, word, onSelect}) => {
     return <div>
         { PARTS_OF_SPEACH.map((pos) => 
-            <WordPartOfSpeachItem
+            <PartOfSpeachItem
                 key={pos}
                 active={selected === pos}
                 enabled={(getExcerpts(word, pos).length || getDefinitions(word, pos).lenght) > 0}
@@ -47,6 +47,6 @@ export {
     getDefinitions, 
     getExcerpts, 
     PARTS_OF_SPEACH, 
-    WordPartOfSpeachItem,
-    WordPartOfSpeachSelector
+    PartOfSpeachItem,
+    PartOfSpeachSelector
 };

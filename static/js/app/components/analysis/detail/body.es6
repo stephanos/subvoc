@@ -3,7 +3,7 @@ import React from 'react';
 
 import { WordDefinitionList } from './definition.es6';
 import { WordExcerptList } from './excerpt.es6';
-import { getDefinitions, getExcerpts, PARTS_OF_SPEACH, WordPartOfSpeachSelector } from './selector.es6';
+import { getDefinitions, getExcerpts, PARTS_OF_SPEACH, PartOfSpeachSelector } from './selector.es6';
 
 
 class WordDetailBody extends React.Component {
@@ -31,7 +31,7 @@ class WordDetailBody extends React.Component {
 
         return <div>
             <header className="tab-group">
-                <WordPartOfSpeachSelector 
+                <PartOfSpeachSelector 
                     word={word} 
                     selected={selectedPOS} 
                     onSelect={(p) => this.handleSelectPOS(p)} />

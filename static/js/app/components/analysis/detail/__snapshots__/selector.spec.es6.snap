@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`<WordPartOfSpeachItem /> should mark POS item as active 1`] = `
+exports[`<PartOfSpeachItem /> should mark POS item as active 1`] = `
 <div
   class="noun tab card active"
 >
@@ -17,7 +17,7 @@ exports[`<WordPartOfSpeachItem /> should mark POS item as active 1`] = `
 </div>
 `;
 
-exports[`<WordPartOfSpeachItem /> should mark POS item as enabled 1`] = `
+exports[`<PartOfSpeachItem /> should mark POS item as enabled 1`] = `
 <div
   class="noun tab card"
 >
@@ -34,7 +34,7 @@ exports[`<WordPartOfSpeachItem /> should mark POS item as enabled 1`] = `
 </div>
 `;
 
-exports[`<WordPartOfSpeachItem /> should mark POS item with frequency 1`] = `
+exports[`<PartOfSpeachItem /> should mark POS item with frequency 1`] = `
 <div
   class="noun tab card"
 >
@@ -51,7 +51,7 @@ exports[`<WordPartOfSpeachItem /> should mark POS item with frequency 1`] = `
 </div>
 `;
 
-exports[`<WordPartOfSpeachItem /> should render disabled, inactive POS item 1`] = `
+exports[`<PartOfSpeachItem /> should render disabled, inactive POS item 1`] = `
 <div
   class="noun tab card empty"
 >
@@ -68,27 +68,27 @@ exports[`<WordPartOfSpeachItem /> should render disabled, inactive POS item 1`] 
 </div>
 `;
 
-exports[`<WordPartOfSpeachSelector /> should mark POS with definition as available 1`] = `
+exports[`<PartOfSpeachSelector /> should mark POS with definition as available 1`] = `
 <div>
-  <WordPartOfSpeachItem
+  <PartOfSpeachItem
     active={false}
     enabled={true}
     freq={1}
     label="noun"
   />
-  <WordPartOfSpeachItem
+  <PartOfSpeachItem
     active={false}
     enabled={false}
     freq={0}
     label="verb"
   />
-  <WordPartOfSpeachItem
+  <PartOfSpeachItem
     active={false}
     enabled={false}
     freq={0}
     label="adj"
   />
-  <WordPartOfSpeachItem
+  <PartOfSpeachItem
     active={false}
     enabled={false}
     freq={0}
@@ -97,27 +97,27 @@ exports[`<WordPartOfSpeachSelector /> should mark POS with definition as availab
 </div>
 `;
 
-exports[`<WordPartOfSpeachSelector /> should mark POS with excerpt as available 1`] = `
+exports[`<PartOfSpeachSelector /> should mark POS with excerpt as available 1`] = `
 <div>
-  <WordPartOfSpeachItem
+  <PartOfSpeachItem
     active={true}
     enabled={true}
     freq={1}
     label="noun"
   />
-  <WordPartOfSpeachItem
+  <PartOfSpeachItem
     active={false}
     enabled={true}
     freq={1}
     label="verb"
   />
-  <WordPartOfSpeachItem
+  <PartOfSpeachItem
     active={false}
     enabled={false}
     freq={0}
     label="adj"
   />
-  <WordPartOfSpeachItem
+  <PartOfSpeachItem
     active={false}
     enabled={false}
     freq={0}
@@ -126,27 +126,27 @@ exports[`<WordPartOfSpeachSelector /> should mark POS with excerpt as available 
 </div>
 `;
 
-exports[`<WordPartOfSpeachSelector /> should mark selected POS as 'active' 1`] = `
+exports[`<PartOfSpeachSelector /> should mark selected POS as 'active' 1`] = `
 <div>
-  <WordPartOfSpeachItem
+  <PartOfSpeachItem
     active={true}
     enabled={false}
     freq={0}
     label="noun"
   />
-  <WordPartOfSpeachItem
+  <PartOfSpeachItem
     active={false}
     enabled={false}
     freq={0}
     label="verb"
   />
-  <WordPartOfSpeachItem
+  <PartOfSpeachItem
     active={false}
     enabled={false}
     freq={0}
     label="adj"
   />
-  <WordPartOfSpeachItem
+  <PartOfSpeachItem
     active={false}
     enabled={false}
     freq={0}
@@ -155,27 +155,27 @@ exports[`<WordPartOfSpeachSelector /> should mark selected POS as 'active' 1`] =
 </div>
 `;
 
-exports[`<WordPartOfSpeachSelector /> should render 1`] = `
+exports[`<PartOfSpeachSelector /> should render 1`] = `
 <div>
-  <WordPartOfSpeachItem
+  <PartOfSpeachItem
     active={false}
     enabled={false}
     freq={0}
     label="noun"
   />
-  <WordPartOfSpeachItem
+  <PartOfSpeachItem
     active={false}
     enabled={false}
     freq={0}
     label="verb"
   />
-  <WordPartOfSpeachItem
+  <PartOfSpeachItem
     active={false}
     enabled={false}
     freq={0}
     label="adj"
   />
-  <WordPartOfSpeachItem
+  <PartOfSpeachItem
     active={false}
     enabled={false}
     freq={0}
