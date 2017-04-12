@@ -1298,39 +1298,69 @@ var WordPartOfSpeachSelector = function WordPartOfSpeachSelector(_ref2) {
     );
 };
 
-function getSelectedPOS(selection) {
-    return selection.POS || index(PARTS_OF_SPEACH, function (pos) {
-        return getExcerpts(selection.word, pos).length > 0;
-    });
-}
+var WordDetailBody = function (_React$Component) {
+    inherits(WordDetailBody, _React$Component);
 
-var WordDetailBody = function WordDetailBody(_ref) {
-    var selection = _ref.selection,
-        onSelectPOS = _ref.onSelectPOS;
+    function WordDetailBody(props) {
+        classCallCheck(this, WordDetailBody);
 
-    var selectedPOS = getSelectedPOS(selection);
-    var selectedWord = selection.word;
+        var _this = possibleConstructorReturn(this, (WordDetailBody.__proto__ || Object.getPrototypeOf(WordDetailBody)).call(this, props));
 
-    return React$1.createElement(
-        'div',
-        null,
-        React$1.createElement(
-            'header',
-            { className: 'tab-group' },
-            React$1.createElement(WordPartOfSpeachSelector, { selected: selectedPOS, word: selectedWord, onSelect: onSelectPOS })
-        ),
-        React$1.createElement(
-            'section',
-            null,
-            React$1.createElement(WordExcerptList, { excerpts: getExcerpts(selectedWord, selectedPOS) })
-        ),
-        React$1.createElement(
-            'section',
-            null,
-            React$1.createElement(WordDefinitionList, { definitions: getDefinitions(selectedWord, selectedPOS) })
-        )
-    );
-};
+        _this.state = {};
+        return _this;
+    }
+
+    createClass(WordDetailBody, [{
+        key: 'handleSelectPOS',
+        value: function handleSelectPOS(POS) {
+            this.setState(function (prevState) {
+                prevState.POS = POS;
+            });
+        }
+    }, {
+        key: 'getSelectedPOS',
+        value: function getSelectedPOS(word) {
+            return this.state.POS || index(PARTS_OF_SPEACH, function (pos) {
+                return getExcerpts(word, pos).length > 0;
+            });
+        }
+    }, {
+        key: 'render',
+        value: function render() {
+            var _this2 = this;
+
+            var word = this.props.word;
+
+            var selectedPOS = this.getSelectedPOS(word);
+
+            return React$1.createElement(
+                'div',
+                null,
+                React$1.createElement(
+                    'header',
+                    { className: 'tab-group' },
+                    React$1.createElement(WordPartOfSpeachSelector, {
+                        word: word,
+                        selected: selectedPOS,
+                        onSelect: function onSelect(p) {
+                            return _this2.handleSelectPOS(p);
+                        } })
+                ),
+                React$1.createElement(
+                    'section',
+                    null,
+                    React$1.createElement(WordExcerptList, { excerpts: getExcerpts(word, selectedPOS) })
+                ),
+                React$1.createElement(
+                    'section',
+                    null,
+                    React$1.createElement(WordDefinitionList, { definitions: getDefinitions(word, selectedPOS) })
+                )
+            );
+        }
+    }]);
+    return WordDetailBody;
+}(React$1.Component);
 
 function scrollTo(pos) {
     document.documentElement.scrollTop = document.body.scrollTop = pos;
@@ -1362,50 +1392,45 @@ var WordDetail = function (_React$Component) {
     createClass(WordDetail, [{
         key: 'render',
         value: function render() {
-            var _props = this.props,
-                selection = _props.selection,
-                onSelectPOS = _props.onSelectPOS;
+            var word = this.props.word;
 
-            if (selection.word) {
-                return React$1.createElement(
+
+            return React$1.createElement(
+                'div',
+                { className: 'word-detail' },
+                React$1.createElement(
+                    'h2',
+                    { className: 'head' },
+                    React$1.createElement(
+                        'span',
+                        { className: 'label' },
+                        word.token
+                    )
+                ),
+                React$1.createElement(
+                    'section',
+                    { className: 'body' },
+                    !word.lookup ? React$1.createElement(Spinner, null) : React$1.createElement(WordDetailBody, { word: word })
+                ),
+                word.lookup ? React$1.createElement(
                     'div',
-                    { className: 'word-detail' },
+                    { className: 'attribution' },
                     React$1.createElement(
-                        'h2',
-                        { className: 'head' },
-                        React$1.createElement(
-                            'span',
-                            { className: 'label' },
-                            selection.word.token
-                        )
-                    ),
-                    React$1.createElement(
-                        'section',
-                        { className: 'body' },
-                        !selection.word.lookup ? React$1.createElement(Spinner, null) : React$1.createElement(WordDetailBody, {
-                            selection: selection,
-                            onSelectPOS: onSelectPOS })
-                    ),
-                    selection.word.lookup ? React$1.createElement(
                         'div',
-                        { className: 'attribution' },
+                        { className: 'attribution_dictionary' },
                         React$1.createElement(
-                            'div',
-                            { className: 'attribution_dictionary' },
-                            React$1.createElement(
-                                'a',
-                                { href: selection.word.lookup.attribution.url },
-                                selection.word.lookup.attribution.text
-                            )
-                        ),
-                        React$1.createElement(
-                            'div',
-                            { className: 'attribution_api' },
-                            React$1.createElement('img', { src: '/static/img/wordnik_badge.png' })
+                            'a',
+                            { href: word.lookup.attribution.url },
+                            word.lookup.attribution.text
                         )
-                    ) : React$1.createElement('div', null)
-                );
-            }
+                    ),
+                    React$1.createElement(
+                        'div',
+                        { className: 'attribution_api' },
+                        React$1.createElement('img', { src: '/static/img/wordnik_badge.png' })
+                    )
+                ) : React$1.createElement('div', null)
+            );
         }
     }, {
         key: 'componentDidUpdate',
@@ -1542,7 +1567,7 @@ var Heading = function Heading(_ref) {
 
 var WordList = function WordList(_ref2) {
     var analysis = _ref2.analysis,
-        selection = _ref2.selection,
+        difficulty = _ref2.difficulty,
         onSelectWord = _ref2.onSelectWord,
         onSelectDifficulty = _ref2.onSelectDifficulty;
 
@@ -1551,7 +1576,7 @@ var WordList = function WordList(_ref2) {
     });
 
     var wordsWithDifficulty = sortedWords.filter(function (w) {
-        return w.difficulty.level === selection.difficulty;
+        return w.difficulty.level === difficulty;
     });
 
     return React$1.createElement(
@@ -1559,7 +1584,7 @@ var WordList = function WordList(_ref2) {
         { className: 'word-list' },
         React$1.createElement(Heading, { analysis: analysis }),
         React$1.createElement(DifficultySelector, {
-            selected: selection.difficulty,
+            selected: difficulty,
             onSelect: onSelectDifficulty,
             words: sortedWords }),
         React$1.createElement(
@@ -1582,7 +1607,7 @@ var Analysis = function (_React$Component) {
 
         var _this = possibleConstructorReturn(this, (Analysis.__proto__ || Object.getPrototypeOf(Analysis)).call(this));
 
-        _this.state = { selection: { difficulty: 3, POS: undefined, word: undefined } };
+        _this.state = { selection: { difficulty: 3, word: undefined } };
         return _this;
     }
 
@@ -1603,17 +1628,9 @@ var Analysis = function (_React$Component) {
             });
         }
     }, {
-        key: 'handleSelectPOS',
-        value: function handleSelectPOS(POS) {
-            this.setState(function (prevState) {
-                prevState.selection.POS = POS;
-            });
-        }
-    }, {
         key: 'handleUnselectWord',
         value: function handleUnselectWord() {
             this.setState(function (prevState) {
-                delete prevState.selection.POS;
                 delete prevState.selection.word;
             });
         }
@@ -1647,12 +1664,9 @@ var Analysis = function (_React$Component) {
                         'div',
                         { className: 'analysis' },
                         this.state.selection.word ? React$1.createElement(WordDetail, {
-                            selection: this.state.selection,
-                            onSelectPOS: function onSelectPOS(p) {
-                                return _this2.handleSelectPOS(p);
-                            } }) : React$1.createElement(WordList, {
+                            word: this.state.selection.word }) : React$1.createElement(WordList, {
                             analysis: analysis,
-                            selection: this.state.selection,
+                            difficulty: this.state.selection.difficulty,
                             onSelectDifficulty: function onSelectDifficulty(d) {
                                 return _this2.handleSelectDifficulty(d);
                             },

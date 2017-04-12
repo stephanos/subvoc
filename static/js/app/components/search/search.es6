@@ -56,8 +56,7 @@ class Search extends React.Component {
                 prevState.searchXHR = undefined;
                 prevState.items = res.data.hits;
             });
-        })
-        .catch((err) => {
+        }).catch((err) => {
             if (err.statusText === 'abort') {
                 return;
             }

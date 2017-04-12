@@ -12,7 +12,7 @@ class Analysis extends React.Component {
 
     constructor({ analysis }) {
         super();
-        this.state = { selection: { difficulty: 3, POS: undefined, word: undefined } };
+        this.state = { selection: { difficulty: 3, word: undefined } };
     }
 
 
@@ -30,15 +30,8 @@ class Analysis extends React.Component {
         });
     }
 
-    handleSelectPOS(POS) {
-        this.setState((prevState) => {  
-            prevState.selection.POS = POS;
-        });
-    }
-
     handleUnselectWord() {
         this.setState((prevState) => {
-            delete prevState.selection.POS;
             delete prevState.selection.word;
         });
     }
@@ -62,11 +55,10 @@ class Analysis extends React.Component {
                 <div className='analysis'>
                     { this.state.selection.word
                         ? <WordDetail
-                            selection={this.state.selection}
-                            onSelectPOS={(p) => this.handleSelectPOS(p)} />
+                            word={this.state.selection.word} />
                         : <WordList
                             analysis={analysis}
-                            selection={this.state.selection}
+                            difficulty={this.state.selection.difficulty}
                             onSelectDifficulty={(d) => this.handleSelectDifficulty(d)}
                             onSelectWord={(w) => this.handleSelectWord(w)} />
                     }
@@ -84,8 +76,7 @@ class Analysis extends React.Component {
                     prevState.selection.word.lookup = res.data;
                 }
             });
-        })
-        .catch((err) => {
+        }).catch((err) => {
             if (err.statusText === 'abort') {
                 return;
             }

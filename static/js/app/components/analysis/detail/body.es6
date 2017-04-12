@@ -6,29 +6,46 @@ import { WordExcerptList } from './excerpt.es6';
 import { getDefinitions, getExcerpts, PARTS_OF_SPEACH, WordPartOfSpeachSelector } from './selector.es6';
 
 
-function getSelectedPOS(selection) {
-    return selection.POS ||
-        find(PARTS_OF_SPEACH, (pos) => getExcerpts(selection.word, pos).length > 0);
-}
+class WordDetailBody extends React.Component {
+
+    constructor(props) {
+        super(props);
+        this.state = {};
+    }
+
+    handleSelectPOS(POS) {
+        this.setState((prevState) => {  
+            prevState.POS = POS;
+        });
+    }
+
+    getSelectedPOS(word) {
+        return this.state.POS ||
+            find(PARTS_OF_SPEACH, (pos) => getExcerpts(word, pos).length > 0);
+    }
 
 
-const WordDetailBody = ({ selection, onSelectPOS }) => {
-    const selectedPOS = getSelectedPOS(selection);
-    const selectedWord = selection.word;
+    render() { 
+        const { word } = this.props;
+        const selectedPOS = this.getSelectedPOS(word);
 
-    return <div>
-        <header className="tab-group">
-            <WordPartOfSpeachSelector selected={selectedPOS} word={selectedWord} onSelect={onSelectPOS} />
-        </header>
+        return <div>
+            <header className="tab-group">
+                <WordPartOfSpeachSelector 
+                    word={word} 
+                    selected={selectedPOS} 
+                    onSelect={(p) => this.handleSelectPOS(p)} />
+            </header>
 
-        <section>
-            <WordExcerptList excerpts={getExcerpts(selectedWord, selectedPOS)} />
-        </section>
+            <section>
+                <WordExcerptList excerpts={getExcerpts(word, selectedPOS)} />
+            </section>
 
-        <section>
-            <WordDefinitionList definitions={getDefinitions(selectedWord, selectedPOS)} />
-        </section>
-    </div>;
+            <section>
+                <WordDefinitionList definitions={getDefinitions(word, selectedPOS)} />
+            </section>
+        </div>;
+    }
 };
 
 

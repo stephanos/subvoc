@@ -19,18 +19,18 @@ const Heading = ({ analysis }) =>
     </div>;
 
 
-const WordList = ({ analysis, selection, onSelectWord, onSelectDifficulty }) => {
+const WordList = ({ analysis, difficulty, onSelectWord, onSelectDifficulty }) => {
     const sortedWords =
         analysis.words.sort((a, b) => a.difficulty.value - b.difficulty.value);
 
     const wordsWithDifficulty =
-        sortedWords.filter(w => w.difficulty.level === selection.difficulty);
+        sortedWords.filter(w => w.difficulty.level === difficulty);
 
     return <div className="word-list">
         <Heading analysis={analysis} />
 
         <DifficultySelector
-            selected={selection.difficulty}
+            selected={difficulty}
             onSelect={onSelectDifficulty}
             words={sortedWords} />
 

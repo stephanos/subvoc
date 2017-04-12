@@ -55,8 +55,7 @@ class App extends React.Component {
                 prevState.analysisXHR = undefined;
                 prevState.analysis = res.data;
             });
-        })
-        .catch((err) => {
+        }).catch((err) => {
             if (err.statusText === 'abort') {
                 return;
             }

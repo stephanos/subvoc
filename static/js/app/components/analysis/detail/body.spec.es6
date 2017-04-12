@@ -8,38 +8,32 @@ import { WordDetailBody } from './body.es6';
 describe("<WordDetailBody />", () => {
     
     test("should render with pre-selected POS", () => {
-        const selection = {
-            word: {
-                byPOS: {
-                    noun: { freq: 1, excerpts: ['...'] }
-                },
-                lookup: {}
+        const word = {
+            byPOS: {
+                noun: { freq: 1, excerpts: ['...'] }
             },
-            POS: 'noun'
+            lookup: {}
         };
 
         const result = shallow(
-            <WordDetailBody selection={selection} />
+            <WordDetailBody POS='noun' word={word} />
         );
 
         expect(result).toMatchSnapshot();
     });
 
     test("should render by picking POS with excerpt", () => {
-        const selection = {
-            word: {
-                byPOS: {
-                    verb: { freq: 1, excerpts: ['...'] }
-                },
-                lookup: {
-                    noun: ['...']
-                }
+        const word = {
+            byPOS: {
+                verb: { freq: 1, excerpts: ['...'] }
             },
-            POS: undefined
+            lookup: {
+                noun: ['...']
+            }
         };
 
         const result = shallow(
-            <WordDetailBody selection={selection} />
+            <WordDetailBody word={word} />
         );
 
         expect(result).toMatchSnapshot();

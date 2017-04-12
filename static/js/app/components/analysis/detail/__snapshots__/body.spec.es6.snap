@@ -6,6 +6,7 @@ exports[`<WordDetailBody /> should render by picking POS with excerpt 1`] = `
     className="tab-group"
   >
     <WordPartOfSpeachSelector
+      onSelect={[Function]}
       selected="verb"
       word={
         Object {
@@ -49,6 +50,7 @@ exports[`<WordDetailBody /> should render with pre-selected POS 1`] = `
     className="tab-group"
   >
     <WordPartOfSpeachSelector
+      onSelect={[Function]}
       selected="noun"
       word={
         Object {
