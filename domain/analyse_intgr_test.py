@@ -93,9 +93,9 @@ I hoped.
 
     assert dict(analysis.word_with_excerpts) == {
         Word('I', PartOfSpeach.OTHER): [Excerpt([s1, s2], 'I'),
-                                            Excerpt([s1, s2], 'I')],
+                                        Excerpt([s1, s2], 'I')],
         Word('hop', PartOfSpeach.VERB): [Excerpt([s1, s2], 'hoped'),
-                                             Excerpt([s1, s2], 'hoped')],
+                                         Excerpt([s1, s2], 'hoped')],
         Word('to', PartOfSpeach.OTHER): [Excerpt([s1, s2], 'to')],
         Word('see', PartOfSpeach.VERB): [Excerpt([s1, s2], 'see')],
         Word('my', PartOfSpeach.OTHER): [Excerpt([s1, s2], 'my')],
