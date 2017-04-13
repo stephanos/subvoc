@@ -69,21 +69,18 @@ class Analysis extends React.Component {
 
 
     lookupWord(word) {
-        const xhr = API.lookupWord(word);
-        xhr.then((res) => {
+        const req = API.lookupWord(word);
+        req.then((res) => {
             this.setState((prevState) => {
                 if (prevState.selection.word) {
                     prevState.selection.word.lookup = res.data;
                 }
             });
         }).catch((err) => {
-            if (err.statusText === 'abort') {
-                return;
-            }
             console.error(err); // eslint-disable-line
             document.location.href = "/error";
         });
-        return xhr;
+        return req;
     }
 }
 

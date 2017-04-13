@@ -18,11 +18,11 @@ class Search extends React.Component {
 
     handleSearch(query) {
         this.setState((prevState) => {
-            if (prevState.searchXHR) {
-                prevState.searchXHR.abort();
+            if (prevState.searchReq) {
+                prevState.searchReq.cancel();
             }
 
-            prevState.searchXHR = this.searchMovie(query);
+            prevState.searchReq = this.searchMovie(query);
         });
     }
 
@@ -35,7 +35,7 @@ class Search extends React.Component {
                     Use movies to discover new vocabulary.
                 </h1>
                 <SearchBar onSearch={(q) => this.handleSearch(q)} />
-                { this.state.searchXHR 
+                { this.state.searchReq 
                     ? <Spinner big={true} />
                     : this.state.items === undefined 
                         ? <Intro />
@@ -46,22 +46,22 @@ class Search extends React.Component {
     }
 
     searchMovie(query) {
-        if (query && query.trim() === '') {
+        if (!query || !query.trim().length) {
             return;
         }
 
         const xhr = API.searchMovie(query);
         xhr.then((res) => {
             this.setState((prevState) => {
-                prevState.searchXHR = undefined;
+                prevState.searchReq = undefined;
                 prevState.items = res.data.hits;
             });
         }).catch((err) => {
-            if (err.statusText === 'abort') {
+            if (API.isCancel(err)) {
                 return;
             }
             console.error(err); // eslint-disable-line
-            document.location.href = "/error";
+            // document.location.href = "/error";
         });
         return xhr;
     }     

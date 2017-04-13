@@ -46,7 +46,7 @@ class WordDetailBody extends React.Component {
             </section>
         </div>;
     }
-};
+}
 
 
 export { WordDetailBody };

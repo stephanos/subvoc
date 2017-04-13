@@ -1093,25 +1093,56 @@ var possibleConstructorReturn = function (self, call) {
   return call && (typeof call === "object" || typeof call === "function") ? call : self;
 };
 
+var CancelToken = axios.CancelToken;
+
+function cancelableGet(url) {
+    var source = CancelToken.source();
+
+    var result = {
+        promise: axios.get(url, {
+            cancelToken: source.token
+        }),
+        cancel: function cancel() {
+            source.cancel();
+        }
+    };
+
+    result.then = function (fn) {
+        result.promise = result.promise.then(fn);
+        return result;
+    };
+    result.catch = function (fn) {
+        result.promise = result.promise.catch(fn);
+        return result;
+    };
+
+    return result;
+}
+
 var API = function () {
     function API() {
         classCallCheck(this, API);
     }
 
     createClass(API, null, [{
+        key: 'isCancel',
+        value: function isCancel(err) {
+            return axios.isCancel(err);
+        }
+    }, {
         key: 'lookupWord',
         value: function lookupWord(word) {
-            return axios.get('/api/words/' + word.token);
+            return cancelableGet('/api/words/' + word.token);
         }
     }, {
         key: 'loadAnalysis',
         value: function loadAnalysis(imdbId) {
-            return axios.get('/api/analysis/' + imdbId);
+            return cancelableGet('/api/analysis/' + imdbId);
         }
     }, {
         key: 'searchMovie',
         value: function searchMovie(query) {
-            return axios.get('/api/search/' + query);
+            return cancelableGet('/api/search/' + query);
         }
     }]);
     return API;
@@ -1682,21 +1713,18 @@ var Analysis = function (_React$Component) {
         value: function lookupWord(word) {
             var _this3 = this;
 
-            var xhr = API.lookupWord(word);
-            xhr.then(function (res) {
+            var req = API.lookupWord(word);
+            req.then(function (res) {
                 _this3.setState(function (prevState) {
                     if (prevState.selection.word) {
                         prevState.selection.word.lookup = res.data;
                     }
                 });
             }).catch(function (err) {
-                if (err.statusText === 'abort') {
-                    return;
-                }
                 console.error(err); // eslint-disable-line
                 document.location.href = "/error";
             });
-            return xhr;
+            return req;
         }
     }]);
     return Analysis;
@@ -1945,11 +1973,11 @@ var Search = function (_React$Component) {
             var _this2 = this;
 
             this.setState(function (prevState) {
-                if (prevState.searchXHR) {
-                    prevState.searchXHR.abort();
+                if (prevState.searchReq) {
+                    prevState.searchReq.cancel();
                 }
 
-                prevState.searchXHR = _this2.searchMovie(query);
+                prevState.searchReq = _this2.searchMovie(query);
             });
         }
     }, {
@@ -1974,7 +2002,7 @@ var Search = function (_React$Component) {
                     React$1.createElement(SearchBar, { onSearch: function onSearch(q) {
                             return _this3.handleSearch(q);
                         } }),
-                    this.state.searchXHR ? React$1.createElement(Spinner, { big: true }) : this.state.items === undefined ? React$1.createElement(Intro, null) : React$1.createElement(SearchResults, { items: this.state.items, onSelect: onSelect })
+                    this.state.searchReq ? React$1.createElement(Spinner, { big: true }) : this.state.items === undefined ? React$1.createElement(Intro, null) : React$1.createElement(SearchResults, { items: this.state.items, onSelect: onSelect })
                 )
             );
         }
@@ -1983,22 +2011,22 @@ var Search = function (_React$Component) {
         value: function searchMovie(query) {
             var _this4 = this;
 
-            if (query && query.trim() === '') {
+            if (!query || !query.trim().length) {
                 return;
             }
 
             var xhr = API.searchMovie(query);
             xhr.then(function (res) {
                 _this4.setState(function (prevState) {
-                    prevState.searchXHR = undefined;
+                    prevState.searchReq = undefined;
                     prevState.items = res.data.hits;
                 });
             }).catch(function (err) {
-                if (err.statusText === 'abort') {
+                if (API.isCancel(err)) {
                     return;
                 }
                 console.error(err); // eslint-disable-line
-                document.location.href = "/error";
+                // document.location.href = "/error";
             });
             return xhr;
         }
