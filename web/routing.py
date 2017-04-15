@@ -50,6 +50,10 @@ def create_routes(app):
     def analysis_route(id):
         return bootstrap()
 
+    @app.route('/analysis/<id>/word/<word>')
+    def word_route(id, word):
+        return bootstrap()
+
     @app.route('/error')
     def error_route():
         return error()

@@ -1,18 +1,23 @@
 import React from 'react';
 
+import { Word } from './word/word.es6';
+import { WordList } from './list.es6';
+
 import { API } from '../api.es6';
 import { Nav } from '../nav.es6';
-import { WordDetail } from './detail/detail.es6';
-import { WordList } from './list/list.es6';
-
+import { Router } from '../router.es6';
+import { Spinner } from '../util/spinner.es6';
 import { scrollTo, scrollPos } from '../util/scroll.es6';
 
 
 class Analysis extends React.Component {
 
-    constructor({ analysis }) {
+    constructor({ movie }) {
         super();
-        this.state = { selection: { difficulty: 3, word: undefined } };
+        this.state = { 
+            movie: movie,
+            selection: { difficulty: 3, word: undefined }
+        };
     }
 
 
@@ -21,7 +26,6 @@ class Analysis extends React.Component {
             prevState.listScrollPos = scrollPos();
             prevState.selection.word = word;
         });
-        this.lookupWord(word);
     }
 
     handleSelectDifficulty(difficulty) {
@@ -37,6 +41,18 @@ class Analysis extends React.Component {
     }
 
 
+    componentWillMount() {
+        this.setState({
+            analysisXHR: this.loadAnalysis(this.state.movie.id)
+        });
+    }
+
+    componentWillUnmount() {
+        if (this.state.analysisXHR) {
+            this.state.analysisXHR.abort();
+        }
+    }
+
     componentDidUpdate(prevProps, prevState) {
         if (!this.state.selection.word && this.state.listScrollPos) {
             scrollTo(this.state.listScrollPos);
@@ -45,42 +61,50 @@ class Analysis extends React.Component {
     }
 
     render() {
-        const { analysis } = this.props;
+        const { analysis, movie, selection } = this.state;
+        
         return <div>
             <Nav analysis={analysis}
-                 selection={this.state.selection}
+                 selection={selection}
                  onClick={() => this.handleUnselectWord()} />
-            
-            <section className='container'>
-                <div className='analysis'>
-                    { this.state.selection.word
-                        ? <WordDetail
-                            word={this.state.selection.word} />
-                        : <WordList
-                            analysis={analysis}
-                            difficulty={this.state.selection.difficulty}
-                            onSelectDifficulty={(d) => this.handleSelectDifficulty(d)}
-                            onSelectWord={(w) => this.handleSelectWord(w)} />
-                    }
-                </div>
-            </section>
+
+            { this.state.analysisXHR 
+                ? <div>
+                    <Spinner big={true} centered={true} />
+                  </div>
+                : <section className='container'>
+                    <div className='analysis'>
+                        { selection.word
+                            ? <Word
+                                movie={movie}
+                                word={selection.word} />
+                            : <WordList
+                                analysis={analysis}
+                                movie={movie}
+                                difficulty={selection.difficulty}
+                                onSelectDifficulty={(d) => this.handleSelectDifficulty(d)}
+                                onSelectWord={(w) => this.handleSelectWord(w)} />
+                        }
+                    </div>
+                </section> }
         </div>;
     }
 
-
-    lookupWord(word) {
-        const req = API.lookupWord(word);
-        req.then((res) => {
-            this.setState((prevState) => {
-                if (prevState.selection.word) {
-                    prevState.selection.word.lookup = res.data;
-                }
+    loadAnalysis(movieId) {
+        const xhr = API.loadAnalysis(movieId);
+        xhr.then((res) => {
+            this.setState({
+                analysisXHR: undefined,
+                analysis: res.data
             });
         }).catch((err) => {
+            if (API.isCancel(err)) {
+                return;
+            }
             console.error(err); // eslint-disable-line
             document.location.href = "/error";
         });
-        return req;
+        return xhr;
     }
 }
 

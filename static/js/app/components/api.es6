@@ -34,7 +34,7 @@ class API {
     }
 
     static lookupWord(word) {
-        return cancelableGet(`/api/words/${word.token}`);
+        return cancelableGet(`/api/words/${word}`);
     }
 
     static loadAnalysis(imdbId) {

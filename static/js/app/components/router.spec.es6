@@ -14,5 +14,10 @@ describe("Router", () => {
             expect(Router.getPage('/analysis/tt0114369'))
                 .toEqual({ movieId: 'tt0114369' });
         });
+
+        test("should match analysis page", () => {
+            expect(Router.getPage('/analysis/tt0114369/word/word'))
+                .toEqual({ movieId: 'tt0114369', word: 'word' });
+        });
     });
 });

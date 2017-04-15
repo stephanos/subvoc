@@ -2,14 +2,37 @@ import React from 'react';
 
 import { WordDetailBody } from './body.es6';
 
+import { API } from '../../api.es6';
+import { Router } from '../../router.es6';
 import { scrollTo } from '../../util/scroll.es6';
 import { Spinner } from '../../util/spinner.es6';
 
 
-class WordDetail extends React.Component {
+class Word extends React.Component {
+
+    componentWillMount() {
+        const { movie, word } = this.props;
+
+        Router.onWordPage(movie, word.token);
+        this.setState({
+            wordXHR: this.lookupWord(word.token)
+        });
+    }
+
+    componentWillUnmount() {
+        if (this.state.wordXHR) {
+            this.state.wordXHR.cancel();
+        }
+    }
+
+    componentDidUpdate(prevProps, prevState) {
+        scrollTo(0);
+    }
+
 
     render() {
         const { word } = this.props;
+        word.lookup = this.state.definition;
         
         return <div className="word-detail">
             <h2 className="head">
@@ -39,10 +62,23 @@ class WordDetail extends React.Component {
         </div>;
     }
 
-    componentDidUpdate(prevProps, prevState) {
-        scrollTo(0);
+    lookupWord(word) {
+        const req = API.lookupWord(word);
+        req.then((res) => {
+            this.setState({
+                wordXHR: undefined,
+                definition: res.data
+            });
+        }).catch((err) => {
+            if (API.isCancel(err)) {
+                return;
+            }
+            console.error(err); // eslint-disable-line
+            document.location.href = "/error";
+        });
+        return req;
     }
 }
 
 
-export { WordDetail };
+export { Word };

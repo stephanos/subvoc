@@ -1132,7 +1132,7 @@ var API = function () {
     }, {
         key: 'lookupWord',
         value: function lookupWord(word) {
-            return cancelableGet('/api/words/' + word.token);
+            return cancelableGet('/api/words/' + word);
         }
     }, {
         key: 'loadAnalysis',
@@ -1147,46 +1147,6 @@ var API = function () {
     }]);
     return API;
 }();
-
-var Nav = function Nav(_ref) {
-    var analysis = _ref.analysis,
-        selection = _ref.selection,
-        onClick = _ref.onClick;
-    return React.createElement(
-        'nav',
-        { className: 'navigation' },
-        React.createElement(
-            'section',
-            { className: 'container' },
-            React.createElement(
-                'span',
-                { className: 'navigation-title' },
-                React.createElement(
-                    'h1',
-                    { className: 'title' },
-                    selection && selection.word ? React.createElement(
-                        'div',
-                        { className: 'media', onClick: onClick },
-                        React.createElement(
-                            'span',
-                            { className: 'arrow left' },
-                            '>'
-                        ),
-                        React.createElement(
-                            'span',
-                            { className: 'name' },
-                            analysis.media.title
-                        )
-                    ) : React.createElement(
-                        'a',
-                        { className: 'generic', href: '/' },
-                        'subvoc'
-                    )
-                )
-            )
-        )
-    );
-};
 
 var WordDefinitionList = function WordDefinitionList(_ref) {
     var definitions = _ref.definitions;
@@ -1393,6 +1353,58 @@ var WordDetailBody = function (_React$Component) {
     return WordDetailBody;
 }(React$1.Component);
 
+var Page = {
+    ANALYTICS: new RegExp('/analysis/(\\w+)'),
+    SEARCH: '/',
+    WORD: new RegExp('/analysis/(\\w+)/word/(\\w+)')
+};
+
+var Router = function () {
+    function Router() {
+        classCallCheck(this, Router);
+    }
+
+    createClass(Router, null, [{
+        key: 'getPage',
+        value: function getPage(path) {
+            var wordRouteMatch = path.match(Page.WORD);
+            if (wordRouteMatch) {
+                return { movieId: wordRouteMatch[1], word: wordRouteMatch[2] };
+            }
+
+            var analysisRouteMatch = path.match(Page.ANALYTICS);
+            if (analysisRouteMatch) {
+                return { movieId: analysisRouteMatch[1] };
+            }
+
+            return {};
+        }
+    }, {
+        key: 'onAnalysisPage',
+        value: function onAnalysisPage(movie) {
+            var title = movie.title ? 'Analysis: ' + movie.title : 'Analysis';
+            var path = '/analysis/' + movie.id;
+            if (path === location.pathname) {
+                document.title = title;
+            } else {
+                history.pushState(null, title, path);
+            }
+        }
+    }, {
+        key: 'onWordPage',
+        value: function onWordPage(movie, word) {
+            var title = word ? '' + word : 'Details';
+            var path = '/analysis/' + movie.id + '/word/' + word;
+            if (path === location.pathname) {
+                document.title = title;
+            } else {
+                history.pushState(null, title, path);
+            }
+        }
+    }]);
+    return Router;
+}();
+
 function scrollTo(pos) {
     document.documentElement.scrollTop = document.body.scrollTop = pos;
 }
@@ -1412,19 +1424,45 @@ var Spinner = function Spinner(_ref) {
     );
 };
 
-var WordDetail = function (_React$Component) {
-    inherits(WordDetail, _React$Component);
+var Word = function (_React$Component) {
+    inherits(Word, _React$Component);
 
-    function WordDetail() {
-        classCallCheck(this, WordDetail);
-        return possibleConstructorReturn(this, (WordDetail.__proto__ || Object.getPrototypeOf(WordDetail)).apply(this, arguments));
+    function Word() {
+        classCallCheck(this, Word);
+        return possibleConstructorReturn(this, (Word.__proto__ || Object.getPrototypeOf(Word)).apply(this, arguments));
     }
 
-    createClass(WordDetail, [{
+    createClass(Word, [{
+        key: 'componentWillMount',
+        value: function componentWillMount() {
+            var _props = this.props,
+                movie = _props.movie,
+                word = _props.word;
+
+
+            Router.onWordPage(movie, word.token);
+            this.setState({
+                wordXHR: this.lookupWord(word.token)
+            });
+        }
+    }, {
+        key: 'componentWillUnmount',
+        value: function componentWillUnmount() {
+            if (this.state.wordXHR) {
+                this.state.wordXHR.cancel();
+            }
+        }
+    }, {
+        key: 'componentDidUpdate',
+        value: function componentDidUpdate(prevProps, prevState) {
+            scrollTo(0);
+        }
+    }, {
         key: 'render',
         value: function render() {
             var word = this.props.word;
 
+            word.lookup = this.state.definition;
 
             return React$1.createElement(
                 'div',
@@ -1464,12 +1502,27 @@ var WordDetail = function (_React$Component) {
             );
         }
     }, {
-        key: 'componentDidUpdate',
-        value: function componentDidUpdate(prevProps, prevState) {
-            scrollTo(0);
+        key: 'lookupWord',
+        value: function lookupWord(word) {
+            var _this2 = this;
+
+            var req = API.lookupWord(word);
+            req.then(function (res) {
+                _this2.setState({
+                    wordXHR: undefined,
+                    definition: res.data
+                });
+            }).catch(function (err) {
+                if (API.isCancel(err)) {
+                    return;
+                }
+                console.error(err); // eslint-disable-line
+                document.location.href = "/error";
+            });
+            return req;
         }
     }]);
-    return WordDetail;
+    return Word;
 }(React$1.Component);
 
 var WordListItem = function (_React$Component) {
@@ -1596,35 +1649,94 @@ var Heading = function Heading(_ref) {
     );
 };
 
-var WordList = function WordList(_ref2) {
-    var analysis = _ref2.analysis,
-        difficulty = _ref2.difficulty,
-        onSelectWord = _ref2.onSelectWord,
-        onSelectDifficulty = _ref2.onSelectDifficulty;
+var WordList = function (_React$Component) {
+    inherits(WordList, _React$Component);
 
-    var sortedWords = analysis.words.sort(function (a, b) {
-        return a.difficulty.value - b.difficulty.value;
-    });
+    function WordList() {
+        classCallCheck(this, WordList);
+        return possibleConstructorReturn(this, (WordList.__proto__ || Object.getPrototypeOf(WordList)).apply(this, arguments));
+    }
 
-    var wordsWithDifficulty = sortedWords.filter(function (w) {
-        return w.difficulty.level === difficulty;
-    });
+    createClass(WordList, [{
+        key: 'componentWillMount',
+        value: function componentWillMount() {
+            Router.onAnalysisPage(this.props.movie);
+        }
+    }, {
+        key: 'render',
+        value: function render() {
+            var _props = this.props,
+                analysis = _props.analysis,
+                difficulty = _props.difficulty,
+                onSelectWord = _props.onSelectWord,
+                onSelectDifficulty = _props.onSelectDifficulty;
 
-    return React$1.createElement(
-        'div',
-        { className: 'word-list' },
-        React$1.createElement(Heading, { analysis: analysis }),
-        React$1.createElement(DifficultySelector, {
-            selected: difficulty,
-            onSelect: onSelectDifficulty,
-            words: sortedWords }),
-        React$1.createElement(
-            'div',
-            { className: 'list' },
-            wordsWithDifficulty.map(function (item) {
-                return React$1.createElement(WordListItem, { key: item.token, word: item,
-                    onSelect: onSelectWord });
-            })
+            var sortedWords = analysis.words.sort(function (a, b) {
+                return a.difficulty.value - b.difficulty.value;
+            });
+
+            var wordsWithDifficulty = sortedWords.filter(function (w) {
+                return w.difficulty.level === difficulty;
+            });
+
+            return React$1.createElement(
+                'div',
+                { className: 'word-list' },
+                React$1.createElement(Heading, { analysis: analysis }),
+                React$1.createElement(DifficultySelector, {
+                    selected: difficulty,
+                    onSelect: onSelectDifficulty,
+                    words: sortedWords }),
+                React$1.createElement(
+                    'div',
+                    { className: 'list' },
+                    wordsWithDifficulty.map(function (item) {
+                        return React$1.createElement(WordListItem, { key: item.token, word: item,
+                            onSelect: onSelectWord });
+                    })
+                )
+            );
+        }
+    }]);
+    return WordList;
+}(React$1.Component);
+
+var Nav = function Nav(_ref) {
+    var analysis = _ref.analysis,
+        selection = _ref.selection,
+        onClick = _ref.onClick;
+    return React.createElement(
+        'nav',
+        { className: 'navigation' },
+        React.createElement(
+            'section',
+            { className: 'container' },
+            React.createElement(
+                'span',
+                { className: 'navigation-title' },
+                React.createElement(
+                    'h1',
+                    { className: 'title' },
+                    selection && selection.word ? React.createElement(
+                        'div',
+                        { className: 'media', onClick: onClick },
+                        React.createElement(
+                            'span',
+                            { className: 'arrow left' },
+                            '>'
+                        ),
+                        React.createElement(
+                            'span',
+                            { className: 'name' },
+                            analysis.media.title
+                        )
+                    ) : React.createElement(
+                        'a',
+                        { className: 'generic', href: '/' },
+                        'subvoc'
+                    )
+                )
+            )
         )
     );
 };
@@ -1633,12 +1745,15 @@ var Analysis = function (_React$Component) {
     inherits(Analysis, _React$Component);
 
     function Analysis(_ref) {
-        var analysis = _ref.analysis;
+        var movie = _ref.movie;
         classCallCheck(this, Analysis);
 
         var _this = possibleConstructorReturn(this, (Analysis.__proto__ || Object.getPrototypeOf(Analysis)).call(this));
 
-        _this.state = { selection: { difficulty: 3, word: undefined } };
+        _this.state = {
+            movie: movie,
+            selection: { difficulty: 3, word: undefined }
+        };
         return _this;
     }
 
@@ -1649,7 +1764,6 @@ var Analysis = function (_React$Component) {
                 prevState.listScrollPos = scrollPos();
                 prevState.selection.word = word;
             });
-            this.lookupWord(word);
         }
     }, {
         key: 'handleSelectDifficulty',
@@ -1666,6 +1780,20 @@ var Analysis = function (_React$Component) {
             });
         }
     }, {
+        key: 'componentWillMount',
+        value: function componentWillMount() {
+            this.setState({
+                analysisXHR: this.loadAnalysis(this.state.movie.id)
+            });
+        }
+    }, {
+        key: 'componentWillUnmount',
+        value: function componentWillUnmount() {
+            if (this.state.analysisXHR) {
+                this.state.analysisXHR.abort();
+            }
+        }
+    }, {
         key: 'componentDidUpdate',
         value: function componentDidUpdate(prevProps, prevState) {
             if (!this.state.selection.word && this.state.listScrollPos) {
@@ -1678,26 +1806,36 @@ var Analysis = function (_React$Component) {
         value: function render() {
             var _this2 = this;
 
-            var analysis = this.props.analysis;
+            var _state = this.state,
+                analysis = _state.analysis,
+                movie = _state.movie,
+                selection = _state.selection;
+
 
             return React$1.createElement(
                 'div',
                 null,
                 React$1.createElement(Nav, { analysis: analysis,
-                    selection: this.state.selection,
+                    selection: selection,
                     onClick: function onClick() {
                         return _this2.handleUnselectWord();
                     } }),
-                React$1.createElement(
+                this.state.analysisXHR ? React$1.createElement(
+                    'div',
+                    null,
+                    React$1.createElement(Spinner, { big: true, centered: true })
+                ) : React$1.createElement(
                     'section',
                     { className: 'container' },
                     React$1.createElement(
                         'div',
                         { className: 'analysis' },
-                        this.state.selection.word ? React$1.createElement(WordDetail, {
-                            word: this.state.selection.word }) : React$1.createElement(WordList, {
+                        selection.word ? React$1.createElement(Word, {
+                            movie: movie,
+                            word: selection.word }) : React$1.createElement(WordList, {
                             analysis: analysis,
-                            difficulty: this.state.selection.difficulty,
+                            movie: movie,
+                            difficulty: selection.difficulty,
                             onSelectDifficulty: function onSelectDifficulty(d) {
                                 return _this2.handleSelectDifficulty(d);
                             },
@@ -1709,61 +1847,28 @@ var Analysis = function (_React$Component) {
             );
         }
     }, {
-        key: 'lookupWord',
-        value: function lookupWord(word) {
+        key: 'loadAnalysis',
+        value: function loadAnalysis(movieId) {
             var _this3 = this;
 
-            var req = API.lookupWord(word);
-            req.then(function (res) {
-                _this3.setState(function (prevState) {
-                    if (prevState.selection.word) {
-                        prevState.selection.word.lookup = res.data;
-                    }
+            var xhr = API.loadAnalysis(movieId);
+            xhr.then(function (res) {
+                _this3.setState({
+                    analysisXHR: undefined,
+                    analysis: res.data
                 });
             }).catch(function (err) {
+                if (API.isCancel(err)) {
+                    return;
+                }
                 console.error(err); // eslint-disable-line
                 document.location.href = "/error";
             });
-            return req;
+            return xhr;
         }
     }]);
     return Analysis;
 }(React$1.Component);
-
-var Page = {
-    ANALYTICS: new RegExp('/analysis/(\\w+)'),
-    SEARCH: '/'
-};
-
-var Router = function () {
-    function Router() {
-        classCallCheck(this, Router);
-    }
-
-    createClass(Router, null, [{
-        key: 'getPage',
-        value: function getPage(path) {
-            var analysisMatch = path.match(Page.ANALYTICS);
-            if (analysisMatch) {
-                return { movieId: analysisMatch[1] };
-            }
-
-            return {};
-        }
-    }, {
-        key: 'onAnalysisPage',
-        value: function onAnalysisPage(movieTitle, movieId) {
-            var title = movieTitle ? 'Analysis: ' + movieTitle : 'Analysis';
-            var path = '/analysis/' + movieId;
-            if (path === location.pathname) {
-                document.title = title;
-            } else {
-                history.pushState(null, title, path);
-            }
-        }
-    }]);
-    return Router;
-}();
 
 var Intro = function Intro() {
   return React.createElement(
@@ -2043,75 +2148,38 @@ var App = function (_React$Component) {
 
         var _this = possibleConstructorReturn(this, (App.__proto__ || Object.getPrototypeOf(App)).call(this));
 
-        var xhr = void 0;
-        if (page.movieId) {
-            xhr = _this.loadAnalysis(page.movieId);
-        }
-        _this.state = { analysisXHR: xhr };
+        _this.state = { movie: { id: page.movieId }, word: page.word };
         return _this;
     }
 
     createClass(App, [{
         key: 'handleSelection',
         value: function handleSelection(movie) {
-            var _this2 = this;
-
-            Router.onAnalysisPage(movie.title, movie.id);
-
-            this.setState(function (prevState) {
-                if (prevState.analysisXHR) {
-                    prevState.analysisXHR.abort();
-                }
-
-                prevState.analysisXHR = _this2.loadAnalysis(movie.id);
-            });
+            this.setState({ movie: movie });
         }
     }, {
         key: 'render',
         value: function render() {
-            var _this3 = this;
+            var _this2 = this;
 
             return React$1.createElement(
                 'div',
                 null,
-                this.state.analysisXHR ? React$1.createElement(
-                    'div',
-                    null,
-                    React$1.createElement(Nav, null),
-                    React$1.createElement(Spinner, { big: true, centered: true })
-                ) : this.state.analysis ? React$1.createElement(Analysis, { analysis: this.state.analysis }) : React$1.createElement(Search, { onSelect: function onSelect(m) {
-                        return _this3.handleSelection(m);
+                this.state.movie.id ? React$1.createElement(Analysis, { movie: this.state.movie }) : React$1.createElement(Search, { onSelect: function onSelect(m) {
+                        return _this2.handleSelection(m);
                     } })
             );
-        }
-    }, {
-        key: 'loadAnalysis',
-        value: function loadAnalysis(movieId) {
-            var _this4 = this;
-
-            var xhr = API.loadAnalysis(movieId);
-            xhr.then(function (res) {
-                _this4.setState(function (prevState) {
-                    prevState.analysisXHR = undefined;
-                    prevState.analysis = res.data;
-                });
-            }).catch(function (err) {
-                if (err.statusText === 'abort') {
-                    return;
-                }
-                console.error(err); // eslint-disable-line
-                document.location.href = "/error";
-            });
-            return xhr;
         }
     }]);
     return App;
 }(React$1.Component);
 
-window.onload = function () {
+function init() {
     var page = Router.getPage(location.pathname);
     var container = document.getElementById('main');
     ReactDOM.render(React$1.createElement(App, { page: page }), container);
-};
+}
+
+window.onload = init;
 
 }(React,ReactDOM,axios,classNames,Slider));
