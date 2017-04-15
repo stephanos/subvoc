@@ -46,11 +46,11 @@ def create_routes(app):
     def home_route():
         return bootstrap()
 
-    @app.route('/analysis/<id>')
+    @app.route('/m/<id>')
     def analysis_route(id):
         return bootstrap()
 
-    @app.route('/analysis/<id>/word/<word>')
+    @app.route('/m/<id>/w/<word>')
     def word_route(id, word):
         return bootstrap()
 

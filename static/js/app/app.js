@@ -1,10 +1,10 @@
-(function (React$1,ReactDOM,axios,classNames,Slider) {
+(function (React$1,ReactDOM,classNames,axios,Slider) {
 'use strict';
 
 React$1 = 'default' in React$1 ? React$1['default'] : React$1;
 ReactDOM = 'default' in ReactDOM ? ReactDOM['default'] : ReactDOM;
-axios = 'default' in axios ? axios['default'] : axios;
 classNames = 'default' in classNames ? classNames['default'] : classNames;
+axios = 'default' in axios ? axios['default'] : axios;
 Slider = 'default' in Slider ? Slider['default'] : Slider;
 
 var toStr$2 = Object.prototype.toString;
@@ -23,6 +23,7 @@ var isArguments = function isArguments(value) {
 	return isArgs;
 };
 
+// modified from https://github.com/es-shims/es5-shim
 var has = Object.prototype.hasOwnProperty;
 var toStr$1 = Object.prototype.toString;
 var slice$1 = Array.prototype.slice;
@@ -521,6 +522,7 @@ var es5$2 = function ToPrimitive(input, PreferredType) {
 	return ES5internalSlots['[[DefaultValue]]'](input, PreferredType);
 };
 
+// https://es5.github.io/#x9
 var ES5 = {
 	ToPrimitive: es5$2,
 
@@ -1027,127 +1029,6 @@ index$1(boundFindShim, {
 
 var index = boundFindShim;
 
-var classCallCheck = function (instance, Constructor) {
-  if (!(instance instanceof Constructor)) {
-    throw new TypeError("Cannot call a class as a function");
-  }
-};
-
-var createClass = function () {
-  function defineProperties(target, props) {
-    for (var i = 0; i < props.length; i++) {
-      var descriptor = props[i];
-      descriptor.enumerable = descriptor.enumerable || false;
-      descriptor.configurable = true;
-      if ("value" in descriptor) descriptor.writable = true;
-      Object.defineProperty(target, descriptor.key, descriptor);
-    }
-  }
-
-  return function (Constructor, protoProps, staticProps) {
-    if (protoProps) defineProperties(Constructor.prototype, protoProps);
-    if (staticProps) defineProperties(Constructor, staticProps);
-    return Constructor;
-  };
-}();
-
-
-
-
-
-
-
-
-
-var inherits = function (subClass, superClass) {
-  if (typeof superClass !== "function" && superClass !== null) {
-    throw new TypeError("Super expression must either be null or a function, not " + typeof superClass);
-  }
-
-  subClass.prototype = Object.create(superClass && superClass.prototype, {
-    constructor: {
-      value: subClass,
-      enumerable: false,
-      writable: true,
-      configurable: true
-    }
-  });
-  if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass;
-};
-
-
-
-
-
-
-
-
-
-
-
-var possibleConstructorReturn = function (self, call) {
-  if (!self) {
-    throw new ReferenceError("this hasn't been initialised - super() hasn't been called");
-  }
-
-  return call && (typeof call === "object" || typeof call === "function") ? call : self;
-};
-
-var CancelToken = axios.CancelToken;
-
-function cancelableGet(url) {
-    var source = CancelToken.source();
-
-    var result = {
-        promise: axios.get(url, {
-            cancelToken: source.token
-        }),
-        cancel: function cancel() {
-            source.cancel();
-        }
-    };
-
-    result.then = function (fn) {
-        result.promise = result.promise.then(fn);
-        return result;
-    };
-    result.catch = function (fn) {
-        result.promise = result.promise.catch(fn);
-        return result;
-    };
-
-    return result;
-}
-
-var API = function () {
-    function API() {
-        classCallCheck(this, API);
-    }
-
-    createClass(API, null, [{
-        key: 'isCancel',
-        value: function isCancel(err) {
-            return axios.isCancel(err);
-        }
-    }, {
-        key: 'lookupWord',
-        value: function lookupWord(word) {
-            return cancelableGet('/api/words/' + word);
-        }
-    }, {
-        key: 'loadAnalysis',
-        value: function loadAnalysis(imdbId) {
-            return cancelableGet('/api/analysis/' + imdbId);
-        }
-    }, {
-        key: 'searchMovie',
-        value: function searchMovie(query) {
-            return cancelableGet('/api/search/' + query);
-        }
-    }]);
-    return API;
-}();
-
 var WordDefinitionList = function WordDefinitionList(_ref) {
     var definitions = _ref.definitions;
     return React$1.createElement(
@@ -1289,6 +1170,72 @@ var PartOfSpeachSelector = function PartOfSpeachSelector(_ref2) {
     );
 };
 
+var classCallCheck = function (instance, Constructor) {
+  if (!(instance instanceof Constructor)) {
+    throw new TypeError("Cannot call a class as a function");
+  }
+};
+
+var createClass = function () {
+  function defineProperties(target, props) {
+    for (var i = 0; i < props.length; i++) {
+      var descriptor = props[i];
+      descriptor.enumerable = descriptor.enumerable || false;
+      descriptor.configurable = true;
+      if ("value" in descriptor) descriptor.writable = true;
+      Object.defineProperty(target, descriptor.key, descriptor);
+    }
+  }
+
+  return function (Constructor, protoProps, staticProps) {
+    if (protoProps) defineProperties(Constructor.prototype, protoProps);
+    if (staticProps) defineProperties(Constructor, staticProps);
+    return Constructor;
+  };
+}();
+
+
+
+
+
+
+
+
+
+var inherits = function (subClass, superClass) {
+  if (typeof superClass !== "function" && superClass !== null) {
+    throw new TypeError("Super expression must either be null or a function, not " + typeof superClass);
+  }
+
+  subClass.prototype = Object.create(superClass && superClass.prototype, {
+    constructor: {
+      value: subClass,
+      enumerable: false,
+      writable: true,
+      configurable: true
+    }
+  });
+  if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass;
+};
+
+
+
+
+
+
+
+
+
+
+
+var possibleConstructorReturn = function (self, call) {
+  if (!self) {
+    throw new ReferenceError("this hasn't been initialised - super() hasn't been called");
+  }
+
+  return call && (typeof call === "object" || typeof call === "function") ? call : self;
+};
+
 var WordDetailBody = function (_React$Component) {
     inherits(WordDetailBody, _React$Component);
 
@@ -1353,11 +1300,76 @@ var WordDetailBody = function (_React$Component) {
     return WordDetailBody;
 }(React$1.Component);
 
-var Page = {
-    ANALYTICS: new RegExp('/analysis/(\\w+)'),
-    SEARCH: '/',
-    WORD: new RegExp('/analysis/(\\w+)/word/(\\w+)')
+var CancelToken = axios.CancelToken;
+
+function cancelableGet(url) {
+    var source = CancelToken.source();
+
+    var result = {
+        promise: axios.get(url, {
+            cancelToken: source.token
+        }),
+        cancel: function cancel() {
+            source.cancel();
+        }
+    };
+
+    result.then = function (fn) {
+        result.promise = result.promise.then(fn);
+        return result;
+    };
+    result.catch = function (fn) {
+        result.promise = result.promise.catch(fn);
+        return result;
+    };
+
+    return result;
+}
+
+var API = function () {
+    function API() {
+        classCallCheck(this, API);
+    }
+
+    createClass(API, null, [{
+        key: 'isCancel',
+        value: function isCancel(err) {
+            return axios.isCancel(err);
+        }
+    }, {
+        key: 'lookupWord',
+        value: function lookupWord(word) {
+            return cancelableGet('/api/words/' + word);
+        }
+    }, {
+        key: 'loadAnalysis',
+        value: function loadAnalysis(imdbId) {
+            return cancelableGet('/api/analysis/' + imdbId);
+        }
+    }, {
+        key: 'searchMovie',
+        value: function searchMovie(query) {
+            return cancelableGet('/api/search/' + query);
+        }
+    }]);
+    return API;
+}();
+
+var PAGE = {
+    analytics: new RegExp('/m/(\\w+)'),
+    search: '/',
+    word: new RegExp('/m/(\\w+)/w/(\\w+)')
 };
+
+var TITLE_SUFFIX = ' | subvoc';
+
+var HISTORY = void 0;
+function history() {
+    if (!HISTORY) {
+        HISTORY = window.History.createBrowserHistory();
+    }
+    return HISTORY;
+}
 
 var Router = function () {
     function Router() {
@@ -1365,14 +1377,16 @@ var Router = function () {
     }
 
     createClass(Router, null, [{
-        key: 'getPage',
-        value: function getPage(path) {
-            var wordRouteMatch = path.match(Page.WORD);
+        key: 'getState',
+        value: function getState() {
+            var path = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : location.pathname;
+
+            var wordRouteMatch = path.match(PAGE.word);
             if (wordRouteMatch) {
                 return { movieId: wordRouteMatch[1], word: wordRouteMatch[2] };
             }
 
-            var analysisRouteMatch = path.match(Page.ANALYTICS);
+            var analysisRouteMatch = path.match(PAGE.analytics);
             if (analysisRouteMatch) {
                 return { movieId: analysisRouteMatch[1] };
             }
@@ -1382,24 +1396,29 @@ var Router = function () {
     }, {
         key: 'onAnalysisPage',
         value: function onAnalysisPage(movie) {
-            var title = movie.title ? 'Analysis: ' + movie.title : 'Analysis';
-            var path = '/analysis/' + movie.id;
-            if (path === location.pathname) {
-                document.title = title;
-            } else {
-                history.pushState(null, title, path);
+            var title = movie.title ? '' + movie.title : 'Analysis';
+            document.title = title + TITLE_SUFFIX;
+
+            var path = '/m/' + movie.id;
+            if (path !== location.pathname) {
+                history().push(path);
             }
         }
     }, {
         key: 'onWordPage',
         value: function onWordPage(movie, word) {
             var title = word ? '' + word : 'Details';
-            var path = '/analysis/' + movie.id + '/word/' + word;
-            if (path === location.pathname) {
-                document.title = title;
-            } else {
-                history.pushState(null, title, path);
+            document.title = title + TITLE_SUFFIX;
+
+            var path = '/m/' + movie.id + '/w/' + word;
+            if (path !== location.pathname) {
+                history().push(path);
             }
+        }
+    }, {
+        key: 'onUrlChange',
+        value: function onUrlChange(callback) {
+            history().listen(callback);
         }
     }]);
     return Router;
@@ -1436,14 +1455,29 @@ var Word = function (_React$Component) {
         key: 'componentWillMount',
         value: function componentWillMount() {
             var _props = this.props,
-                movie = _props.movie,
+                analysis = _props.analysis,
                 word = _props.word;
 
 
-            Router.onWordPage(movie, word.token);
+            Router.onWordPage(analysis.media, word.token);
             this.setState({
                 wordXHR: this.lookupWord(word.token)
             });
+        }
+    }, {
+        key: 'componentDidMount',
+        value: function componentDidMount() {
+            var _this2 = this;
+
+            window.onpopstate = function (e) {
+                e.preventDefault();
+                _this2.props.onUnselect();
+            };
+        }
+    }, {
+        key: 'componentDidUpdate',
+        value: function componentDidUpdate(prevProps, prevState) {
+            scrollTo(0);
         }
     }, {
         key: 'componentWillUnmount',
@@ -1451,11 +1485,7 @@ var Word = function (_React$Component) {
             if (this.state.wordXHR) {
                 this.state.wordXHR.cancel();
             }
-        }
-    }, {
-        key: 'componentDidUpdate',
-        value: function componentDidUpdate(prevProps, prevState) {
-            scrollTo(0);
+            window.onpopstate = undefined;
         }
     }, {
         key: 'render',
@@ -1504,11 +1534,11 @@ var Word = function (_React$Component) {
     }, {
         key: 'lookupWord',
         value: function lookupWord(word) {
-            var _this2 = this;
+            var _this3 = this;
 
             var req = API.lookupWord(word);
             req.then(function (res) {
-                _this2.setState({
+                _this3.setState({
                     wordXHR: undefined,
                     definition: res.data
                 });
@@ -1660,7 +1690,7 @@ var WordList = function (_React$Component) {
     createClass(WordList, [{
         key: 'componentWillMount',
         value: function componentWillMount() {
-            Router.onAnalysisPage(this.props.movie);
+            Router.onAnalysisPage(this.props.analysis.media);
         }
     }, {
         key: 'render',
@@ -1703,7 +1733,7 @@ var WordList = function (_React$Component) {
 
 var Nav = function Nav(_ref) {
     var analysis = _ref.analysis,
-        selection = _ref.selection,
+        word = _ref.word,
         onClick = _ref.onClick;
     return React.createElement(
         'nav',
@@ -1717,7 +1747,7 @@ var Nav = function Nav(_ref) {
                 React.createElement(
                     'h1',
                     { className: 'title' },
-                    selection && selection.word ? React.createElement(
+                    analysis && word && word.token ? React.createElement(
                         'div',
                         { className: 'media', onClick: onClick },
                         React.createElement(
@@ -1745,14 +1775,15 @@ var Analysis = function (_React$Component) {
     inherits(Analysis, _React$Component);
 
     function Analysis(_ref) {
-        var movie = _ref.movie;
+        var movie = _ref.movie,
+            word = _ref.word;
         classCallCheck(this, Analysis);
 
         var _this = possibleConstructorReturn(this, (Analysis.__proto__ || Object.getPrototypeOf(Analysis)).call(this));
 
         _this.state = {
-            movie: movie,
-            selection: { difficulty: 3, word: undefined }
+            difficulty: 3,
+            word: { token: word }
         };
         return _this;
     }
@@ -1762,28 +1793,28 @@ var Analysis = function (_React$Component) {
         value: function handleSelectWord(word) {
             this.setState(function (prevState) {
                 prevState.listScrollPos = scrollPos();
-                prevState.selection.word = word;
+                prevState.word = word;
             });
         }
     }, {
         key: 'handleSelectDifficulty',
         value: function handleSelectDifficulty(difficulty) {
             this.setState(function (prevState) {
-                prevState.selection.difficulty = difficulty;
+                prevState.difficulty = difficulty;
             });
         }
     }, {
         key: 'handleUnselectWord',
         value: function handleUnselectWord() {
             this.setState(function (prevState) {
-                delete prevState.selection.word;
+                delete prevState.word;
             });
         }
     }, {
         key: 'componentWillMount',
         value: function componentWillMount() {
             this.setState({
-                analysisXHR: this.loadAnalysis(this.state.movie.id)
+                analysisXHR: this.loadAnalysis(this.props.movie.id)
             });
         }
     }, {
@@ -1796,7 +1827,7 @@ var Analysis = function (_React$Component) {
     }, {
         key: 'componentDidUpdate',
         value: function componentDidUpdate(prevProps, prevState) {
-            if (!this.state.selection.word && this.state.listScrollPos) {
+            if (!this.state.word && this.state.listScrollPos) {
                 scrollTo(this.state.listScrollPos);
                 delete this.state.listScrollPos;
             }
@@ -1808,15 +1839,15 @@ var Analysis = function (_React$Component) {
 
             var _state = this.state,
                 analysis = _state.analysis,
-                movie = _state.movie,
-                selection = _state.selection;
+                difficulty = _state.difficulty,
+                word = _state.word;
 
 
             return React$1.createElement(
                 'div',
                 null,
                 React$1.createElement(Nav, { analysis: analysis,
-                    selection: selection,
+                    word: word,
                     onClick: function onClick() {
                         return _this2.handleUnselectWord();
                     } }),
@@ -1830,12 +1861,14 @@ var Analysis = function (_React$Component) {
                     React$1.createElement(
                         'div',
                         { className: 'analysis' },
-                        selection.word ? React$1.createElement(Word, {
-                            movie: movie,
-                            word: selection.word }) : React$1.createElement(WordList, {
+                        word && word.token ? React$1.createElement(Word, {
                             analysis: analysis,
-                            movie: movie,
-                            difficulty: selection.difficulty,
+                            word: word,
+                            onUnselect: function onUnselect() {
+                                return _this2.handleUnselectWord();
+                            } }) : React$1.createElement(WordList, {
+                            analysis: analysis,
+                            difficulty: difficulty,
                             onSelectDifficulty: function onSelectDifficulty(d) {
                                 return _this2.handleSelectDifficulty(d);
                             },
@@ -2142,13 +2175,13 @@ var Search = function (_React$Component) {
 var App = function (_React$Component) {
     inherits(App, _React$Component);
 
-    function App(_ref) {
-        var page = _ref.page;
+    function App() {
         classCallCheck(this, App);
 
         var _this = possibleConstructorReturn(this, (App.__proto__ || Object.getPrototypeOf(App)).call(this));
 
-        _this.state = { movie: { id: page.movieId }, word: page.word };
+        var data = Router.getState();
+        _this.state = { movie: { id: data.movieId }, word: data.word };
         return _this;
     }
 
@@ -2156,17 +2189,36 @@ var App = function (_React$Component) {
         key: 'handleSelection',
         value: function handleSelection(movie) {
             this.setState({ movie: movie });
+            Router.onAnalysisPage(movie);
+        }
+    }, {
+        key: 'componentWillMount',
+        value: function componentWillMount() {
+            var _this2 = this;
+
+            Router.onUrlChange(function () {
+                return _this2.setState(function (prevState) {
+                    var data = Router.getState();
+                    prevState.movie.id = data.movieId;
+                    prevState.word = data.word;
+                });
+            });
         }
     }, {
         key: 'render',
         value: function render() {
-            var _this2 = this;
+            var _this3 = this;
+
+            var _state = this.state,
+                movie = _state.movie,
+                word = _state.word;
+
 
             return React$1.createElement(
                 'div',
                 null,
-                this.state.movie.id ? React$1.createElement(Analysis, { movie: this.state.movie }) : React$1.createElement(Search, { onSelect: function onSelect(m) {
-                        return _this2.handleSelection(m);
+                movie.id ? React$1.createElement(Analysis, { movie: movie, word: word }) : React$1.createElement(Search, { onSelect: function onSelect(m) {
+                        return _this3.handleSelection(m);
                     } })
             );
         }
@@ -2174,12 +2226,11 @@ var App = function (_React$Component) {
     return App;
 }(React$1.Component);
 
-function init() {
-    var page = Router.getPage(location.pathname);
+function render() {
     var container = document.getElementById('main');
-    ReactDOM.render(React$1.createElement(App, { page: page }), container);
+    ReactDOM.render(React$1.createElement(App, null), container);
 }
 
-window.onload = init;
+window.onload = render;
 
-}(React,ReactDOM,axios,classNames,Slider));
+}(React,ReactDOM,classNames,axios,Slider));

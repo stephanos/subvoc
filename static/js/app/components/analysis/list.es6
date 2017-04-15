@@ -24,7 +24,7 @@ const Heading = ({ analysis }) =>
 class WordList extends React.Component { 
 
     componentWillMount() {
-        Router.onAnalysisPage(this.props.movie);
+        Router.onAnalysisPage(this.props.analysis.media);
     }
 
     render() {

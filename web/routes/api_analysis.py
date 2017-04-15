@@ -46,6 +46,7 @@ def generate(subtitle, analysis, poster_url):
     since Flask would - for whatever reason - only send a partial response.
     """
     yield '{"media": ' + json.dumps({
+        'id': subtitle.media.id,
         'title': subtitle.media.title,
         'poster_url': poster_url,
     }) + ', "words": ['

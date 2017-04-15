@@ -12,11 +12,11 @@ import { scrollTo, scrollPos } from '../util/scroll.es6';
 
 class Analysis extends React.Component {
 
-    constructor({ movie }) {
+    constructor({ movie, word }) {
         super();
-        this.state = { 
-            movie: movie,
-            selection: { difficulty: 3, word: undefined }
+        this.state = {
+            difficulty: 3,
+            word: { token: word }
         };
     }
 
@@ -24,26 +24,26 @@ class Analysis extends React.Component {
     handleSelectWord(word) {
         this.setState((prevState) => {
             prevState.listScrollPos = scrollPos();
-            prevState.selection.word = word;
+            prevState.word = word;
         });
     }
 
     handleSelectDifficulty(difficulty) {
         this.setState((prevState) => {
-            prevState.selection.difficulty = difficulty;
+            prevState.difficulty = difficulty;
         });
     }
 
     handleUnselectWord() {
         this.setState((prevState) => {
-            delete prevState.selection.word;
+            delete prevState.word;
         });
     }
 
 
     componentWillMount() {
         this.setState({
-            analysisXHR: this.loadAnalysis(this.state.movie.id)
+            analysisXHR: this.loadAnalysis(this.props.movie.id)
         });
     }
 
@@ -54,18 +54,18 @@ class Analysis extends React.Component {
     }
 
     componentDidUpdate(prevProps, prevState) {
-        if (!this.state.selection.word && this.state.listScrollPos) {
+        if (!this.state.word && this.state.listScrollPos) {
             scrollTo(this.state.listScrollPos);
             delete this.state.listScrollPos;
         }
     }
 
     render() {
-        const { analysis, movie, selection } = this.state;
+        const { analysis, difficulty, word } = this.state;
         
         return <div>
             <Nav analysis={analysis}
-                 selection={selection}
+                 word={word}
                  onClick={() => this.handleUnselectWord()} />
 
             { this.state.analysisXHR 
@@ -74,14 +74,14 @@ class Analysis extends React.Component {
                   </div>
                 : <section className='container'>
                     <div className='analysis'>
-                        { selection.word
+                        { word && word.token
                             ? <Word
-                                movie={movie}
-                                word={selection.word} />
+                                analysis={analysis}
+                                word={word} 
+                                onUnselect={() => this.handleUnselectWord()} />
                             : <WordList
                                 analysis={analysis}
-                                movie={movie}
-                                difficulty={selection.difficulty}
+                                difficulty={difficulty}
                                 onSelectDifficulty={(d) => this.handleSelectDifficulty(d)}
                                 onSelectWord={(w) => this.handleSelectWord(w)} />
                         }

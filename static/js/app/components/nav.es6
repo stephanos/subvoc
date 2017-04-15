@@ -1,9 +1,9 @@
-const Nav = ({ analysis, selection, onClick }) =>
+const Nav = ({ analysis, word, onClick }) =>
     <nav className='navigation'>
         <section className='container'>
             <span className='navigation-title'>
                 <h1 className='title'>
-                    { selection && selection.word
+                    { analysis && word && word.token
                         ? <div className='media' onClick={onClick}>
                             <span className="arrow left">&gt;</span>
                             <span className="name">{ analysis.media.title }</span>

@@ -2,13 +2,10 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 
 import { App } from './app.es6';
-import { Router } from './router.es6';
 
-
-function init() {
-    const page = Router.getPage(location.pathname);
+function render() {
     const container = document.getElementById('main');
-    ReactDOM.render(<App page={page}/>, container);
+    ReactDOM.render(<App />, container);
 }
 
-window.onload = init;
+window.onload = render;

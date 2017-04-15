@@ -11,22 +11,30 @@ import { Spinner } from '../../util/spinner.es6';
 class Word extends React.Component {
 
     componentWillMount() {
-        const { movie, word } = this.props;
+        const { analysis, word } = this.props;
 
-        Router.onWordPage(movie, word.token);
+        Router.onWordPage(analysis.media, word.token);
         this.setState({
             wordXHR: this.lookupWord(word.token)
         });
+    }
+
+    componentDidMount() {
+        window.onpopstate = (e) => {
+            e.preventDefault();
+            this.props.onUnselect();
+        };
+    }
+
+    componentDidUpdate(prevProps, prevState) {
+        scrollTo(0);
     }
 
     componentWillUnmount() {
         if (this.state.wordXHR) {
             this.state.wordXHR.cancel();
         }
-    }
-
-    componentDidUpdate(prevProps, prevState) {
-        scrollTo(0);
+        window.onpopstate = undefined;
     }
 
 

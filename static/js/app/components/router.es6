@@ -1,19 +1,30 @@
-const Page = {
-    ANALYTICS: new RegExp('/analysis/(\\w+)'),
-    SEARCH: '/',
-    WORD: new RegExp('/analysis/(\\w+)/word/(\\w+)'),
+const PAGE = {
+    analytics: new RegExp('/m/(\\w+)'),
+    search: '/',
+    word: new RegExp('/m/(\\w+)/w/(\\w+)'),
 };
+
+
+const TITLE_SUFFIX = ' | subvoc';
+
+let HISTORY;
+function history() {
+    if (!HISTORY) {
+        HISTORY = window.History.createBrowserHistory();
+    }
+    return HISTORY;
+}
 
 
 class Router {
 
-    static getPage(path) {
-        const wordRouteMatch = path.match(Page.WORD);
+    static getState(path = location.pathname) {
+        const wordRouteMatch = path.match(PAGE.word);
         if (wordRouteMatch) {
             return { movieId: wordRouteMatch[1], word: wordRouteMatch[2] };
         }
 
-        const analysisRouteMatch = path.match(Page.ANALYTICS);
+        const analysisRouteMatch = path.match(PAGE.analytics);
         if (analysisRouteMatch) {
             return { movieId: analysisRouteMatch[1] };
         }
@@ -22,24 +33,28 @@ class Router {
     }
 
     static onAnalysisPage(movie) {
-        const title = movie.title ? `Analysis: ${movie.title}` : 'Analysis';
-        const path = `/analysis/${movie.id}`;
-        if (path === location.pathname) {
-            document.title = title;
-        } else {
-            history.pushState(null, title, path);
+        const title = movie.title ? `${movie.title}` : 'Analysis';
+        document.title = title + TITLE_SUFFIX;
+        
+        const path = `/m/${movie.id}`;
+        if (path !== location.pathname) {
+            history().push(path);
         }
     }
 
     static onWordPage(movie, word) {
         const title = word ? `${word}` : 'Details';
-        const path = `/analysis/${movie.id}/word/${word}`;
-        if (path === location.pathname) {
-            document.title = title;
-        } else {
-            history.pushState(null, title, path);
+        document.title = title + TITLE_SUFFIX;
+        
+        const path = `/m/${movie.id}/w/${word}`;
+        if (path !== location.pathname) {
+            history().push(path);
         }
     }
+
+    static onUrlChange(callback) {
+        history().listen(callback);
+    } 
 }
 
 
