@@ -61,6 +61,6 @@ def generate(subtitle, analysis, poster_url):
 
 def analysis_api(analyser, poster_api, id):
     subtitle, analysis = analyser.analyse(id)
-    poster_url = poster_api.get_movie_posters([id])[id]
+    poster_url = poster_api.get_movie_posters([id]).get(id)
     return Response(generate(subtitle, analysis, poster_url),
                     content_type='application/json')
