@@ -12,6 +12,6 @@ docker run \
     -v $(pwd):/app/src \
     stephanos/subvoc \
     /bin/bash -c "flake8 && \
-                  pytest --cov --diff && sed -i \"s|/app/src/|`pwd`/|g\" .coverage && \
+                  pytest --cov -vv && sed -i \"s|/app/src/|`pwd`/|g\" .coverage && \
                   /opt/node_modules/eslint/bin/eslint.js static/js/app/**/*.es6 && \
                   /opt/node_modules/jest/bin/jest.js --runInBand"
