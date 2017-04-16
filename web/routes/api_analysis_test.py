@@ -34,7 +34,6 @@ def test_analysis_api():
 
     resp = analysis_api(analyser_mock, poster_api_mock, 'MOVIE_ID')
 
-    print(str(resp.data))
     assert json.loads(resp.get_data(as_text=True)) == {
         "media": {
             "title": "MOVIE_TITLE",

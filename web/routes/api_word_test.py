@@ -16,9 +16,9 @@ def test_words_api():
             ],
             Attribution('text', 'url'))
 
-    data = words_api(api_mock, 'word')
+    resp = words_api(api_mock, 'word')
 
-    assert data == {
+    assert resp == {
         "attribution": {
             "text": "text",
             "url": "url"
