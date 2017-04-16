@@ -51,7 +51,7 @@ def generate(subtitle, analysis, poster_url):
         'poster_url': poster_url,
     }) + ', "words": ['
 
-    tokens = list(analysis.token_with_difficulty.keys())
+    tokens = sorted(list(analysis.token_with_difficulty.keys()))
     for token in tokens:
         yield json.dumps(token_to_dict(analysis, token)) \
             + (',' if token is not tokens[-1] else '')

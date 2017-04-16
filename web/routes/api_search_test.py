@@ -24,5 +24,5 @@ def test_search_api():
             }
         ]
     }
-    
+
     searcher_mock.search.assert_called_once_with('query')
