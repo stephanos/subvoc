@@ -46,8 +46,10 @@ When you select a movie, the [OpenSubtitles API](http://trac.opensubtitles.org/p
 
 (requires Docker) 
 
- - run and test web app with `scripts/dev.sh`
- 
+ - run server with `scripts/dev-py.sh`
+ - build client `scripts/dev-js.sh`
+ - run tests with `scripts/test-py.sh` and `scripts/test-js.sh`
+
 
 ## License
 MIT (see LICENSE).
