@@ -19,17 +19,13 @@
     {% assets "app-css" %}
       <link href="{{ ASSET_URL }}" rel="stylesheet">
     {% endassets %}
-
-    {% block header %}{% endblock %}
   </head>
 
   <body>
 
     <main id="main" class="wrapper">
-
       {% block body %}{% endblock %}
-      
-    </main>
+    </main> 
 
     <a class="github-fork-ribbon"
        href="https://github.com/stephanos/subvoc" title="Fork me">Fork me</a>
@@ -42,6 +38,8 @@
     ga('create', 'UA-97108809-1', 'auto');
     ga('send', 'pageview');
     </script>
+
+    {% block footer %}{% endblock %}
 
   </body>
 </html>
