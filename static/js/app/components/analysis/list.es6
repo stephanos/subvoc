@@ -1,4 +1,3 @@
-import find from 'array.prototype.find';
 import React from 'react';
 
 import { WordListItem } from './list-item.es6';

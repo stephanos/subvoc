@@ -1,4 +1,3 @@
-import find from 'array.prototype.find';
 import React from 'react';
 
 import { WordDefinitionList } from './definition.es6';
@@ -21,7 +20,7 @@ class WordDetailBody extends React.Component {
 
     getSelectedPOS(word) {
         return this.state.POS ||
-            find(PARTS_OF_SPEACH, (pos) => getExcerpts(word, pos).length > 0);
+            PARTS_OF_SPEACH.find(pos => getExcerpts(word, pos).length > 0);
     }
 
 

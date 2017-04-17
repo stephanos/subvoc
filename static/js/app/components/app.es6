@@ -1,5 +1,4 @@
 import React from 'react';
-import find from 'array.prototype.find';
 
 import { Analysis } from './analysis/analysis.es6';
 import { API } from './api.es6';
@@ -11,9 +10,7 @@ class App extends React.Component {
 
     constructor() {
         super();
-        
-        const data = Router.getState();
-        this.state = { movie: { id: data.movieId }, word: data.word };
+        this.state = { selection: Router.getState() };
     }
 
     handleSelection(movie) {
@@ -22,20 +19,18 @@ class App extends React.Component {
     }
 
     componentWillMount() {
-        Router.onUrlChange(() => this.setState((prevState) => {
-            const data = Router.getState();
-            prevState.movie.id = data.movieId;
-            prevState.word = data.word;
-        }));
+        Router.onUrlChange(() => this.setState(
+            { selection: Router.getState() }
+        ));
     }
 
 
     render() {
-        const { movie, word } = this.state;
+        const { movieId, word } = this.state;
 
         return <div>
-            { movie.id
-                ? <Analysis movie={movie} word={word} />
+            { movieId
+                ? <Analysis movie={movieId} word={word} />
                 : <Search onSelect={(m) => this.handleSelection(m)} /> }
         </div>;
     }
