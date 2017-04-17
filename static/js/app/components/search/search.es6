@@ -61,7 +61,7 @@ class Search extends React.Component {
                 return;
             }
             console.error(err); // eslint-disable-line
-            // document.location.href = "/error";
+            document.location.href = "/error";
         });
         return xhr;
     }     
