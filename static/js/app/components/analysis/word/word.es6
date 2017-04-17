@@ -15,6 +15,7 @@ class Word extends React.Component {
 
         Router.onWordPage(analysis.media, word.token);
         this.setState({
+            word,
             wordXHR: this.lookupWord(word.token)
         });
     }
@@ -39,8 +40,7 @@ class Word extends React.Component {
 
 
     render() {
-        const { word } = this.props;
-        word.lookup = this.state.definition;
+        const { word } = this.state;
         
         return <div className="word-detail">
             <h2 className="head">
@@ -73,9 +73,9 @@ class Word extends React.Component {
     lookupWord(word) {
         const req = API.lookupWord(word);
         req.then((res) => {
-            this.setState({
-                wordXHR: undefined,
-                definition: res.data
+            this.setState((prevState) => {
+                prevState.wordXHR = undefined;
+                prevState.word.lookup = res.data;
             });
         }).catch((err) => {
             if (API.isCancel(err)) {
