@@ -6,7 +6,7 @@ import resolve from 'rollup-plugin-node-resolve';
 export default {
   entry: 'static/js/app/components/init.es6',
   format: 'iife',
-  dest: 'static/js/app/app.js',
+  dest: 'static/js/app/bundle.js',
   sourceMap: false,
   globals: {
     'axios': 'axios',
