@@ -38,7 +38,6 @@ RUN apk update \
     && cd /app \
     && yarn global add concat-cli npm-check-updates onchange \
     && yarn
-#ENV NODE_PATH /app/node_modules
 
 # install Firefox & virtual framebuffer
 ARG GECKODRIVER_VERSION=0.11.1
