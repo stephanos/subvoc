@@ -26,9 +26,9 @@ class Lemmatizer:
         return self.wordNetLemmatizer.lemmatize(token, pos=wordnet_pos)
 
     def _to_wordnet_pos(self, token_POS):
-        if token_POS is PartOfSpeach.ADJ:
+        if token_POS is PartOfSpeach.ADJECTIVE:
             return wordnet.ADJ
-        elif token_POS is PartOfSpeach.ADV:
+        elif token_POS is PartOfSpeach.ADVERB:
             return wordnet.ADV
         elif token_POS is PartOfSpeach.NOUN:
             return wordnet.NOUN

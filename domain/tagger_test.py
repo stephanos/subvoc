@@ -15,7 +15,7 @@ def test_tag():
         Word('to', PartOfSpeach.OTHER),
         Word('see', PartOfSpeach.VERB),
         Word('my',  PartOfSpeach.OTHER),
-        Word('wonderful',  PartOfSpeach.ADJ),
+        Word('wonderful',  PartOfSpeach.ADJECTIVE),
         Word('friend', PartOfSpeach.NOUN),
         Word('.', PartOfSpeach.OTHER)]
     assert list(words_in_sentence[1]) == [
@@ -23,5 +23,5 @@ def test_tag():
         Word('shake', PartOfSpeach.VERB),
         Word('his', PartOfSpeach.OTHER),
         Word('hand', PartOfSpeach.NOUN),
-        Word('firmly', PartOfSpeach.ADV),
+        Word('firmly', PartOfSpeach.ADVERB),
         Word('.', PartOfSpeach.OTHER)]

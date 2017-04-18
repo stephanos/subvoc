@@ -2,7 +2,7 @@ import React from 'react';
 
 import { WordDefinitionList } from './definition.es6';
 import { WordExcerptList } from './excerpt.es6';
-import { getDefinitions, getExcerpts, PARTS_OF_SPEACH, PartOfSpeachSelector } from './selector.es6';
+import { getDefinitions, getExcerpts, PARTS_OF_SPEECH, PartOfSpeechSelector } from './selector.es6';
 
 
 class WordDetailBody extends React.Component {
@@ -20,7 +20,7 @@ class WordDetailBody extends React.Component {
 
     getSelectedPOS(word) {
         return this.state.POS ||
-            PARTS_OF_SPEACH.find(pos => getExcerpts(word, pos).length > 0);
+            Object.keys(PARTS_OF_SPEECH).find(pos => getExcerpts(word, pos).length > 0);
     }
 
 
@@ -30,7 +30,7 @@ class WordDetailBody extends React.Component {
 
         return <div>
             <header className="tab-group">
-                <PartOfSpeachSelector 
+                <PartOfSpeechSelector 
                     word={word} 
                     selected={selectedPOS} 
                     onSelect={(p) => this.handleSelectPOS(p)} />

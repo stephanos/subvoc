@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`<PartOfSpeachItem /> should mark POS item as active 1`] = `
+exports[`<PartOfSpeechItem /> should mark POS item as active 1`] = `
 <div
   class="noun tab card active"
 >
@@ -17,7 +17,7 @@ exports[`<PartOfSpeachItem /> should mark POS item as active 1`] = `
 </div>
 `;
 
-exports[`<PartOfSpeachItem /> should mark POS item as enabled 1`] = `
+exports[`<PartOfSpeechItem /> should mark POS item as enabled 1`] = `
 <div
   class="noun tab card"
 >
@@ -34,7 +34,7 @@ exports[`<PartOfSpeachItem /> should mark POS item as enabled 1`] = `
 </div>
 `;
 
-exports[`<PartOfSpeachItem /> should mark POS item with frequency 1`] = `
+exports[`<PartOfSpeechItem /> should mark POS item with frequency 1`] = `
 <div
   class="noun tab card"
 >
@@ -51,7 +51,7 @@ exports[`<PartOfSpeachItem /> should mark POS item with frequency 1`] = `
 </div>
 `;
 
-exports[`<PartOfSpeachItem /> should render disabled, inactive POS item 1`] = `
+exports[`<PartOfSpeechItem /> should render disabled, inactive POS item 1`] = `
 <div
   class="noun tab card empty"
 >
@@ -68,118 +68,167 @@ exports[`<PartOfSpeachItem /> should render disabled, inactive POS item 1`] = `
 </div>
 `;
 
-exports[`<PartOfSpeachSelector /> should mark POS with definition as available 1`] = `
+exports[`<PartOfSpeechSelector /> should mark POS with definition only as available 1`] = `
 <div>
-  <PartOfSpeachItem
+  <PartOfSpeechItem
     active={false}
-    enabled={true}
-    freq={1}
+    enabled={false}
+    freq={0}
     label="noun"
+    type="noun"
   />
-  <PartOfSpeachItem
+  <PartOfSpeechItem
     active={false}
     enabled={false}
     freq={0}
     label="verb"
+    type="verb"
   />
-  <PartOfSpeachItem
+  <PartOfSpeechItem
     active={false}
-    enabled={false}
+    enabled={true}
     freq={0}
     label="adj"
+    type="adjective"
   />
-  <PartOfSpeachItem
-    active={false}
-    enabled={false}
-    freq={0}
-    label="adv"
-  />
-</div>
-`;
-
-exports[`<PartOfSpeachSelector /> should mark POS with excerpt as available 1`] = `
-<div>
-  <PartOfSpeachItem
+  <PartOfSpeechItem
     active={true}
     enabled={true}
     freq={1}
-    label="noun"
+    label="adv"
+    type="adverb"
   />
-  <PartOfSpeachItem
+</div>
+`;
+
+exports[`<PartOfSpeechSelector /> should mark POS with excerpt as active 1`] = `
+<div>
+  <PartOfSpeechItem
+    active={false}
+    enabled={true}
+    freq={0}
+    label="noun"
+    type="noun"
+  />
+  <PartOfSpeechItem
     active={false}
     enabled={true}
     freq={1}
     label="verb"
+    type="verb"
   />
-  <PartOfSpeachItem
+  <PartOfSpeechItem
     active={false}
     enabled={false}
     freq={0}
     label="adj"
+    type="adjective"
   />
-  <PartOfSpeachItem
+  <PartOfSpeechItem
     active={false}
     enabled={false}
     freq={0}
     label="adv"
+    type="adverb"
   />
 </div>
 `;
 
-exports[`<PartOfSpeachSelector /> should mark selected POS as 'active' 1`] = `
+exports[`<PartOfSpeechSelector /> should mark POS with excerpt as available 1`] = `
 <div>
-  <PartOfSpeachItem
+  <PartOfSpeechItem
+    active={false}
+    enabled={false}
+    freq={0}
+    label="noun"
+    type="noun"
+  />
+  <PartOfSpeechItem
+    active={false}
+    enabled={true}
+    freq={1}
+    label="verb"
+    type="verb"
+  />
+  <PartOfSpeechItem
+    active={false}
+    enabled={false}
+    freq={0}
+    label="adj"
+    type="adjective"
+  />
+  <PartOfSpeechItem
+    active={false}
+    enabled={false}
+    freq={0}
+    label="adv"
+    type="adverb"
+  />
+</div>
+`;
+
+exports[`<PartOfSpeechSelector /> should mark selected POS as 'active' 1`] = `
+<div>
+  <PartOfSpeechItem
     active={true}
     enabled={false}
     freq={0}
     label="noun"
+    type="noun"
   />
-  <PartOfSpeachItem
+  <PartOfSpeechItem
     active={false}
     enabled={false}
     freq={0}
     label="verb"
+    type="verb"
   />
-  <PartOfSpeachItem
+  <PartOfSpeechItem
     active={false}
     enabled={false}
     freq={0}
     label="adj"
+    type="adjective"
   />
-  <PartOfSpeachItem
+  <PartOfSpeechItem
     active={false}
     enabled={false}
     freq={0}
     label="adv"
+    type="adverb"
   />
 </div>
 `;
 
-exports[`<PartOfSpeachSelector /> should render 1`] = `
+exports[`<PartOfSpeechSelector /> should render 1`] = `
 <div>
-  <PartOfSpeachItem
+  <PartOfSpeechItem
     active={false}
     enabled={false}
     freq={0}
     label="noun"
+    type="noun"
   />
-  <PartOfSpeachItem
+  <PartOfSpeechItem
     active={false}
     enabled={false}
     freq={0}
     label="verb"
+    type="verb"
   />
-  <PartOfSpeachItem
+  <PartOfSpeechItem
     active={false}
     enabled={false}
     freq={0}
     label="adj"
+    type="adjective"
   />
-  <PartOfSpeachItem
+  <PartOfSpeechItem
     active={false}
     enabled={false}
     freq={0}
     label="adv"
+    type="adverb"
   />
 </div>
 `;

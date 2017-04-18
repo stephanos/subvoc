@@ -2,7 +2,13 @@ import React from 'react';
 import classNames from 'classnames';
 
 
-const PARTS_OF_SPEACH = ['noun', 'verb', 'adj', 'adv'];
+const PARTS_OF_SPEECH = {
+    'noun': 'noun',
+    'verb': 'verb',
+    'adjective': 'adj',
+    'adverb': 'adv'
+}
+
 
 function getFreq(word, pos) {
     return (word.byPOS[pos] || {}).freq || 0;
@@ -17,9 +23,9 @@ function getDefinitions(word, pos) {
 }
 
 
-const PartOfSpeachItem = ({ active, enabled, label, freq, onSelect }) => {
+const PartOfSpeechItem = ({ type, enabled, active, label, freq, onSelect }) => {
     const classes = classNames(label, 'tab', 'card', {'empty': !enabled}, {active});
-    return <div onClick={() => enabled ? onSelect(label) : null} className={classes} >
+    return <div onClick={() => enabled ? onSelect(type) : null} className={classes} >
         <div className="label">
             { label }
         </div>
@@ -28,25 +34,25 @@ const PartOfSpeachItem = ({ active, enabled, label, freq, onSelect }) => {
 };
 
 
-const PartOfSpeachSelector = ({selected, word, onSelect}) => {
-    return <div>
-        { PARTS_OF_SPEACH.map((pos) => 
-            <PartOfSpeachItem
+const PartOfSpeechSelector = ({selected, word, onSelect}) => 
+    <div>
+        { Object.keys(PARTS_OF_SPEECH).map(pos =>
+            <PartOfSpeechItem
                 key={pos}
+                type={pos}
+                enabled={(getExcerpts(word, pos).length || getDefinitions(word, pos).length) > 0}
                 active={selected === pos}
-                enabled={(getExcerpts(word, pos).length || getDefinitions(word, pos).lenght) > 0}
-                label={pos}
+                label={PARTS_OF_SPEECH[pos]}
                 freq={getFreq(word, pos)}
                 onSelect={onSelect} />
         ) }
     </div>;
-};
 
 
 export { 
     getDefinitions, 
     getExcerpts, 
-    PARTS_OF_SPEACH, 
-    PartOfSpeachItem,
-    PartOfSpeachSelector
+    PARTS_OF_SPEECH, 
+    PartOfSpeechItem,
+    PartOfSpeechSelector
 };

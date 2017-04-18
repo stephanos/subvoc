@@ -10,8 +10,8 @@ Word = namedtuple('Word', ['token', 'POS'])
 class PartOfSpeach(Enum):
     """A word's part of speech in a sentence."""
 
-    ADJ = 1
-    ADV = 2
+    ADJECTIVE = 1
+    ADVERB = 2
     NOUN = 3
     VERB = 4
     OTHER = 5
@@ -34,11 +34,11 @@ class Tagger:
 
     def _parse_POS(self, tag):
         if tag.startswith('J'):
-            return PartOfSpeach.ADJ
+            return PartOfSpeach.ADJECTIVE
         elif tag.startswith('V'):
             return PartOfSpeach.VERB
         elif tag.startswith('N'):
             return PartOfSpeach.NOUN
         elif tag.startswith('R'):
-            return PartOfSpeach.ADV
+            return PartOfSpeach.ADVERB
         return PartOfSpeach.OTHER
