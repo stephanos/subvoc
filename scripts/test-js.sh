@@ -8,4 +8,4 @@ docker run \
     -it \
     -v $(pwd):/app/src \
     stephanos/subvoc \
-    /bin/bash -c "/opt/node_modules/jest/bin/jest.js --runInBand --watch"
+    /bin/bash -c "/app/node_modules/jest/bin/jest.js --runInBand --watch"

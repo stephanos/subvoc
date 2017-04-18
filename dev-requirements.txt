@@ -3,4 +3,6 @@ pur==4.0.2
 pytest==3.0.7
 pytest-cov==2.4.0
 pytest-flask==0.10.0
+pytest-selenium==1.9.1
 pytest-watch==4.1.0
+xvfbwrapper==0.2.9

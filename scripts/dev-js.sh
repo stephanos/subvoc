@@ -8,4 +8,4 @@ docker run \
     -it \
     -v $(pwd):/app/src \
     stephanos/subvoc \
-    /bin/bash -c "scripts/update-js-vendor.sh && /opt/node_modules/rollup/bin/rollup --config --watch"
+    /bin/bash -c "scripts/update-js-vendor.sh && /app/node_modules/rollup/bin/rollup --config --watch"

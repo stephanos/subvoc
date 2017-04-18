@@ -8,3 +8,5 @@ credentials.py
 .webassets-cache
 generated
 node_modules
+screenshots/
+geckodriver.log
