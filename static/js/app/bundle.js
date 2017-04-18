@@ -92,7 +92,7 @@ var WordExcerptList = function WordExcerptList(_ref2) {
             React$1.createElement(
                 "h4",
                 null,
-                "Excerpt"
+                "Movie Excerpt"
             ),
             excerpts.map(function (excerpt, idx) {
                 return React$1.createElement(WordExcerpt, { key: idx, excerpt: excerpt });

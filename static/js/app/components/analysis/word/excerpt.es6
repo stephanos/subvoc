@@ -19,7 +19,7 @@ const WordExcerptList = ({ excerpts }) =>
     <div> { excerpts.length > 0
         ? <div className="excerpts">
             <h4>
-                Excerpt
+                Movie Excerpt
             </h4>
             { excerpts.map((excerpt, idx) => 
                 <WordExcerpt key={idx} excerpt={excerpt} />) }
