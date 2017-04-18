@@ -12,7 +12,7 @@ import { scrollTo, scrollPos } from '../util/scroll.es6';
 
 class Analysis extends React.Component {
 
-    constructor({ movie, word }) {
+    constructor({ movieId, word }) {
         super();
         this.state = {
             difficulty: 3,
@@ -43,7 +43,7 @@ class Analysis extends React.Component {
 
     componentWillMount() {
         this.setState({
-            analysisXHR: this.loadAnalysis(this.props.movie.id)
+            analysisXHR: this.loadAnalysis(this.props.movieId)
         });
     }
 

@@ -26,11 +26,11 @@ class App extends React.Component {
 
 
     render() {
-        const { movieId, word } = this.state;
+        const { movieId, word } = this.state.selection;
 
         return <div>
             { movieId
-                ? <Analysis movie={movieId} word={word} />
+                ? <Analysis movieId={movieId} word={word} />
                 : <Search onSelect={(m) => this.handleSelection(m)} /> }
         </div>;
     }

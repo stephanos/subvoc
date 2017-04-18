@@ -771,7 +771,7 @@ var Analysis = function (_React$Component) {
     inherits(Analysis, _React$Component);
 
     function Analysis(_ref) {
-        var movie = _ref.movie,
+        var movieId = _ref.movieId,
             word = _ref.word;
         classCallCheck(this, Analysis);
 
@@ -810,7 +810,7 @@ var Analysis = function (_React$Component) {
         key: 'componentWillMount',
         value: function componentWillMount() {
             this.setState({
-                analysisXHR: this.loadAnalysis(this.props.movie.id)
+                analysisXHR: this.loadAnalysis(this.props.movieId)
             });
         }
     }, {
@@ -1200,15 +1200,15 @@ var App = function (_React$Component) {
         value: function render() {
             var _this3 = this;
 
-            var _state = this.state,
-                movieId = _state.movieId,
-                word = _state.word;
+            var _state$selection = this.state.selection,
+                movieId = _state$selection.movieId,
+                word = _state$selection.word;
 
 
             return React$1.createElement(
                 'div',
                 null,
-                movieId ? React$1.createElement(Analysis, { movie: movieId, word: word }) : React$1.createElement(Search, { onSelect: function onSelect(m) {
+                movieId ? React$1.createElement(Analysis, { movieId: movieId, word: word }) : React$1.createElement(Search, { onSelect: function onSelect(m) {
                         return _this3.handleSelection(m);
                     } })
             );
