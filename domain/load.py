@@ -13,7 +13,7 @@ class Loader:
     def load(self, imdb_id):
         """Load movie subtitle.
 
-        :param movie_id: IMDB ID of movie
+        :param movie_id: IMDb ID of movie
         :return: movie subtitle
         """
         all_subtitles = self.api.find_subtitles_for_movie(imdb_id)
@@ -24,7 +24,7 @@ class Loader:
         if not subtitle:
             return None
 
-        subtitle.text = self.api.load_text(subtitle)
+        subtitle.text = self.api.load_text(subtitle.id, subtitle.encoding)
         return subtitle
 
     def _pick_best_subtitle(self, subtitles):

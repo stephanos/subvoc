@@ -70,7 +70,7 @@ class Analyser:
     def analyse(self, imdb_id):
         """Generate analysis report for a movie.
 
-        :param imdb_id: IMDB ID of movie
+        :param imdb_id: IMDb ID of movie
         :return: analysis
         """
 

@@ -81,7 +81,7 @@ def test_load_text(api):
         client.DownloadSubtitles = MagicMock(return_value=json.load(resp))
 
         subtitle = Subtitle('my-subtitle', None, 'srt', 0, 'CP1252', False)
-        result = openSubtitles.load_text(subtitle)
+        result = openSubtitles.load_text(subtitle.id, subtitle.encoding)
 
         assert isinstance(result, str)
         assert len(result) == 101014

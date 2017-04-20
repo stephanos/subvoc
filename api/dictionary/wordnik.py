@@ -11,12 +11,23 @@ WORDNIK_URL = 'http://api.wordnik.com/v4'
 
 
 class Wordnik:
+    """API client to lookup words in wordnik.com"""
 
-    def __init__(self, api_key, fetcher=Fetcher(WORDNIK_URL)):
+    def __init__(self, api_key, client=Fetcher(WORDNIK_URL)):
+        """Constructor to prepare API connection.
+
+        :param api_key: valid API key for wordnik.com
+        :param client: client for making a batch of HTTP GET requests
+        """
         self.api_key = api_key
-        self.fetcher = fetcher
+        self.client = client
 
-    def lookup(self, token):
+    def lookup(self, word):
+        """Lookup a word in online dictionary.
+
+        :param word: word to look up
+        :returns: lookup for word
+        """
         query = urlencode(OrderedDict([
             ('api_key', self.api_key),
             ('includeRelated', False),
@@ -25,9 +36,9 @@ class Wordnik:
             ('sourceDictionaries', 'wiktionary'),
             ('useCanonical', False),
         ]))
-        request_paths = ['/word.json/{}/definitions?{}'.format(token, query)]
+        request_paths = ['/word.json/{}/definitions?{}'.format(word, query)]
 
-        responses = self.fetcher.get(request_paths)
+        responses = self.client.get(request_paths)
         responses_data = [r.json() for r in responses if r and r.status_code == 200]
 
         definitions = []
@@ -36,4 +47,4 @@ class Wordnik:
                 definition = WordDefinition(entry['partOfSpeech'], entry['text'])
                 definitions.append(definition)
 
-        return WordLookup(token, definitions, ATTRIBUTION)
+        return WordLookup(word, definitions, ATTRIBUTION)
