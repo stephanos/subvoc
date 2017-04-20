@@ -7,7 +7,7 @@ const PARTS_OF_SPEECH = {
     'verb': 'verb',
     'adjective': 'adj',
     'adverb': 'adv'
-}
+};
 
 
 function getFreq(word, pos) {
