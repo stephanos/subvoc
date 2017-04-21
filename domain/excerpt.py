@@ -35,7 +35,7 @@ class Excerptor:
         picked = []
         i = token_sentence_pos + direction
 
-        while i >= 0 and i < len(sentences) and self._is_close(sentences[i].time, start_time):
+        while 0 <= i < len(sentences) and self._is_close(sentences[i].time, start_time):
             picked.append(sentences[i])
             i += direction
 
