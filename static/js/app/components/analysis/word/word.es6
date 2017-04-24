@@ -2,10 +2,11 @@ import React from 'react';
 
 import { WordDetailBody } from './body.es6';
 
-import { API } from '../../api.es6';
-import { Router } from '../../router.es6';
-import { scrollTo } from '../../util/scroll.es6';
 import { Spinner } from '../../util/spinner.es6';
+
+import { API } from '../../../api.es6';
+import { Router } from '../../../router.es6';
+import { scrollTo } from '../../../util/scroll.es6';
 
 
 class Word extends React.Component {

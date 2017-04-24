@@ -3,11 +3,12 @@ import React from 'react';
 import { Word } from './word/word.es6';
 import { WordList } from './list.es6';
 
-import { API } from '../api.es6';
 import { Nav } from '../nav.es6';
-import { Router } from '../router.es6';
+
+import { API } from '../../api.es6';
+import { Router } from '../../router.es6';
 import { Spinner } from '../util/spinner.es6';
-import { scrollTo, scrollPos } from '../util/scroll.es6';
+import { scrollTo, scrollPos } from '../../util/scroll.es6';
 
 
 class Analysis extends React.Component {
@@ -19,8 +20,7 @@ class Analysis extends React.Component {
             word: { token: word }
         };
     }
-
-
+    
     handleSelectWord(word) {
         this.setState((prevState) => {
             prevState.listScrollPos = scrollPos();
@@ -93,9 +93,10 @@ class Analysis extends React.Component {
     loadAnalysis(movieId) {
         const xhr = API.loadAnalysis(movieId);
         xhr.then((res) => {
-            this.setState({
-                analysisXHR: undefined,
-                analysis: res.data
+            this.setState((prevState) => {
+                prevState.analysisXHR = undefined;
+                prevState.analysis = res.data;
+                prevState.word = res.data.words.find((w) => w == prevState.word.token);
             });
         }).catch((err) => {
             if (API.isCancel(err)) {

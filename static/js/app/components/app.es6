@@ -1,8 +1,8 @@
 import React from 'react';
 
 import { Analysis } from './analysis/analysis.es6';
-import { API } from './api.es6';
-import { Router } from './router.es6';
+import { API } from '../api.es6';
+import { Router } from '../router.es6';
 import { Search } from './search/search.es6';
 
 
@@ -19,9 +19,9 @@ class App extends React.Component {
     }
 
     componentWillMount() {
-        Router.onUrlChange(() => this.setState(
-            { selection: Router.getState() }
-        ));
+        Router.onUrlChange(() => this.setState({
+            selection: Router.getState()
+        }));
     }
 
 

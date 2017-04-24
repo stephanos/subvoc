@@ -302,6 +302,17 @@ var WordDetailBody = function (_React$Component) {
     return WordDetailBody;
 }(React$1.Component);
 
+var Spinner = function Spinner(_ref) {
+    var big = _ref.big,
+        centered = _ref.centered;
+    return React.createElement(
+        "div",
+        { className: classNames("spinner", { big: big }, { centered: centered }) },
+        React.createElement("div", { className: "double-bounce1" }),
+        React.createElement("div", { className: "double-bounce2" })
+    );
+};
+
 var CancelToken = axios.CancelToken;
 
 function cancelableGet(url) {
@@ -433,17 +444,6 @@ function scrollTo(pos) {
 function scrollPos() {
     return (window.pageYOffset || document.documentElement.scrollTop) - (document.documentElement.clientTop || 0);
 }
-
-var Spinner = function Spinner(_ref) {
-    var big = _ref.big,
-        centered = _ref.centered;
-    return React.createElement(
-        "div",
-        { className: classNames("spinner", { big: big }, { centered: centered }) },
-        React.createElement("div", { className: "double-bounce1" }),
-        React.createElement("div", { className: "double-bounce2" })
-    );
-};
 
 var Word = function (_React$Component) {
     inherits(Word, _React$Component);
@@ -888,9 +888,12 @@ var Analysis = function (_React$Component) {
 
             var xhr = API.loadAnalysis(movieId);
             xhr.then(function (res) {
-                _this3.setState({
-                    analysisXHR: undefined,
-                    analysis: res.data
+                _this3.setState(function (prevState) {
+                    prevState.analysisXHR = undefined;
+                    prevState.analysis = res.data;
+                    prevState.word = res.data.words.find(function (w) {
+                        return w == prevState.word.token;
+                    });
                 });
             }).catch(function (err) {
                 if (API.isCancel(err)) {
@@ -1098,11 +1101,13 @@ var SearchResults = function SearchResults(_ref2) {
 var Search = function (_React$Component) {
     inherits(Search, _React$Component);
 
-    function Search() {
+    function Search(_ref) {
+        var api = _ref.api;
         classCallCheck(this, Search);
 
         var _this = possibleConstructorReturn(this, (Search.__proto__ || Object.getPrototypeOf(Search)).call(this));
 
+        _this.api = api;
         _this.state = { items: undefined };
         return _this;
     }
@@ -1155,14 +1160,14 @@ var Search = function (_React$Component) {
                 return;
             }
 
-            var xhr = API.searchMovie(query);
+            var xhr = this.api.searchMovie(query);
             xhr.then(function (res) {
                 _this4.setState(function (prevState) {
                     prevState.searchReq = undefined;
                     prevState.items = res.data.hits;
                 });
             }).catch(function (err) {
-                if (API.isCancel(err)) {
+                if (_this4.api.isCancel(err)) {
                     return;
                 }
                 console.error(err); // eslint-disable-line
@@ -1198,7 +1203,9 @@ var App = function (_React$Component) {
             var _this2 = this;
 
             Router.onUrlChange(function () {
-                return _this2.setState({ selection: Router.getState() });
+                return _this2.setState({
+                    selection: Router.getState()
+                });
             });
         }
     }, {
@@ -1214,7 +1221,7 @@ var App = function (_React$Component) {
             return React$1.createElement(
                 'div',
                 null,
-                movieId ? React$1.createElement(Analysis, { movieId: movieId, word: word }) : React$1.createElement(Search, { onSelect: function onSelect(m) {
+                movieId ? React$1.createElement(Analysis, { movieId: movieId, word: word }) : React$1.createElement(Search, { api: API, onSelect: function onSelect(m) {
                         return _this3.handleSelection(m);
                     } })
             );

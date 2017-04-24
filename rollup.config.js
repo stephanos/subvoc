@@ -4,7 +4,7 @@ import replace from 'rollup-plugin-replace';
 import resolve from 'rollup-plugin-node-resolve';
 
 export default {
-  entry: 'static/js/app/components/init.es6',
+  entry: 'static/js/app/init.es6',
   format: 'iife',
   dest: 'static/js/app/bundle.js',
   sourceMap: false,
@@ -13,9 +13,12 @@ export default {
     'classnames': 'classNames',
     'react': 'React',
     'react-dom': 'ReactDOM',
-    'react-slick': 'Slider'
+    'react-redux': 'Redux',
+    'react-slick': 'Slider',
+    'redux': 'Redux',
+    'redux-saga': 'ReduxSaga'
   },
-  external: ['axios', 'classnames', 'react', 'react-dom', 'react-slick'],
+  external: ['axios', 'classnames', 'react', 'react-dom', 'react-redux', 'react-slick', 'redux', 'redux-saga'],
   plugins: [
     babel({
       babelrc: false,

@@ -3,7 +3,7 @@ import React from 'react';
 import { WordListItem } from './list-item.es6';
 import { DifficultySelector } from './selector.es6';
 
-import { Router } from '../router.es6';
+import { Router } from '../../router.es6';
 
 
 const Heading = ({ analysis }) =>

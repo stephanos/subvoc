@@ -1,4 +1,4 @@
-import { debounce } from '../util/debounce.es6';
+import { debounce } from '../../util/debounce.es6';
 
 
 const SearchBar = ({ onSearch }) => {
