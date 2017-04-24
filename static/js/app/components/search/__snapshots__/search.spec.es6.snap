@@ -1,0 +1,47 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Search component should render 1`] = `
+<div>
+  <Nav />
+  <section
+    className="container"
+  >
+    <h1
+      className="heading"
+    >
+      Use movies to discover new vocabulary.
+    </h1>
+    <SearchBar
+      onSearch={[Function]}
+    />
+    <Intro />
+  </section>
+</div>
+`;
+
+exports[`Search component should render search result 1`] = `
+<div>
+  <Nav />
+  <section
+    className="container"
+  >
+    <h1
+      className="heading"
+    >
+      Use movies to discover new vocabulary.
+    </h1>
+    <SearchBar
+      onSearch={[Function]}
+    />
+    <SearchResults
+      items={
+        Array [
+          "A",
+          "B",
+          "C",
+        ]
+      }
+    />
+  </section>
+</div>
+`;

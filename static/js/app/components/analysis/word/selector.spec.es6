@@ -77,12 +77,6 @@ describe("<PartOfSpeechSelector />", () => {
 });
 
 describe("<PartOfSpeechItem />", () => {
-    let onSelect;
-
-    beforeEach(() => {
-        onSelect = td.function();
-    });
-
     test("should render disabled, inactive POS item", () => {
         const result = render(
             <PartOfSpeechItem enabled={false} label='noun' />
@@ -116,6 +110,7 @@ describe("<PartOfSpeechItem />", () => {
     });
 
     test("should propagate click on enabled POS item", () => {
+        const onSelect = td.function();
         const result = shallow(
             <PartOfSpeechItem enabled={true} type="adjective" label='adj' onSelect={onSelect} />
         );
@@ -125,6 +120,7 @@ describe("<PartOfSpeechItem />", () => {
     });
 
     test("should not propagate click on disabled POS item", () => {
+        const onSelect = td.function();
         const result = shallow(
             <PartOfSpeechItem enabled={true} type="adjective" label='adj' onSelect={onSelect} />
         );

@@ -38,6 +38,9 @@
         "roots": [
             "static/js/app"
         ],
+        "setupFiles": [
+            "./static/js/app/test-setup.es6"
+        ],
         "snapshotSerializers": [
             "enzyme-to-json/serializer"
         ],

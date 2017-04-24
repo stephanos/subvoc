@@ -31,7 +31,7 @@ class App extends React.Component {
         return <div>
             { movieId
                 ? <Analysis movieId={movieId} word={word} />
-                : <Search onSelect={(m) => this.handleSelection(m)} /> }
+                : <Search api={API} onSelect={(m) => this.handleSelection(m)} /> }
         </div>;
     }
 }

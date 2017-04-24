@@ -5,14 +5,14 @@ import { Nav } from '../nav.es6';
 import { SearchBar } from './bar.es6';
 import { SearchResults } from './results.es6';
 
-import { API } from '../api.es6';
 import { Spinner } from '../util/spinner.es6';
 
 
 class Search extends React.Component {
 
-    constructor() {
+    constructor({ api }) {
         super();
+        this.api = api;
         this.state = { items: undefined };
     }
 
@@ -50,14 +50,14 @@ class Search extends React.Component {
             return;
         }
 
-        const xhr = API.searchMovie(query);
+        const xhr = this.api.searchMovie(query);
         xhr.then((res) => {
             this.setState((prevState) => {
                 prevState.searchReq = undefined;
                 prevState.items = res.data.hits;
             });
         }).catch((err) => {
-            if (API.isCancel(err)) {
+            if (this.api.isCancel(err)) {
                 return;
             }
             console.error(err); // eslint-disable-line
