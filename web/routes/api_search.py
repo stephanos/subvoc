@@ -1,4 +1,10 @@
+def remember_last_query(query, cache={}):
+    cache['last_query'] = query
+    return cache
+
+
 def search_api(searcher, query):
+    remember_last_query(query)
     media = searcher.search(query)
     return {
         'hits': [
