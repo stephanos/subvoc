@@ -15,21 +15,33 @@ class Searcher:
         :param limit: limit of results
         :return: list of movies
         """
+        query = self._normalize_query(query)
+        if not query:
+            return []
+
         subtitles = self.subtitle_api.find_by_query(query)
 
         movie_downloads = Counter()
         movie_by_id = {}
         for s in subtitles:
-            if s.media.kind == 'movie':
+            if s.media.kind == 'movie' and s.downloads > 0:
                 media_id = s.media.id
                 movie_by_id[media_id] = s.media
                 movie_downloads[media_id] += s.downloads
 
-        most_popular_movies = [movie_by_id[m[0]] for m in movie_downloads.most_common(limit)]
+        most_popular_movies = [
+            movie_by_id[m[0]]
+            for m in movie_downloads.most_common(self._result_limit(limit))]
         self._add_posters(most_popular_movies)
         return most_popular_movies
 
     def _add_posters(self, movies):
         posters = self.poster_api.get_movie_posters([m.id for m in movies])
         for movie in movies:
-            movie.poster_url = posters.get(movie.id, None)
+            movie.poster_url = posters.get(movie.id, '')
+
+    def _normalize_query(self, query):
+        return query.strip().lower()
+
+    def _result_limit(self, limit):
+        return min(limit, 25)
